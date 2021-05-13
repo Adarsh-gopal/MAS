@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+    
+    <template id="external_layout_for_headerfooter_payment">
+         <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+           
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+   
+       <div class="header">
+       
+            <table class="table table-sm  table-condensed" width="100%" style="width:100%;margin-bottom:none !important;font-size:16px;">
+                    <tr>
+                        <td style="border-top:none !important;" >
+                         
+                            <div class="row" >
+                                <div class="col-2">
+                                <img class="text-right" t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="left:35px;height:50px;width:100px;padding-left:15;"/>
+                                </div>
+                                
+                                <div class="col-5 text-left" style="font-size:16px !important;">
+                                    <h3><b>
+                                            <span style="font-size: 24px;font-family: sans-serif;" t-field="company.partner_id"/>
+                                        </b>
+                                    </h3>
+                                   
+                                    <span style="font-size:16px">
+                                    <span t-field="company.partner_id.street"/>
+                                    
+                                    <span t-field="company.partner_id.street2"/>
+                                    <span t-field="company.city"/>
+                                    <span t-field="company.country_id" class="text-center right"/>
+                                     &amp;nbsp;&amp;nbsp;<br/><br/>
+                                    
+                                   
+                                    </span>
+                                   
+                                    
+                                </div>  
+
+                                <div class="col-5">
+                                     <h3 style="font-size:16px;"><strong>Payment Receipt: <span t-field="o.name"/></strong></h3>
+                                     <!-- <br/> -->
+                                     <h3 style="font-size:16px;"><strong>Payment Date: </strong> <span t-field="o.date"/></h3>
+                                </div>    
+
+                            </div>
+                            <div class="row">
+                            <div class="col-12" >
+                                <div class="text-center">
+                                        <t t-if="o.payment_type == 'outbound'">
+                                            <t t-if="o.journal_id.type == 'bank'">
+                                            <b><h5 style="font-size:20px;font-family:Lato-Bol;color:maroon;"><b>Bank Payment Voucher</b></h5></b>
+                                            </t>
+                                            <t t-if="o.journal_id.type == 'cash'">
+                                            <b><h5 style="font-size:20px;font-family:Lato-Bol;color:maroon;"><b>Cash Payment Voucher</b></h5></b>
+                                            </t>
+                                        </t>
+
+                                        <t t-if="o.payment_type == 'inbound'">
+                                        <t t-if="o.journal_id.type == 'bank'">
+                                            <b><h5 style="font-size:20px;font-family:Lato-Bol;color:maroon;"><b>Bank Receipt Voucher</b></h5></b>
+                                            </t>
+                                            <t t-if="o.journal_id.type == 'cash'">
+                                            <b><h5 style="font-size:20px;font-family:Lato-Bol;color:maroon;"><b>Cash Receipt Voucher</b></h5></b>
+                                            </t>
+                                        </t>
+                                        
+                            </div>
+                            </div>
+                        </div>
+
+                        </td>
+                        
+                    </tr>
+                </table>
+                </div> 
+
+         
+        
+
+
+        <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+            
+        </div>
+
+        
+  
+
+    </template>
+
+</data>
+
+</odoo>

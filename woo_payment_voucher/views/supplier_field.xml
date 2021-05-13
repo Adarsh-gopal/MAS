@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+
+        <record id="view_payment_form_inherit" model="ir.ui.view">
+                <field name="name">Custom</field>
+                <field name="model">account.payment</field>
+                <field name="inherit_id" ref="account.view_account_payment_form"/>
+                <field name="arch" type="xml">
+                    <header>
+                       
+                         <button name="action_confirm" id="report1" string="WOO Payment Voucher" class="btn btn-primary" context="{'report_type':'wqwot'}" type="object" attrs="{'invisible': [('state','!=', 'posted')]}" />
+                    
+                    </header>
+
+                    <xpath expr="//form//sheet//group[@name='group2']/field[@name='move_id']"  position="after">
+                           
+                            <field name="supplier_payment_method" attrs="{'invisible': [('payment_type','=', 'inbound')]}"/>
+                            
+                    </xpath>
+                    
+
+                    
+                </field>
+        </record>
+       
+    </data>
+</odoo>

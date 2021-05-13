@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+       <record id="view_partner_form_inherite_cm" model="ir.ui.view">
+            <field name="name">res.partner.view.form.inherit.cm</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="partner_category.view_partner_form_inherite1"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='customer']" position="replace">
+                    <label for="customer"/>
+                    <div class="o_row" name="customer">
+                        <field name="customer"   nolabel="1" readonly="True" />
+                        <button   name="approve_customer" attrs="{'invisible': [('customer', '=', True)]}"  string="Approve" type="object" title="Approve Customer"  groups="contact_management.approve_contacts_customer" class="oe_link"  icon="fa-check"/>
+
+                        <button   name="%(contact_reject_reason_action_wiz)d"  context="{'customer_type':'customer'}" string="Reject" type="action" title="Reject Customer"  groups="contact_management.approve_contacts_customer" class="oe_link" style="color:red" icon="fa-ban"/> 
+                    </div>
+                  
+                  
+                </xpath>
+                <xpath expr="//field[@name='vendor']" position="replace">
+                    <label for="vendor"/>
+                    <div class="o_row" name="vendor">
+                        <field name="vendor"   nolabel="1" readonly="True"/>
+                        <button name="approve_vendor" string="Approve" attrs="{'invisible': [('vendor', '=', True)]}"  type="object" title="Approve Vendor" groups="contact_management.approve_contacts_vendor" class="oe_link" icon="fa-check"/>
+
+                        <button name="%(contact_reject_reason_action_wiz)d" string="Reject"   context="{'customer_type':'vendor'}" type="action" title="Reject Vendor" style="color:red" groups="contact_management.approve_contacts_vendor" class="oe_link" icon="fa-ban"/>  
+                    </div>
+                   
+                </xpath>
+              
+            </field>
+        </record> 
+
+    </odoo>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_picking_form_landed_cost">
+			<field name="name">view picking form landed cost</field>
+			<field name="model">stock.picking</field>
+			<field name="inherit_id" ref="stock.view_picking_form"/>
+			<field name="arch" type="xml">
+                <xpath expr="//form/sheet/div[@name='button_box']/button[@name='action_see_packages']" position="after">
+                    <button type="object" class="oe_inline oe_stat_button" name="view_landed_cost_tree" icon="fa-bars" string="Landed Cost"
+                    attrs="{'invisible':[('picking_type_code', 'not in', ['incoming','outgoing'])]}"/>
+                </xpath>
+
+                 <field name="origin" position="after">
+                    <field name="required_landed_cost"  attrs="{'invisible': ['|',('picking_type_code', 'not in', ['incoming','outgoing']),('state','!=','done')]}"/>
+                    <field name="purchase_id" invisible="1"/>
+                    <field name="allowed_picking_ids" widget="many2many_tags" invisible="1"/>
+                </field>
+
+				<xpath expr="//sheet/notebook/page[3]" position="after">
+                    <!-- <page name="landed_cost_page" string="Landed Cost" attrs="{'invisible':[('picking_type_code', '!=', 'incoming')]} "> -->
+                    <!-- <page name="landed_cost_page" string="Landed Cost" attrs="{'invisible':[('hide_landed_cost','=',True),('state', 'in', 'assigned'),('picking_type_code', '!=', 'internal')]} "> -->
+                    <page name="landed_cost_page" string="Landed Cost" attrs="{'invisible':[('hide_landed_cost','=',True)]} ">
+                        <field name="hide_landed_cost"  invisible="1"/>
+                        <field name="landed_cost_ids" widget="one2many" attrs="{'invisible':[('hide_landed_cost','=',True)],'readonly': [('state', '=', 'cancel')]}">
+                            <tree string='Landed Cost' editable="bottom">
+                                <field name="product_id"/>
+                                <field name="name"/>
+                                <field name="account_id"/>
+                                <field name="split_method"/>
+                                <field name="price_unit"/>
+
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <!-- <xpath expr="/form/header/button[@name='action_toggle_is_locked']" position="after">
+                    <button name="Validate_LC" string="Apply Landed Cost" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}"/>
+                    <field name="bool_field" invisible="1"/>
+                </xpath> -->
+                 <xpath expr="/form/header/button[@name='action_toggle_is_locked']" position="after">
+                    <button name="Validate_LC" string="Apply Landed Cost" type="object" class="oe_highlight" attrs="{'invisible': ['|','|',('bool_field', '=', True),('state','in','assigned'),('hide_landed_cost','=',True)]}"/>
+                    <field name="bool_field" invisible="1"/>
+                </xpath>
+     
+
+                
+			</field>
+		</record>
+
+
+         <record id="view_stock_landed_form_custom_inherit_for_aa" model="ir.ui.view">
+            <field name="name">stock.landed.cost.form</field>
+            <field name="model">stock.landed.cost</field>
+            <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='account_move_id']" position="after">
+                    <field name="z_account_analytic_id"  required='1'/>
+                </xpath>
+
+                <xpath expr="//field[@name='cost_lines']/tree/field[@name='split_method']" position="after">
+                    <field name="value" />
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_mrp_production_form_landed_cost">
+            <field name="name">view mrp form landed cost</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                    <button type="object" class="oe_inline oe_stat_button" name="view_landed_cost_tree" icon="fa-bars" string="Landed Cost"/>
+                </xpath>
+
+                <xpath expr="//sheet/notebook" position="inside">
+                    <page name="landed_cost_page" string="Landed Cost" attrs="{'invisible':[('hide_landed_cost','=',True)]} ">
+                        <field name="hide_landed_cost" invisible="1" />
+                        <field name="allowed_mrp_production_ids" widget="many2many_tags" invisible="1" />
+                     
+                            <field name="landed_cost_ids" widget="one2many">
+                                <tree string='Landed Cost' editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="account_id"/>
+                                    <field name="split_method"/>
+                                    <field name="price_unit"/>
+
+                                </tree>
+                            </field>
+                     
+                    </page>
+                </xpath>
+                <xpath expr="/form/header" position="inside">
+                    <button name="Validate_mrp_LC" string="Apply Landed Cost" type="object" class="oe_highlight" attrs="{'invisible': ['|',('bool_field', '=', True),('hide_landed_cost','=',True)]}"/>
+                    <field name="bool_field" invisible="1"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        
+	</data>
+</odoo>

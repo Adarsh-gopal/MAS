@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="ktc_inherit_mrp_lot_view" model="ir.ui.view">
+            <field name="name">stock.production.lot</field>
+            <field name="model">stock.production.lot</field>
+            <field name="inherit_id" ref="stock.view_production_lot_form"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//form/sheet/div[2]/h1/field[@name='name']" position="attributes">
+                    <attribute name="name"></attribute>
+                    <attribute name="readonly">1</attribute>
+                </xpath>-->
+                <field name="name" position="replace">
+                    <field name="name" placeholder="e.g. LOT/0001/20121"/>
+
+                </field>
+                <xpath expr="//field[@name='product_id']" position="before">
+                    <field name="receive_from"/>
+                </xpath>
+            </field>
+        </record>
+       
+
+        <record id="product_template_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="tracking" position="after">
+                    <field name="custom_lot"/>
+                </field>
+            </field>
+        </record>
+        <record id="product_product_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.product</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="tracking" position="after">
+                    <field name="custom_lot"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="mas_stok_move_line_view_inherit" model="ir.ui.view">
+            <field name="name">mas.stock.move.line</field>
+            <field name="model">stock.move.line</field>
+            <field name="priority">1000</field>
+            <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="custom_lot" optional="show"/>
+            </xpath>
+                <xpath expr="//tree/field[@name='lot_id']" position='after'>
+                    <field name='partner_id' invisible='0'/>
+                </xpath>
+                <xpath expr="//tree/field[@name='lot_id']" position='replace'>
+                   <field name="lot_id" groups="stock.group_production_lot" attrs="{'column_invisible': [('parent.show_lots_text', '=', True)], 'invisible': [('lots_visible', '=', False)]}" context="{'default_product_id': product_id, 'default_company_id': company_id, 'active_picking_id': picking_id,'default_receive_from': partner_id}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="simple_ktc_inherit_stock_quant_view" model="ir.ui.view">
+            <field name="name">stock.quant</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.view_stock_quant_tree_editable"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='lot_id']" position='after'>
+                    <field name='partner_id'/>
+                    <field name='z_date'/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

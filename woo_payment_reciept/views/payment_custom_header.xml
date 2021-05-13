@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+    
+    <template id="external_layout_for_headerfooter_payment">
+   
+       <div class="header">
+       
+            <table class="table table-sm  table-condensed" width="100%" style="width:100%;margin-bottom:none !important;">
+                    <tr>
+                        <td style="border-top:none !important;" >
+                         
+                            <div class="row" >
+                                <div class="col-6">
+                                <img class="text-right" t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="left:35px;height:105px;width:320px;padding-left:15;"/>
+                                </div>
+                                
+                                <div class="col-6 text-left" style="font-size:12px !important;padding-left:20px;">
+                                    <h3><b>
+                                            <span style="font-size: 24px;font-family: sans-serif;" t-field="company.partner_id"/>
+                                        </b>
+                                    </h3>
+                                   
+                                    <span style="font-size:13px">
+                                    <span t-field="company.partner_id.street"/>
+                                    
+                                    <span t-field="company.partner_id.street2"/>
+                                    <span t-field="company.city"/><br/>
+                                    <span t-field="company.country_id" class="text-center right"/>
+                                     &amp;nbsp;&amp;nbsp;
+                                    <i class="fa fa-globe" aria-hidden="true"> &amp;nbsp;&amp;nbsp;</i><span class="mk-footer-copyright cl" style="font-size:13px;" t-field="company.website"></span> <br/>
+                                    <i class="fa fa-phone" aria-hidden="true"></i> &amp;nbsp;&amp;nbsp;  <span style="text-transform:uppercase" t-field="company.phone" class="text-center right"/> &amp;nbsp;&amp;nbsp;
+                                    <i class="fa fa-envelope" aria-hidden="true"> &amp;nbsp;&amp;nbsp;</i> <span class="mk-footer-copyright cl" style="font-size:13px;" t-field="company.email"/>
+                                     <br/>
+                                    <!-- <t t-esc="'VAT #'"/><span t-field="company.vat"/>   -->
+                                   
+                                    </span>
+                                   
+                                    
+                                </div>      
+
+                            </div>
+
+                            <div class="row">
+                                    <div class="col-5">
+                                    </div>  
+                                    <div class="col-7">
+                                         <b><h5 style="font-size:20px;font-family:Lato-Bol;color:maroon;margin-left:76px;">Receipt # <span t-field="o.name"/></h5></b>
+                                        
+                                    </div>
+                                </div>
+                           
+
+                        </td>
+                        
+                    </tr>
+                </table>
+               
+                </div> 
+         
+        
+
+
+        <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+            
+        </div>
+
+        
+  
+
+    </template>
+
+</data>
+
+</odoo>

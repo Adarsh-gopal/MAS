@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <record id="mrp_bom_form_view_operations_master" model="ir.ui.view">
+    <field name="name">Operation Master in BOM</field>
+    <field name="model">mrp.bom</field>
+    <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+    <field name="arch" type="xml">
+      <field name="operation_ids" position="before">
+        <label for="add_operation"/>
+        <field name="add_operation"
+          domain="[('is_master','=',True)]"
+          options="{'no_create': True, 'no_create_edit':True}"/>
+      </field>
+    </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="mrp.mrp_routing_action">
+    <field name="name">Operations</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">mrp.routing.workcenter</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('is_master','=',True)]</field>
+    <field name="context">{'default_is_master':True}</field>
+  </record>
+
+</odoo>

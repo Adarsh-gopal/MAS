@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_equipment_map_tree_view" model="ir.ui.view">
+        <field name="name">product_equipment_map_tree_view</field>
+        <field name="model">product.equipment.map</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name" string="Name" invisible="1"/>
+                <field name="product_id" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}" required="1" />
+                 <field name="equipment_ids" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"  widget="many2many_tags" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="product_equipment_map_action" model="ir.actions.act_window">
+        <field name="name">Product Equipment Map</field>
+        <field name="res_model">product.equipment.map</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="equipment_map_menu_1"
+        name="Equipment Mapping"
+        action="product_equipment_map_action"
+        parent="mrp.menu_mrp_configuration"
+        sequence="10"/>
+</odoo>

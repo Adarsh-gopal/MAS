@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+
+        <record id="view_payment_form_inherit" model="ir.ui.view">
+                <field name="name">Custom</field>
+                <field name="model">account.payment</field>
+                <field name="inherit_id" ref="account.view_account_payment_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//form//sheet//group[@name='group2']/field[@name='move_id']"  position="after">
+                           
+                            <field name="custom_payment_method" attrs="{'invisible': [('payment_type','=', 'outbound')]}"/>
+                            
+                    </xpath>
+                    <xpath expr="//form//sheet//group[@name='group2']/field[@name='move_id']"  position="after">
+                           
+                            <field name="custom_cheque_no" attrs="{'invisible': [('payment_type','=', 'outbound')]}"/>
+                            <field name="confirmed_user" invisible="1"/>
+                            <field name="creditdebit"  attrs="{'invisible': [('payment_type','=', 'outbound')]}" />
+                    </xpath>
+
+                    
+                </field>
+        </record>
+       
+    </data>
+</odoo>

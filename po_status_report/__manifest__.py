@@ -1,0 +1,24 @@
+{
+    'name': 'PO Status Report',
+    'author': 'Prixgen Tech Solutions Pvt. Ltd.',
+    'company': 'Prixgen Tech Solutions Pvt. Ltd.',
+    'website': 'https://www.prixgen.com',    
+    
+    'version': '14.0.2',
+    
+    'category': 'Purchase',
+
+    'summary': 'This module is useful to show the purchase order lines with status of GRN and Invoice',
+
+    'description': """This module is useful to show the purchase order lines with status of GRN and Invoice""",
+    
+    'depends': ['purchase'],
+    
+    'data': [
+        'views/purchase_order_line.xml',
+    ],
+    
+    'auto_install': False,
+    'installable' : True,
+    'application': True,
+}

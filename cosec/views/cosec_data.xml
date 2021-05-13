@@ -1,0 +1,173 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="cosec.datalist">
+      <field name="name">cosec list</field>
+      <field name="model">cosec.data</field>
+      <field name="arch" type="xml">
+        <tree create="false" edit="false">
+          <field name="userid" string="USER ID" readonly="1"/>
+          <field name="username" string="USER NAME" readonly="1"/>
+          <field name="processdate" string="PROCESS DATE" readonly="1"/>
+          <field name="punch1" string="PUNCH1" readonly="1"/>
+          <field name="punch2" string="PUNCH2" readonly="1"/>
+          <field name="punch3" string="PUNCH3" optional="show" readonly="1"/>
+          <field name="punch4" string="PUNCH4" optional="show" readonly="1"/>
+          <field name="punch5" string="PUNCH5" optional="show" readonly="1"/>
+          <field name="punch6" string="PUNCH6" optional="show" readonly="1"/>
+          <field name="punch7" string="PUNCH7" optional="show" readonly="1"/>
+          <field name="punch8" string="PUNCH8" optional="show" readonly="1"/>
+          <field name="punch9" string="PUNCH9" optional="show" readonly="1"/>
+          <field name="punch10" string="PUNCH10" optional="show" readonly="1"/>
+          <field name="punch11" string="PUNCH11" optional="show" readonly="1"/>
+          <field name="punch12" string="PUNCH12" optional="show" readonly="1"/>
+          <field name="workingshift" string="WORKING SHIFT" readonly="1"/>
+          <field name="latein" string="LATE IN" readonly="1"/>
+          <field name="earlyout" string="EARLY OUT" readonly="1"/>
+          <field name="overtime" string="OVERTIME" readonly="1"/>
+          <field name="worktime" string="WORKTIME" readonly="1"/>
+          <field name="fun_one" string="Function1" optional="show" readonly="1"/>
+          <field name="fun_two" string="Function2" optional="show" readonly="1"/>
+          <field name="fun_three" string="Function3" optional="show" readonly="1"/>
+          <field name="fun_four" string="Function4" optional="show" readonly="1"/>
+          <field name="fun_five" string = "Function5" optional="show" readonly="1"/>
+          <field name="fun_six" string = "Function6" optional="show" readonly="1"/> 
+          <field name="fun_seven" string = "Function7" optional="show" readonly="1"/>
+          <field name="fun_eigth" string = "Function8" optional="show" readonly="1"/>
+          <field name="fun_nine" string = "Function9" optional="show" readonly="1"/>
+          <field name="fun_ten" string = "Function10" optional="show" readonly="1"/>
+          <field name="fun_eleven" string = "Function11" optional="show" readonly="1"/>
+          <field name="fun_twelve" string = "Function12" optional="show" readonly="1"/>
+          <field name="first_half" string = "First Half" readonly="1"/>
+          <field name="second_half" string = "Second Half" readonly="1"/>
+          <field name="missed_punch" string="MISSED PUNCH" readonly="1"/>
+          <field name="missed_punchtwo" string="MISSED PUNCH2" readonly="1"/>
+
+
+
+        </tree>
+      </field>
+    </record>
+
+        <record id="cosec_datafilter" model="ir.ui.view">
+            <field name="name">cosec.data.select</field>
+            <field name="model">cosec.data</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Cosec List">
+
+                    <field name="userid"/>
+                    <field name="username"/>
+                    <field name="workingshift"/>
+                    <field name="worktime"/>
+                </search>
+            </field>
+        </record>
+
+  
+      <record id="ir_cron_scheduler_daily_action" model="ir.cron">
+        <field name="name">COSEC Scheduler</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">8</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field ref="model_cosec_data" name="model_id"/>
+        <field name="code">
+          model.fetch_data()
+        </field>
+        <field name="state">code</field> 
+      </record>
+
+      <record id="ir_action_validate_cosec_data" model="ir.actions.server">
+        <field name="name">Validate</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_cosec_data"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.validate_data()
+        </field>
+        <field name="binding_model_id" ref="model_cosec_data"/>
+      </record>
+
+      
+<!--       <act_window id="action_validate_cosec_action"
+            name="Validate"
+            view_id="cosec.datalist"
+            res_model="cosec.data"
+            action="action_validate_cosec"></act_window>
+
+      <record id="action_validate_cosec" model="ir.actions.server">
+      <field name="name">Validate</field>
+
+      <field ref="model_cosec_data" name="model_id"></field>
+      <field name="code">
+          model.validate_data()
+        </field>
+      </record> -->
+
+
+<!-- 
+      <record>
+
+        <field name="type">ir.actions.act_window</field>
+        <field name ="res_model">hr.employee</field>
+        <field name="domain">[]</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="cosec.datalist"/>
+        <field name="binding_model_id" ref="hr.view_employee_form"/>
+
+      </record> -->
+
+
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="cosec.action_windows">
+      <field name="name">Daily Attendance</field>
+      <field name="res_model">cosec.data</field>
+      <field name="view_mode">tree,form,search</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+    <!-- <record model="ir.actions.server" id="cosec.action_server">
+      <field name="name">cosec server</field>
+      <field name="model_id" ref="model_cosec_cosec"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record> -->
+
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="cosec" id="cosec.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="cosec.menu_1" parent="cosec.menu_root"/>
+    <menuitem name="Menu 2" id="cosec.menu_2" parent="cosec.menu_root"/>
+-->
+    <!-- actions -->
+
+<!--     <menuitem name="List" id="cosec.menu_1_list" parent="cosec.menu_1"
+              action="cosec.action_window"/>
+    <menuitem name="Server to list" id="cosec" parent="cosec.menu_2"
+              action="cosec.action_server"/> -->
+
+    <menuitem id="menu_cosec_data" name="Cosec data" parent="hr_attendance.menu_hr_attendance_manage_attendances" groups="hr_attendance.group_hr_attendance_user" sequence="20" action="cosec.action_windows"/>
+
+  </data>
+
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_payment_form_inherit" model="ir.ui.view">
+            <field name="name">account.payment.form.inherit</field>
+            <field name="model">account.payment</field>   
+            <field name="inherit_id" ref="account.view_account_payment_form"/>                     
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_method_id']" position="after">
+                    <field name="lot_id" attrs="{'invisible': [('payment_method_code', '!=', 'check_printing')],'readonly':[('state','!=','draft')]}" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                    <field name='cheque_payee_name' attrs="{'invisible': [('payment_method_code', '!=', 'check_printing')],'readonly':[('state','!=','draft')]}" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_form_cheque" model="ir.ui.view">
+            <field name="name">res.partner.view.form.inherit1</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                 <xpath expr="/form/sheet/notebook/page[3]/group[1]//button[@name='61']" position="after">
+                    <field name='cheque_payee_name'/>
+                 </xpath>
+              
+            </field>
+        </record>
+
+        <record id="view_account_payment_register_form_inherit_wools" model="ir.ui.view">
+            <field name="name">account.payment.form.multi.inherit</field>
+            <field name="model">account.payment.register</field>
+            <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_method_id']" position="after">
+                    <field name="payment_method_code" invisible="1"/>
+                    <field name="lot_id" attrs="{'invisible': [('payment_method_code', '!=', 'check_printing')]}" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                    <field name="check_number" attrs="{'invisible': [('payment_method_code', '!=', 'check_printing')],'readonly': [('lot_id', '!=', False)]}"/>
+                    <field name="check_date" attrs="{'invisible': [('payment_method_code', '!=', 'check_printing')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

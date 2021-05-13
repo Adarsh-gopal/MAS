@@ -1,0 +1,203 @@
+<odoo>
+    <template id="mass_assets" name="Mass Assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/mass_product_dimensions/static/scss/table_layout_auto.scss"/>
+        </xpath>
+    </template>
+
+    <record model="ir.ui.view" id="product_dimension_form_view">
+        <field name="name">product dimension form view</field>
+        <field name="model">product.dimension</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="typee" readonly="True"/>
+                </group>
+                <group>
+                    <group>
+                        <field name="lengthx" string="Length"/>
+                        <field name="width"/>
+                        <field name="thickness"/>
+                        <field name="height"/>
+                        <field name="diameter"/>
+                    </group>
+                    <group>
+                        <field name="lengthx_UOM" string="Length Uom"/>
+                        <field name="width_UOM"/>
+                        <field name="thickness_UOM"/>
+                        <field name="height_UOM"/>
+                        <field name="diameter_UOM"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="description" attrs="{'invisible': [('typee','!=','shutter'),('typee','!=','frame')]}"/>
+                    
+                    <field name="face_description" attrs="{'invisible': [('typee','!=','door')]}"/>
+                    <field name="back_description" attrs="{'invisible': [('typee','!=','door')]}"/>
+                    <field name="edge_banding" attrs="{'invisible': [('typee','!=','door')]}"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_only_form_view_dimension_tree">
+        <field name="name">product.template.only.form.dimension.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[@name='product_specifications']" position="after">
+                <page name="product_dimensions" string="Dimensions">
+                    
+                    <group>
+                        <field name="material_group"/>
+                    </group>
+
+                    <button name="dimension_to_name" string="Add To Name" type="object" class="oe_highlight"/>
+                    
+                    <field name="product_dimension_ids">
+                        <tree create="false" delete="false">
+                            <field name="typee"/>
+                            
+                            <field name="lengthx" string="Length"/>
+                            <field name="lengthx_UOM" string="UOM"/>
+                            
+                            <field name="width"/>
+                            <field name="width_UOM" string="UOM"/>
+                            
+                            <field name="thickness"/>
+                            <field name="thickness_UOM" string="UOM"/>
+
+                            <field name="height"/>
+                            <field name="height_UOM" string="UOM"/>
+
+                            <field name="diameter"/>
+                            <field name="diameter_UOM" string="UOM"/>
+
+                            <field name="description" attrs="{'column_invisible': [('parent.material_group','!=','doorframe'),('parent.material_group','!=','frame')]}"/>
+                            
+                            <field name="face_description" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
+                            <field name="back_description" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
+                            <field name="edge_banding" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="product_normal_form_view_dimension_tree">
+        <field name="name">product.product.form.dimension.tree</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[@name='inventory']" position="after">
+                <page name="product_dimensions" string="Dimensions">
+                    
+                    <group>
+                        <field name="material_group"/>
+                    </group>
+
+                    <button name="dimension_to_name" string="Add To Name" type="object" class="oe_highlight"/>
+                    
+                    <field name="product_dimension_ids">
+                        <tree create="false" delete="false">
+                            <field name="typee"/>
+                            
+                            <field name="lengthx" string="Length"/>
+                            <field name="lengthx_UOM" string="UOM"/>
+                            
+                            <field name="width"/>
+                            <field name="width_UOM" string="UOM"/>
+                            
+                            <field name="thickness"/>
+                            <field name="thickness_UOM" string="UOM"/>
+
+                            <field name="height"/>
+                            <field name="height_UOM" string="UOM"/>
+
+                            <field name="diameter"/>
+                            <field name="diameter_UOM" string="UOM"/>
+
+                            <field name="description" attrs="{'column_invisible': [('parent.material_group','!=','doorframe'),('parent.material_group','!=','frame')]}"/>
+                            
+                            <field name="face_description" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
+                            <field name="back_description" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
+                            <field name="edge_banding" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_order_form_dimensions">
+        <field name="name">sale.order.form.dimensions</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']" position="before">
+                <group>
+                    <field name="material_group"/>
+                    <field name="show_lengthx" invisible="True"/>
+                    <field name="show_width" invisible="True"/>
+                    <field name="show_thickness" invisible="True"/>
+                    <field name="show_height" invisible="True"/>
+                    <field name="show_diameter" invisible="True"/>
+                    <field name="show_frame_lengthx" invisible="True"/>
+                    <field name="show_frame_width" invisible="True"/>
+                    <field name="show_frame_thickness" invisible="True"/>
+                    <field name="show_frame_height" invisible="True"/>
+                    <field name="show_frame_diameter" invisible="True"/>
+                    <field name="show_frame_description" invisible="True"/>
+                    <!-- <field name="show_frame_price" invisible="True"/> -->
+                    <field name="show_shutter_lengthx" invisible="True"/>
+                    <field name="show_shutter_width" invisible="True"/>
+                    <field name="show_shutter_thickness" invisible="True"/>
+                    <field name="show_shutter_height" invisible="True"/>
+                    <field name="show_shutter_diameter" invisible="True"/>
+                    <field name="show_shutter_description" invisible="True"/>
+                    <!-- <field name="show_shutter_price" invisible="True"/> -->
+                    <field name="show_face_description" invisible="True"/>
+                    <field name="show_back_description" invisible="True"/>
+                    <field name="show_edge_banding" invisible="True"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="domain">['|',('material_group', '=', parent.material_group),('product_tmpl_id.material_group', '=', parent.material_group)]</attribute>
+            </xpath>
+
+            <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="after">
+               
+                <field name="lengthx" string="Length" attrs="{'column_invisible': [('parent.show_lengthx','=',False)]}"/>
+                <field name="width" attrs="{'column_invisible': [('parent.show_width','=',False)]}"/>
+                <field name="thickness" attrs="{'column_invisible': [('parent.show_thickness','=',False)]}"/>
+                <field name="height" attrs="{'column_invisible': [('parent.show_height','=',False)]}"/>
+                <field name="diameter" attrs="{'column_invisible': [('parent.show_diameter','=',False)]}"/>
+
+
+                <field name="frame_lengthx" attrs="{'column_invisible': [('parent.show_frame_lengthx','=',False)]}"/>
+                <field name="frame_width" attrs="{'column_invisible': [('parent.show_frame_width','=',False)]}"/>
+                <field name="frame_thickness" attrs="{'column_invisible': [('parent.show_frame_thickness','=',False)]}"/>
+                <field name="frame_height" attrs="{'column_invisible': [('parent.show_frame_height','=',False)]}"/>
+                <field name="frame_diameter" attrs="{'column_invisible': [('parent.show_frame_diameter','=',False)]}"/>
+                <field name="frame_description" attrs="{'column_invisible': [('parent.show_frame_description','=',False)]}"/>
+                <field name="frame_price" attrs="{'column_invisible': [('parent.material_group','!=','doorframe')]}"/>
+
+
+                <field name="shutter_lengthx" attrs="{'column_invisible': [('parent.show_shutter_lengthx','=',False)]}"/>
+                <field name="shutter_width" attrs="{'column_invisible': [('parent.show_shutter_width','=',False)]}"/>
+                <field name="shutter_thickness" attrs="{'column_invisible': [('parent.show_shutter_thickness','=',False)]}"/>
+                <field name="shutter_height" attrs="{'column_invisible': [('parent.show_shutter_height','=',False)]}"/>
+                <field name="shutter_diameter" attrs="{'column_invisible': [('parent.show_shutter_diameter','=',False)]}"/>
+                <field name="shutter_description" attrs="{'column_invisible': [('parent.show_shutter_description','=',False)]}"/>
+                <field name="shutter_price" attrs="{'column_invisible': [('parent.material_group','!=','doorframe')]}"/>
+
+
+                <field name="face_description" attrs="{'column_invisible': [('parent.show_face_description','=',False)]}"/>
+                <field name="back_description" attrs="{'column_invisible': [('parent.show_back_description','=',False)]}"/>
+                <field name="edge_banding" attrs="{'column_invisible': [('parent.show_edge_banding','=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

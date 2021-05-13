@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="group_inventory_revaluation" model="res.groups">
+            <field name="name">Manual Revaluation Access</field>
+        </record>
+    </data>
+    
+    <record id="stock_valuation_layer_tree" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.inherit.view.form</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.stock_valuation_layer_tree"/>
+        <field name="arch" type="xml">
+            <button name="action_revaluation" position="attributes">
+                <attribute name="groups">stock_account_base.group_inventory_revaluation</attribute>
+            </button>
+            <xpath expr="//field[@name='value']" position="before">
+              <field name="unit_cost"/>
+            </xpath>
+            <field name="product_id" position="after">
+                <field name="stock_landed_cost_ids" optional="hide"/>
+                <field name="description" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="stock_valuation_layer_revaluation_tree" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.revaluation.inherit.view.form</field>
+        <field name="model">stock.valuation.layer.revaluation</field>
+        <field name="inherit_id" ref="stock_account.stock_valuation_layer_revaluation_form_view"/>
+        <field name="arch" type="xml">
+            <field name="account_id" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_create_edit':True, 'no_open': True}</attribute>
+            </field>
+            <field name="reason" position="attributes">
+                <attribute name="required">True</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="view_picking_form_analytic_purchase">
+      <field name="name">analytic account in stock picking for purchase</field>
+      <field name="model">stock.picking</field>
+      <field name="inherit_id" ref="stock.view_picking_form"/>
+      <field name="arch" type="xml">
+
+        <field name="analytic_account_id" position="attributes">
+          <attribute name="attrs">
+            {'readonly':['|',('state','in',('done','cancel')),('picking_type_code','=','incoming')],'required': [('analytic_company_type', '=', 'wh')]}
+          </attribute>
+        </field>
+        
+        <field name="analytic_tag_ids" position="attributes">
+          <attribute name="attrs">
+            {'readonly':['|',('state','in',('done','cancel')),('picking_type_code','=','incoming')]}
+          </attribute>
+        </field>
+
+
+
+
+      </field>
+    </record>
+
+  </data>
+</odoo>

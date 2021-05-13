@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <record id="hr_equipment_request_view_form_inherit_purchase" model="ir.ui.view">
+    <field name="name">Manintenance request form view</field>
+    <field name="model">maintenance.request</field>
+    <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+    <field name="arch" type="xml">
+      <field name="maintenance_type" position="after">
+        <field name="purchase_order" readonly="1" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': [('purchase_order','=',False)]}"/>
+        <field name="material_purchase_order" readonly="1" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': [('material_purchase_order','=',False)]}"/>
+        <field name="vendor" readonly="1" options="{'no_create': True, 'no_create_edit':True}" widget="many2many_tags" attrs="{'invisible': [('material_purchase_order','=',False),('purchase_order','=',False)]}"/>
+      </field>
+    </field>
+  </record>
+</odoo>
+  

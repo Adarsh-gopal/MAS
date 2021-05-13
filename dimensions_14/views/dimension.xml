@@ -1,0 +1,50 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="dimension_name_tree">
+      <field name="name">Dimension Name List View</field>
+      <field name="model">dimension.name</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="dimension_name_form">
+      <field name="name">Dimension Name Form View</field>
+      <field name="model">dimension.name</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+                <field name="dimension_value_ids" invisible="1"/>
+              </group>
+            </group>
+            <notebook>
+              <sheet string="Dimension Values">
+                <field name="dimension_line_ids">
+                  <tree editable="bottom">
+                    <field name="dimension_value_id" domain="[('id','not in',parent.dimension_value_ids)]"/>
+                  </tree>
+                </field>
+              </sheet>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="dimension_name_action">
+      <field name="name">Dimensions</field>
+      <field name="res_model">dimension.name</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Dimensions" id="dimension_name_menu" parent="account.account_account_menu" sequence="2" action="dimension_name_action"/>
+
+  </data>
+</odoo>

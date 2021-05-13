@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences for account.cheque.lot -->
+        <record id="seq_account_cheque_lot" model="ir.sequence">
+            <field name="name">Account Cheque Lot</field>
+            <field name="code">account.cheque.lot</field>
+            <field eval="1" name="number_next"/>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

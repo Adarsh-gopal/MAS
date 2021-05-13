@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_family_details,access_family_details,model_family_details,base.group_user,1,1,1,1
+access_relation_name,access_relation_name,model_relation_name,base.group_user,1,1,1,1
+access_designation_name,access_designation_name,model_designation_name,base.group_user,1,1,1,1
+access_reason_name,access_reason_name,model_reason_name,base.group_user,1,1,1,1
+access_group_name,access_group_name,model_group_name,base.group_user,1,1,1,1
+access_qual_name,access_qual_name,model_qual_name,base.group_user,1,1,1,1

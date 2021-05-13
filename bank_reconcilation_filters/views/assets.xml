@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <template id="assets_backend" name="custom account assets backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/bank_reconcilation_filters/static/src/js/reconcilation_custom.js"/>
+        </xpath>
+    </template>
+
+</odoo>

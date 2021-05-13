@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="hr_contract_form_custom_fields" model="ir.ui.view">
+        <field name="name">hr.contract.custom.fields</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <group name="salary_and_advantages" position="inside">
+                <label for="total_ctc"/>
+                <div class="o_row" name="total_ctc">
+                    <field name="total_ctc" nolabel="1"/>
+                    <span>/ month</span>
+                </div>
+                <field name="current_month_salary"/>
+            </group>
+        </field>
+    </record>
+    <record id="hr_loan_hrms_inherited" model="ir.ui.view">
+        <field name="name">HR LOAN</field>
+        <field name="model">hr.loan</field>
+        <field name="inherit_id" ref="loan.hr_loan_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_date']" position="after">
+                <field name='current_month_salary'/>
+                <field name='remaining_advance_amount'/>
+                <field name='date_of_joinings'/>
+                <field name='contractors_visible'/>
+                <field name='contractors' options="{'no_create': True}" attrs="{'invisible': [('contractors_visible','=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="hr_loan_hrms_contractors" model="ir.ui.view">
+        <field name="name">HR Contractors</field>
+        <field name="model">hr.contractors</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name='name'/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="hr_loan_hrms_contractors_tree" model="ir.ui.view">
+        <field name="name">HR Contractors Tree</field>
+        <field name="model">hr.contractors</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name='name'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_hr_contractors" model="ir.actions.act_window">
+	            <field name="name">Contractors</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="res_model">hr.contractors</field>
+	            <field name="view_mode">tree,form</field>
+	            <field name="help" type="html">
+	                <p class="oe_view_nocontent_create">
+	                    Create Hr Contractors for the Company
+	                </p>
+	            </field>
+	        </record>
+        
+	   <menuitem action="action_hr_contractors" name="Contractors"
+	            id="menu_action_hr_contractors" parent="hr.menu_human_resources_configuration"
+	            sequence="12"/> 
+</odoo>

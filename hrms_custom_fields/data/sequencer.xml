@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="sequence_profile_id" model="ir.sequence">
+            <field name="name">Profile ID Instellars</field>
+            <field name="code">hr.applicant</field>
+            <field name="prefix">CA-</field>
+            <field name="padding" eval="0"/>
+        </record>
+        <record id="employee_registration_number_india" model="ir.sequence">
+            <field name="name">Employee Registration Number India</field>
+            <field name="code">hr.employee.india</field>
+            <field name="prefix">IGC</field>
+            <field name="company_id">1</field>
+
+            <field name="padding" eval="4"/>
+        </record>
+        <!-- <record id="employee_registration_number_singapore" model="ir.sequence">
+            <field name="name">Employee Registration Number Singapore</field>
+            <field name="code">hr.employee.singapore</field>
+            <field name="prefix">IGC-SG-</field>
+            <field name="company_id">2</field>
+            <field name="padding" eval="3"/>
+        </record> -->
+    </data>
+</odoo>

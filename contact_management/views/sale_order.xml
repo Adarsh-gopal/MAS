@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_for_customer_cm"  model="ir.ui.view">
+        <field name="name">sale.order.view.form.inherited.cm</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+              <!--   <attribute name="domain">['|', ('company_id', '=', False), ('company_id', '=', company_id),('vendor','!=',True)]</attribute> -->
+              <attribute name="domain">['|',('company_id', '=', False), ('company_id', '=', company_id),'|','|',('customer','=',True),'&amp;',('customer','=',True),('vendor','=',True),'&amp;',('customer','=',False),('vendor','=',False)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+
+     <record id="purchase_order_form_for_vendor_cm"  model="ir.ui.view">
+        <field name="name">purchase.order.view.form.inherited.cm</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="domain">['|',('company_id', '=', False), ('company_id', '=', company_id),'|','|',('vendor','=',True),'&amp;',('customer','=',True),('vendor','=',True),'&amp;',('customer','=',False),('vendor','=',False)]</attribute>
+            </xpath>
+             
+        </field>
+    </record>
+</odoo>

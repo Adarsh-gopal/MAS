@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="contact_reject_reason_form_wiz" model="ir.ui.view">
+          <field name="name">contact.reject.reason.form</field>
+          <field name="model">contact.reject.reason</field>
+          <field name="arch" type="xml">
+            <form string="Reason">
+                <group>
+                    <group>
+                        <field name="customer_type" invisible="1"/>
+                        <field name="partner_id" invisible="1"/>
+                        <field name="reasons" required="1"/>
+                    </group>              
+                </group>
+                <footer>
+                    <button name="update_reason" type="object" string="Update" class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+          </field>
+    </record>
+
+    <record id="contact_reject_reason_action_wiz" model="ir.actions.act_window">
+        <field name="name">Action Window contact reject reason</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">contact.reject.reason</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="contact_reject_reason_form_wiz"/>
+        <field name="context">{'active_id' : active_id}</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

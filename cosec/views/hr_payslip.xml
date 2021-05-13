@@ -1,0 +1,34 @@
+<odoo>
+  <data>
+
+
+    <record model="ir.ui.view" id="view_hr_payslip_form_inherit">
+        <field name="name">hr.payslip.form</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+
+            
+                <xpath expr="//form/sheet/notebook/page[@name='account_info']" position="after">
+                
+                    <page string="Leave Information">
+                        <group>
+                            <group>
+
+              <field name='unpaid_leaves'/>
+              <field name='paid_leaves'/>
+              <field name='process_month'/>
+              <field name='present_days'/>
+              <field name='working_time'/>
+              <field name='over_time'/>
+              <field name='salary_over_hour' invisible ="1"/>
+              <field name='salary_over_minute' invisible ="1"/>
+          </group>
+      </group>
+          </page>
+      </xpath>
+</field>
+</record>
+</data>
+</odoo>
+

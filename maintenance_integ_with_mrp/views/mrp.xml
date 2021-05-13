@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <record id="mrp_maintenance_integ_with_mrp" model="ir.ui.view">
+    <field name="name">Mrp Maintenance</field>
+    <field name="model">mrp.workorder</field>
+    <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="/tree/field[@name='state']" position="after">
+        <field name='equipment_ids' widget='many2many_tags' domain="[('id','in',filter_equipment_ids),('state','=','available')]" options="{'no_create': True, 'no_create_edit':True}"/>
+        <field name='filter_equipment_ids' widget='many2many_tags' invisible='1'/>
+      </xpath>
+    </field>
+  </record>
+
+</odoo>

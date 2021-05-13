@@ -1,0 +1,36 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="account_move_due_date">
+      <field name="name">account move invoice due date</field>
+      <field name="model">account.move</field>
+      <field name="inherit_id" ref="account.view_move_form"/>
+      <field name="arch" type="xml">
+        <field name="invoice_date_due" position="replace">
+        <field name="invoice_date_due" force_save="1"
+          placeholder="Date"/>
+        </field>
+      </field>
+    </record>
+
+    <record id="view_invoice_tree_inherit" model="ir.ui.view">
+      <field name="name">account.invoice.tree</field>
+      <field name="model">account.move</field>
+      <field name="inherit_id" ref="account.view_invoice_tree"/>
+      <field name="arch" type="xml">
+
+          <field name="invoice_date_due" position="replace">
+
+    <field name="invoice_date_due" string="Due Date" optional="show" attrs="{'invisible': [['payment_state', 'in', ('paid', 'in_payment', 'reversed')]]}"/>
+
+  </field>
+              <field name="invoice_date_due" position="after">
+     <field name="invoice_date_due" string="Due Days" widget="remaining_days" optional="show" attrs="{'invisible': [['payment_state', 'in', ('paid', 'in_payment', 'reversed')]]}"/>
+   </field>
+
+
+</field>
+</record>
+
+</data>
+</odoo>

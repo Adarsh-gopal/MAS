@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- for backend -->
+    <template id="wrap_text_tree_view" inherit_id="web.assets_backend" name="wrap text tree view">
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/scss" href="/wrap_tree_view_label/static/src/scss/wrap_text_column.scss"/>
+        </xpath>
+    </template>
+</odoo>

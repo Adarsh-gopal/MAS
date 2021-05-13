@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <record id="mas_page_format" model="report.paperformat">
+        <field name="name">MAS sale order page format</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">65</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">55</field>
+        <field name="dpi">90</field>
+    </record>
+    
+
+    <record id="delivery_order_mas.deliveryorder_report" model="ir.actions.report">
+            <field name="name">Non Returnable</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">delivery_order_mas.delivery_report</field>
+            <field name="report_file">delivery_order_mas.delivery_report</field>
+            <field name="print_report_name">(object.state in ('draft', 'ready','waiting','done','waiting another operation') and 'Delivery - %s' % (object.name)) or 'Delivery - %s ' % (object.name)</field>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+            <field name="binding_type">report</field>
+            
+            <field name="paperformat_id" ref="delivery_order_mas.mas_page_format"/>
+ 
+    </record>
+
+    <record id="delivery_order_mas.deliveryorder_report1" model="ir.actions.report">
+            <field name="name">Returnable Document</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">delivery_order_mas.delivery_report</field>
+            <field name="report_file">delivery_order_mas.delivery_report</field>
+            <field name="print_report_name">(object.state in ('draft', 'ready','waiting','done','waiting another operation') and 'Delivery - %s' % (object.name)) or 'Delivery - %s ' % (object.name)</field>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+            <field name="binding_type">report</field>
+            
+            <field name="paperformat_id" ref="delivery_order_mas.mas_page_format"/>
+ 
+    </record>
+
+    <template id="delivery_report">
+     <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+        <t t-call="delivery_order_mas.external_layout_standard_mass">
+            <table class="table" style="font-size:14px;border:1px solid #143980;width:100%;padding-top:70px;margin-bottom:0;height:248mm;color:#143980;">
+                <thead>
+                <tr style="height:3px !important;">
+                    <td  colspan="3" style="width:40%;padding:1px;border:1px solid #143980;font-size:12px;padding-left: 6px;">
+                        <span style="color:#143980;"><b>Consignee / Buyer : </b></span><br/>
+                        <strong><span style="color:black;font-style: normal;" t-esc="doc.partner_id.name"/></strong><br/>
+                        <span style="color:black;font-style: normal;" t-esc="doc.partner_id.street"/> <br/>
+                        <span style="color:black;font-style: normal;" t-esc="doc.partner_id.street2"/>
+                        <span style="color:black;font-style: normal;" t-esc="doc.partner_id.city"/>-
+                        <strong><span style="color:black;font-style: normal;" t-esc="doc.partner_id.state_id.name"/></strong><br/>
+                        <span style="color:black;font-style: normal;" t-esc="doc.partner_id.mobile"/>
+                        <span style="color:black;font-style: normal;" t-esc="doc.partner_id.phone"/><br/> 
+                        <t t-if="doc.partner_id.email">
+                        <t t-set="emailstr" t-value="doc.email_split(doc.partner_id.email)"/> 
+                        <span style="color:black;font-style: normal;" t-esc="emailstr"/> 
+                        </t>       
+                    </td>
+                    <td  colspan="3" style="width:35%;padding:1px;border:1px solid #143980;font-size:12px;padding-left: 6px;">
+                        <span style="color:#143980;"><b>Shipping / Delivery : </b></span><br/>
+                        <strong><span style="font-style: normal;color:black;" t-esc="doc.sale_id.partner_shipping_id.name"/></strong><br/>
+                        <span style="color:black;font-style: normal;" t-esc="doc.sale_id.partner_shipping_id.street"/> <br/>
+                        <span style="color:black;font-style: normal;" t-esc="doc.sale_id.partner_shipping_id.street2"/>
+                        <span style="color:black;"><t t-if="doc.sale_id.partner_shipping_id.city" t-esc="doc.sale_id.partner_shipping_id.city"/>-</span>
+                        <strong style="color:black;"><t t-if="doc.sale_id.partner_shipping_id.state_id.name" t-esc="doc.sale_id.partner_shipping_id.state_id.name"/></strong><br/>
+                        <t t-if="doc.sale_id.partner_shipping_id.phone" t-esc="doc.sale_id.partner_shipping_id.phone"/>
+                        <t t-if="doc.sale_id.partner_shipping_id.mobile" t-esc="doc.sale_id.partner_shipping_id.mobile"/><br/> 
+                        <t t-if="doc.partner_id.email">
+                        <t t-set="emailstr" t-value="doc.email_split(doc.partner_id.email)"/> 
+                        <span style="color:black;font-style: normal;" t-esc="emailstr"/>
+                        </t>    
+                    </td>
+                    <td colspan="4" style="width:25%;padding:1px;border:1px solid #143980;font-size:12px;padding-left: 6px;">
+                        <span style="color:#143980;"><b>Transporter : </b></span>
+                        <span style="color:black;"><span t-esc="doc.z_transporter"/></span>
+                        <br/>
+                        <br/>
+                        <span style="color:#143980;"><b>Vehicle No : </b></span>
+                        <span style="color:black;"><span t-esc="doc.zx_vehicle_no"/></span>
+                    </td>
+                </tr>
+                <tr style="height:5px !important;padding-left: 6px;">
+                    <td colspan="3" style="padding:1px;width:40%;border:1px solid #143980;font-size:12px;">
+                        <b><span style="color:#143980;">State: </span></b>
+                        <span style="color:black;"><t t-if="doc.partner_id.state_id.name" t-esc="doc.partner_id.state_id.name"/></span><br/>
+                        <b><span style="color:#143980;">State Code:</span></b>
+                        <span style="color:black;"><span t-esc="doc.partner_id.state_id.l10n_in_tin"/></span><br/>
+                        <b><span style="color:#143980;">GSTIN:</span></b>
+                        <span style="color:black;"><span t-esc="doc.partner_id.vat"/></span><br/>
+                        <b><span style="color:#143980;">PAN:</span></b>
+                        <span style="color:black;"><span t-esc="doc.partner_id.pan_no"/></span>
+                    </td>
+                    <td colspan="3" style="padding:1px;width:35%;border:1px solid #143980;font-size:12px;padding-left: 6px;">
+                        <b><span style="color:#143980;">State: </span></b>
+                        <span style="color:black;"><t t-if="doc.sale_id.partner_shipping_id.state_id.name" t-esc="doc.sale_id.partner_shipping_id.state_id.name"/></span><br/>
+                        <b><span style="color:#143980;">State Code: </span></b>
+                        <span style="color:black;"><span t-field="doc.sale_id.partner_shipping_id.state_id.l10n_in_tin"/></span><br/>
+                        <b><span style="color:#143980;">GSTIN:</span></b>
+                        <span style="color:black;"><span t-esc="doc.sale_id.partner_shipping_id.vat"/></span><br/>
+                        <b><span style="color:#143980;">PAN:</span></b>
+                        <span style="color:black;"><span t-esc="doc.sale_id.partner_shipping_id.pan_no"/></span>
+                    </td>
+                    <td colspan="4" style="padding:1px;width:25%;border:1px solid #143980;font-size:12px;padding-left: 6px;">
+                        <b><span style="color:#143980;">From : </span></b>
+                        <strong style="color:black"><span t-field="doc.company_id.city"/>,<span  t-field="doc.company_id.state_id"/></strong><br/>
+                        <b><span style="color:#143980;">To : </span></b>
+                            <strong style="color:black"><t t-if="doc.sale_id.partner_shipping_id.city" t-esc="doc.sale_id.partner_shipping_id.city"/>,</strong>
+                            <strong style="color:black"><t t-if="doc.sale_id.partner_shipping_id.state_id.name" t-esc="doc.sale_id.partner_shipping_id.state_id.name"/></strong>
+
+                    </td>
+                </tr>
+                <tr style="color:#143980;height:3px !important;font-size:12px;">
+                    <th class="text-center" style="padding:1px;width:5%;border:1px solid #143980;">Sl No</th>
+                    <th colspan="2" class="text-center" style="padding:1px;width:30%;border:1px solid #143980;">Description of Goods / Services</th>
+                    <th class="text-center" style="padding:1px;width:15%;border:1px solid #143980;">HSN / SAC Code</th>
+                    <th class="text-center" style="padding:1px;width:15%;border:1px solid #143980;">Quantity</th>
+                    <th class="text-center" style="padding:1px;width:10%;border:1px solid #143980;">Price/Unit&#160;(&#8377;)</th>
+                    <th colspan="4" class="text-center" style="padding:1px;width:25%;border:1px solid #143980;">Amount&#160;(&#8377;)</th>
+                </tr>
+            </thead>
+                <tbody style="width:100%;border:1px solid #143980;color:black;border-bottom:none !important;font-size:12px;">
+                    <!-- Variables declaration start-->
+                    <t t-set="i" t-value="1"/>
+                    <t t-set="disc" t-value="0"/>
+                    <t t-set="disc_tot" t-value="0"/>
+                    <t t-set="amttotal" t-value="0"/>
+                    <t t-set="current_subtotal" t-value="0"/>
+                    <t t-if="doc.sale_id.order_line">
+                    <t t-foreach="doc.sale_id.order_line" t-as="line">
+                        <tr style="height:3px !important;">
+                            <td class="text-center" style="width:5%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="i"/>
+                                <t t-set="i" t-value="i+1"/>
+                            </td>
+                            <td colspan="2" class="text-left" style="width:30%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td class="text-left" style="width:15%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-field="line.product_id.l10n_in_hsn_code"/>
+                            </td>
+                            <td class="text-right" style="width:15%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="'{0:,.2f}'.format(int(line.product_uom_qty))"/>&#160;<span t-esc="line.product_uom.name"/>
+                            </td>
+                            <td class="text-center" style="width:10%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="'{0:,.2f}'.format(int(line.price_unit))"/>
+                            </td>
+                            <td colspan="4" class="text-right" style="width:25%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="'{0:,.2f}'.format(int(line.price_unit * line.product_uom_qty))"/>
+                            </td>                        
+                        </tr> 
+                    </t>
+                    </t>
+                    <t t-else="">
+                        <t t-foreach="doc.move_line_ids_without_package" t-as="lines">
+                        <tr style="height:3px !important;">
+                            <td class="text-center" style="width:5%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="i"/>
+                                <t t-set="i" t-value="i+1"/>
+                            </td>
+                            <td colspan="2" class="text-left" style="width:30%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="lines.product_id.name"/>
+                            </td>
+                            <td class="text-left" style="width:15%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-field="lines.product_id.l10n_in_hsn_code"/>
+                            </td>
+                            <td class="text-right" style="width:15%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="'{0:,.2f}'.format(int(lines.qty_done))"/>
+                                <!-- &#160;
+                                <span t-esc="line.product_uom.name"/> -->
+                            </td>
+                            <td class="text-center" style="width:10%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="'{0:,.2f}'.format(int(lines.product_id.standard_price))"/>
+                            </td>
+                            <td colspan="4" class="text-right" style="width:25%;border:1px solid #143980; border-bottom:none !important;">
+                                <span t-esc="'{0:,.2f}'.format(int(lines.qty_done * lines.product_id.standard_price))"/>
+                            </td>                        
+                        </tr> 
+                    </t>
+                    </t>
+
+                    <tr>
+                        <td style="border-left:1px solid #143980;border-top: none !important;"></td>
+                        <td colspan="2" style="border-left:1px solid #143980;border-top: none !important;"></td>
+                        <td style="border-left:1px solid #143980;border-top: none !important;"></td>
+                        <td style="border-left:1px solid #143980;border-top: none !important;"></td>
+                        <td style="border-left:1px solid #143980;border-top: none !important;"></td>
+                        <td colspan="4" style="border:1px solid #143980;border-top: none !important;"></td>
+                    </tr>
+                </tbody>
+                <tbody style="width:100%;border:1px solid #143980;">
+                    <tr style="height:3px !important;">
+                        <th colspan="4" class="text-left" style="width:50%;padding:1px;border:1px solid #143980;font-size:12px;">
+                            <strong style="color:#143980;">No. of Packages:</strong>
+                            <!-- <span style="color:black;"><span t-field="doc.no_of_packages"/></span> -->
+                        </th>
+                        <th colspan="2" class="text-left" style="padding:1px;border:1px solid #143980;border-top:1px solid #143980;width:25%;font-size:12px;">
+                          <strong style="color:#143980;">Total Value of Goods/Services:</strong>
+                        </th>
+                        <th colspan="4" class="text-right" style="padding:1px;border:1px solid #143980;width:25%">
+                            <strong style="color:black"><span t-esc="'{0:,.2f}'.format(int(doc.sale_id.amount_untaxed))"/></strong>
+                        </th>
+                    </tr>
+                    <tr style="height:3px !important;"> 
+                        <td colspan="10" class="text-left" style="padding:1px;border:1px solid #143980;width:100%; font-size:12px;">
+                            <strong style="color:#143980;font-size:12px;">Challan Total in Words: </strong>
+                            <t t-set="amt_tot" t-value="doc.sale_id.amount_untaxed"/>
+                                <span style="color:black;text-transform:uppercase">
+                                    <t t-set="amountwords"  t-value="doc.sale_id.amt_in_words_do(amt_tot)"/>
+                                    <!-- doc.sale_id.pricelist_id.currency_id.id -->
+                                <span t-esc="amountwords"/></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="text-left" style="width:50%;padding:1px;border:1px solid #143980;height:80px;font-size:12px;">
+                            <u><strong style="color:#143980;">Nature of processing required to be done</strong></u><br/>
+                                <span style="color:black;"><span t-field="doc.note"/></span>
+                        </td>
+                        <td colspan="5" rowspan="2" class="text-center" style="border:1px solid #143980;width:30%;">
+                           <span style="font-weight:700">for <strong style="color:#84302e;">MAS</strong>&#160;&#160;<strong>FURNITURE</strong></span>
+                                 <div style="padding:25px"/>
+                                 <span>Authorized Signatory</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="text-left" style="padding:1px;border:1px solid #143980;width:50%;font-size:12px" >
+                            <span style="color:#143980;">Division: Vijayanagar </span><br/>
+                            <span style="color:#143980;">Range: Jayalakshmipuram,Mysuru</span> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <div class="footer">
+                <table class="table table-sm">
+                    <tr>
+                        <td class="text-left" style="width:50%;padding:1px;border:1px solid #143980;font-size:12px;">
+                            <u><strong style="color:#143980;">Nature of processing required to be done</strong></u><br/>
+                                <span t-field="doc.note"/> 
+                        </td>
+                        <td  rowspan="2" class="text-center" style="border:1px solid #143980;width:30%;">
+                           <span style="font-weight:700">for <strong style="color:#84302e;">MAS</strong>&#160;&#160;<strong>FURNITURE</strong></span>
+                                 <div style="padding:15px"/>
+                                 <span>Authorized Signatory</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style="border:1px solid #143980;width:50%;font-size:12px" >
+                            <span style="color:#143980;">Division: Vijayanagar </span><br/>
+                            <span style="color:#143980;">Range: Jayalakshmipuram,Mysuru</span> 
+                        </td>
+                    </tr>
+                </table>
+            </div> -->
+        </t>
+    </t>
+</t>
+</template>
+</data>
+</odoo>

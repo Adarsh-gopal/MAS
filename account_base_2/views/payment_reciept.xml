@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Paper Format -->
+        <record id="payment_temp" model="report.paperformat">
+            <field name="name">MAS - Payment Reciept Template </field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">25</field>
+            <field name="dpi">90</field>
+
+            
+        </record>
+
+        <record id="payment_reciept1_report" model="ir.actions.report">
+            <field name="name">MAS Payment Reciept Template</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">account_base_2.payment_reciept1</field>
+            <field name="report_file">account_base_2.payment_reciept1</field>
+            <field name="print_report_name">(object.state in ('draft', 'sent') and 'Reciept - %s' % (object.name)) or 'Reciept - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="account_base_2.payment_temp"/>
+ 
+        </record>
+    
+       
+        <template id="payment_reciept1">
+         
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                 <t t-if="not o and doc">
+                        <t t-set="o" t-value="doc"/>
+                    </t>
+
+                    <t t-if="o and 'company_id' in o">
+                        <t t-set="company" t-value="o.company_id.sudo()"/>
+                    </t>
+                    <t t-if="not o or not 'company_id' in o">
+                        <t t-set="company" t-value="res_company"/>
+                    </t>
+                   
+                    <t t-call="account_base_2.external_layout_for_headerfooter_payment">
+                    
+                      <div class="page">
+                       <table class="table table-sm  " width="100%" style="width:100%;border:1px solid;">
+                        <tr>
+                            <td style="border-top:none !important;">
+                                
+                                 <div class="row" >
+                                            
+                                            <div class="col-6" style="border-right: 1px solid;">
+                                              
+                                               
+                                                <t t-if="o.partner_id" class="text-center">
+                                                    <b><t t-esc="'Customer : '"></t><i><span t-field="o.partner_id" style="font-size:14px;"/></i></b><br/>
+                                                </t>
+
+                                                <t t-if="o.partner_id.street" class="text-center">
+                                                   <i> <span t-field="o.partner_id.street" style="font-size:14px;"/></i>,
+                                                </t>
+                                               
+                                                <t t-if="o.partner_id.street2" class="text-center">
+                                                    <i><span t-field="o.partner_id.street2" style="font-size:14px;"/></i>,
+                                                </t>
+
+                                                <t t-if="o.partner_id.city" class="text-center">
+                                                    <i><span t-field="o.partner_id.city" style="font-size:14px;"/></i>,
+                                                </t>
+
+                                                <t t-if="o.partner_id.country_id" class="text-center">
+                                                    <i><span t-field="o.partner_id.country_id" style="font-size:14px;"/></i><br/>
+                                                </t>
+
+                                                <t t-if="o.partner_id.vat" class="text-center">
+                                                    <h6 style="font-size:14px;"><b><t t-esc="'GST No # : '"/></b><span t-field="o.partner_id.vat"/></h6>
+                                                </t>
+
+                                                <t t-else="">
+                                                  <h6 style="font-size:14px;"><b><t t-esc="'GST No # : '"/></b><span >N/A</span></h6>
+                                                </t>
+
+                                                 <t t-if="o.partner_bank_id" class="text-center">
+                                                    <h6 style="font-size:14px;"><b><t t-esc="'Customer Bank A/C NO : '"/></b><span t-field="o.partner_bank_id.acc_number"/></h6>
+                                                </t>
+
+
+                                                
+                                                <!-- <t t-if="o.partner_id.business_name" class="text-center">
+                                                    <h6 style="font-size:14px;"><b><t t-esc="'Business Name : '"/></b><span t-field="o.partner_id.business_name"/> </h6>
+                                                </t> -->
+
+                                                 <t t-set="cp" t-value="o.partner_id.child_ids.filtered(lambda l: l.type in ('contact'))[:1]"/>
+                                                <t t-if="cp" class="text-center">
+                                               
+                                                    <h6 style="font-size:14px;"><b><t t-esc="'Contact Person: '"/></b><t ><span t-field="cp.name"/></t> </h6>
+                                                </t>
+
+                                                <t t-if="cp.phone or cp.email" class="text-center">
+                                                    <h6 style="font-size:14px;"><b><i class="fa fa-phone" aria-hidden="true"></i> &amp;nbsp;&amp;nbsp; </b><span t-field="cp.phone"/>  &amp;nbsp;&amp;nbsp;
+                                                
+                                                   <b><i class="fa fa-envelope" aria-hidden="true"></i> &amp;nbsp;&amp;nbsp; </b><span t-field="cp.email"/> </h6>
+                                                </t>
+
+                                            </div>
+
+                                            <div class="col-6">
+                                                <h6 style="font-size:16px;font-family:Lato-Bol;color:maroon;"><b><t t-esc="'Voucher No:'"></t></b><i> <span t-esc="o.name" style="font-size:18px;"/></i><br/></h6>
+
+                                                <t t-if="o.date" class="text-center">
+                                                <h6 style="font-size:14px;"><b><t t-esc="'Date:'"></t></b><i> <span t-esc="o.date.strftime('%d %b %Y')" style="font-size:14px;"/></i><br/></h6>
+                                                </t>
+
+                                                <t t-if="o.journal_id" class="text-center">
+                                                <h6 style="font-size:14px;"><b><t t-esc="'Bank:'"></t></b><i> <span t-esc="o.journal_id.name" style="font-size:14px;"/></i><br/></h6>
+                                                </t>
+                                                
+                                                <t t-if="o.custom_payment_method" class="text-center">
+                                                   <h6 style="font-size:14px;"> <b><t t-esc="'Payment Mode:'"></t></b><i> <span t-field="o.custom_payment_method" style="font-size:14px;"/></i><br/></h6>
+                                                </t>
+                                            
+                                                <t t-if="o.currency_id" class="text-center">
+                                                   <h6 style="font-size:14px;"> <b><t t-esc="'Currency : '"/></b><i><span t-field="o.currency_id.name"/></i><br/></h6>
+                                                </t>
+
+                                            </div>
+
+                                            
+                                        </div>
+                                        
+                        
+                            </td>
+                        </tr>
+                       </table>
+
+                       <t t-foreach="o.move_id._get_reconciled_invoices_partials()" t-as="rec">
+                            <t t-set="amountl" t-value="rec[1]"/>
+                            <t t-set="invl" t-value="rec[2].move_id"/>
+                       
+
+                       <t t-if="invl.invoice_date">
+                       <table class="table" width="100%" style="width:100%;border:1px solid;">
+                        <thead>
+                            <tr>
+                                <th style="border-top: 1px solid;border-bottom: 1px solid;"><span>Invoice Date</span></th>
+                                <th style="border-top: 1px solid;border-bottom: 1px solid;"><span>Invoice Number</span></th>
+                                <th style="border-top: 1px solid;border-bottom: 1px solid;"><span>Reference</span></th>
+                                <th style="border-top: 1px solid;border-bottom: 1px solid;" class="text-right"><span>Original Amount</span></th>
+                                <th style="border-top: 1px solid;border-bottom: 1px solid;" class="text-right"><span>Amount Paid</span></th>
+                                <th style="border-top: 1px solid;border-bottom: 1px solid;" class="text-right"><span>Balance</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.move_id._get_reconciled_invoices_partials()" t-as="rec">
+                                <t t-set="amount" t-value="rec[1]"/>
+                                <t t-set="inv" t-value="rec[2].move_id"/>
+                                <td><span t-field="inv.invoice_date"/></td>
+                                <td><span t-field="inv.name"/></td>
+                                <td><span t-field="inv.ref"/></td>
+                                <td class="text-right"><span t-field="inv.amount_total"/></td>
+                                <td class="text-right"><span t-esc="amount" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
+                                <td class="text-right"><span t-field="inv.amount_residual"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </t>
+                    </t>
+
+                    <table class="table table-sm" width="100%" style="width:100%;border:1px solid;margin-top: -16px;border-top: none;">
+                        <tr>
+                            <td style="border-top:none">
+                                <div class="row">
+                                    <div class="col">
+                                        
+
+                                        <t t-if="o.amount" class="text-center">
+                                           <h6 style="font-size:14px;"> <b><t t-esc="'Amount : '"/></b><i><span t-field="o.amount"/></i><br/></h6>
+                                        </t>
+
+                                        
+
+                                        <t t-if="o.currency_id" class="text-center">
+                                           <h6 style="font-size:14px;"> <b><t t-esc="'Amount in words : '"/></b><i><span t-esc="o.amount_words(o.amount)"/></i><br/></h6>
+                                             
+                                        </t>
+
+                                        <t t-if="o.ref" class="text-center">
+                                           <h6 style="font-size:14px;"> <b><t t-esc="'Reference : '"/></b><i><span t-field="o.ref"/></i><br/></h6>
+                                        </t>
+
+                                        <!--  <t t-if="o.extenal_ref" class="text-center">
+                                           <h6 style="font-size:14px;"> <b><t t-esc="'External Reference : '"/></b><i><span t-field="o.extenal_ref"/></i><br/></h6>
+                                        </t> -->
+
+
+                                    </div>
+                                </div>
+
+                                
+
+                               
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="row" style = "margin-top:60px;position:relative;text-align:center">
+                                    <div class="col-6" style="text-align:left;">
+                                        <label style="font-size:16px;"><strong>Prepared By :  </strong><b><span t-field="o.user_id"/></b></label>
+                                    </div>
+                                    <div class="col-6" style="text-align:right;">
+                                        <label style="font-size:16px;"><strong>Authorized Sign   </strong></label>
+                                    </div>
+                                    
+                            
+                                </div>
+
+                        <div >
+          
+          <hr/>
+         
+                       
+                       
+                        <!-- <img class="text-right" t-if="company.footer_custom" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_custom)" style="margin-left:-24px;height:1%;width:1%;padding-left:0px;"/> -->
+                        <!-- <img t-if="company.footer_custom" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_custom)" style="background-size:contain;max-width:50%;height:auto;opacity:10 !important;"/>      -->
+                        <!-- <img t-if="company.footer_custom" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_custom)" style="background-size:contain;max-width:100%;height:auto;opacity:10 !important;"/> -->
+                        <div class="row">
+                            
+                               <!--  <div class="col-4" style="text-align:left;">
+                                    
+                                  
+
+                                   <span>
+                                    <i class="fa fa-globe" style="font-size:16px;" aria-hidden="true"></i>
+                                    <span t-field="company.email" style="font-size:1px;color:white;"/>   
+                                   </span>
+                                   &amp;nbsp;&amp;nbsp;
+                                   
+
+                                   <span>
+                                    <i class="fa fa-envelope" style="font-size:16px;" aria-hidden="true"></i>
+                                    <span t-field="company.website" style="font-size:1px;color:white;"/>   
+                                   </span>
+                                         
+                                </div>
+ -->
+                                 
+
+
+                                 
+                            
+                               <!--  <div class="col-2" style="text-align:right;">
+                                    <small style="font-size:14px;">
+                                        <span>Page</span>
+                                        <span class="page" />
+                                        of
+                                        <span class="topage" />
+                                    </small>
+                                
+                                </div>   -->
+                        </div>
+
+                        
+
+                            
+                              
+        </div>
+                      </div>
+                          
+                            
+                       
+                       
+                    </t>
+                   
+                </t>
+            </t>
+            
+        </template>
+
+        
+    </data>
+</odoo>  

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="hr_contract_form_view" model="ir.ui.view">
+           <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+              
+                <field name="barcode" position="after">
+             
+         
+                <!--field name="max_loan_amt" string="Max Loan Amount"/-->
+                <field name="loan_balance" invisible='1' />
+
+                </field>
+                
+ 
+            </field>
+        </record>
+        <record id="inherit_res_users_form_view" model="ir.ui.view">
+            <field name="name">res.users</field>
+           <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+              
+               <xpath expr="//sheet/notebook/page[@name='access_rights']" position="inside">
+             
+                <group>
+                    <group>
+                <!--field name="max_loan_amt" string="Max Loan Amount"/-->
+                <field name="allow_loan_balance" string='Loan Balance' invisible='1'/>
+            </group>
+        </group>
+
+                </xpath>
+                
+ 
+            </field>
+        </record>
+    </data>
+</odoo>        
+            

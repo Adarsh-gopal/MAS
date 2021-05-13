@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+    <t t-name="MaintenanceIntg.generate_equipment_button">
+       <button t-if="widget.modelName == 'maintenance.equipment'" type="button" class="btn btn-secondary o_button_generate_equipements">
+            Generate Equipments
+        </button>
+    </t>
+
+    <t t-extend="ListView.buttons" t-name="MaintainanceIntegListView.buttons">
+        <t t-jquery="button.o_list_button_add" t-operation="after">
+            <t t-call="MaintenanceIntg.generate_equipment_button"/>
+        </t>
+    </t>
+
+    <t t-extend="KanbanView.buttons" t-name="MaintainanceIntegKanbanView.buttons">
+        <t t-jquery="button" t-operation="after">
+            <t t-call="MaintenanceIntg.generate_equipment_button"/>
+        </t>
+    </t>
+</templates>

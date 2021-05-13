@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="move_form_reversal_view" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <field name="payment_reference" position="before">
+                    <field name="reversal_move_id" widget="many2many_tags" readonly="1"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

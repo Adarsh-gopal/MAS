@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_warn_insufficient_qty_form_view_scrap_bk" model="ir.ui.view">
+        <field name="name">stock.warn.insufficient.qty.scrap</field>
+        <field name="model">stock.warn.insufficient.qty.scrap</field>
+        <field name="inherit_id" ref="stock.stock_warn_insufficient_qty_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="scrap_backdate" invisible="1"/>
+                <!-- This field is visible in xml file only in Odoo13 not in Odoo14 -->
+                <!-- <field name="scrap_id" invisible="1"/> -->
+            </xpath>
+        </field>
+    </record>
+</odoo>

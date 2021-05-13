@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_order_form_so_type" model="ir.ui.view">
+        <field name="name">sale.order.so.type</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <header position="inside">
+                <button type="object" name="close_sale_order" string="close SO" class="btn" attrs="{'invisible':['|',('sale_order_close', '=', True),('state','=','draft')] }"/>
+            </header>
+            <xpath  expr="//field[@name='payment_term_id']" position='after'>
+                <field name="open_close_mo"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/tree" position="inside">
+                <field name="open_close_done"  attrs="{'column_invisible':[('parent.state','=','draft')],'readonly':[('parent.open_close_mo','=','close_so')] }"/>
+            </xpath>
+
+            <page name="other_information" position="inside">
+                <group>
+                    <group>
+                        
+                        <field name="sale_order_close"/>
+                     
+                    </group>
+                </group>
+            </page>
+                  
+
+        </field>
+    </record>
+
+</odoo>    
+        

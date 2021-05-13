@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+
+    <record id="mrp_eco_view_form_plm_base" model="ir.ui.view">
+      <field name="name">mrp eco view form plm base</field>
+      <field name="model">mrp.eco</field>
+      <field name="inherit_id" ref="mrp_plm.mrp_eco_view_form"/>
+      <field name="arch" type="xml">
+        <field name="company_id" position="after">
+          <field name="analytic_account_id"  attrs="{'required': [('analytic_company_type', '=', 'wh')]}"/>
+          <field name="analytic_tag_ids" widget="many2many_tags"/>
+          <field name="analytic_company_type" invisible="1"/>
+        </field>
+      </field>
+    </record>
+    
+  </data>
+</odoo>

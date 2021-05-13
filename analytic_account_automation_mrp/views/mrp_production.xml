@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="mrp_production_form_analytic">
+      <field name="name">analytic account for workorder</field>
+      <field name="model">mrp.production</field>
+      <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+      <field name="arch" type="xml">
+        <field name="bom_id" position="after">
+          <field name="analytic_account_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state','!=','draft')],'required': [('analytic_company_type', '=', 'wh')]}"/>
+          <field name="analytic_tag_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state','!=','draft')]}"/>
+          <field name="analytic_company_type" invisible="1"/>
+        </field>
+      </field>
+    </record>
+
+  </data>
+</odoo>

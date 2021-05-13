@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>  
+<record id="payment_temp1" model="report.paperformat">
+            <field name="name">MAS - Payment Reciept Template Inherit </field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>   
+        </record>
+
+        <!-- <record id="payment_reciept1_report" model="ir.actions.report">
+            <field name="name">Payment Advice</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">account_base_2.payment_inherit</field>
+            <field name="report_file">account_base_2.payment_inherit</field>
+            <field name="print_report_name">(object.state in ('draft', 'sent') and 'Reciept - %s' % (object.name)) or 'Reciept - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="account_base_2.payment_temp1"/>
+ 
+        </record>   -->
+
+        <record id="account.action_report_payment_receipt" model="ir.actions.report">
+            <field name="name">Payment Advice</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">account.report_payment_receipt</field>
+            <field name="report_file">account.report_payment_receipt</field>
+            <field name="binding_model_id" ref="model_account_payment"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    <template id="payment_inherit" inherit_id="account.report_payment_receipt_document">
+        <xpath expr="//t[@t-call='web.external_layout']" position="attributes">
+            <attribute name="t-call">account_base_2.external_layout_for_headerfooter_payment</attribute>
+            </xpath>
+          <xpath expr="//div[hasclass('page')]" position="replace">
+            <div class="page">
+                <hr style="border: 1px solid black;"/>
+              <!--  <h3><strong>Payment Receipt: <span t-field="o.name"/></strong></h3> -->
+                <!-- <div class="row mt64">
+                    <div class="col-6" t-if="o.date">
+                        <strong>Payment Date: </strong> <span t-field="o.date"/>
+                    </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-6" t-if="o.partner_type">
+                        <t t-if="o.partner_type == 'customer'">
+                            <strong style="font-size:16px;">Customer: </strong>
+                        </t>
+                        <t t-if="o.partner_type == 'supplier'">
+                            <strong style="font-size:16px;">Vendor: </strong>
+                        </t><span t-field="o.partner_id"/><br/>
+                            <t t-if="o.partner_id.street" class="text-center">
+                                                   <i> <span t-field="o.partner_id.street" style="font-size:16px;"/></i>,
+                                                </t>
+                                               
+                                                <t t-if="o.partner_id.street2" class="text-center">
+                                                    <i><span t-field="o.partner_id.street2" style="font-size:16px;"/></i>,
+                                                </t>
+
+                                                <t t-if="o.partner_id.city" class="text-center">
+                                                    <i><span t-field="o.partner_id.city" style="font-size:16px;"/></i>,
+                                                </t>
+
+                                                <t t-if="o.partner_id.country_id" class="text-center">
+                                                    <i><span t-field="o.partner_id.country_id" style="font-size:16px;"/></i>
+                                                    <br/>
+                                                </t>
+
+                                                <t t-if="o.partner_id.vat" class="text-center">
+                                                    <h6 style="font-size:15px;margin-top: 10px;font-size:16px;"><b><t t-esc="'GST No : '"/></b><span t-field="o.partner_id.vat"/></h6>
+                                                    
+                                                </t>
+
+                                                <t t-else="">
+                                                  <h6 style="font-size:14px;margin-top: 10px;font-size:16px;"><b><t t-esc="'GST No : '"/></b><span >N/A</span></h6>
+                                                  <!-- <br/> -->
+                                                </t>
+
+                                                <!-- <t t-if="o.partner_bank_id" class="text-center">
+                                                    <h6 style="font-size:14px;"><b><t t-esc="'Customer Bank A/C NO : '"/></b><span t-field="o.partner_bank_id.acc_number"/></h6>
+                                                </t> -->
+                    </div>
+                    <div class="col-6" t-if="o.check_number" style="font-size:16px;">
+                        <strong>Cheque Number: </strong><span t-field="o.check_number"/>
+                        <br/>
+                        <strong>Cheque Date: </strong><span t-field="o.check_date"/>
+                    </div>
+                </div>
+                <div class="row mb64">
+                     <div class="col-6" t-if="o.ref" style="margin-top: 10px;font-size:16px;">
+                        <strong >Memo: </strong><span t-field="o.ref"/>
+                        <br/>
+                     </div>
+                   <!--  <div class="col-6" t-if="o.payment_method_id">
+                       <strong>Payment Method: </strong><span t-field="o.payment_method_id.name"/>
+                     </div> -->
+                   
+                </div>
+                <h6><p style="font-size:16px;">Please note the details of bills against which the payment is made.</p></h6>
+                <table class="table table-sm" style="font-size:16px;">
+                    <thead>
+                        <tr>
+                            <th><span>Invoice Date</span></th>
+                            <th><span>Invoice Number</span></th>
+                            <th><span>Reference</span></th>
+                            <th class="text-right"><span>Original Amount</span></th>
+                            <th class="text-right"><span>Amount Paid</span></th>
+                            <th class="text-right"><span>Balance</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.move_id._get_reconciled_invoices_partials()" t-as="rec">
+                            <t t-set="amount" t-value="rec[1]"/>
+                            <t t-set="inv" t-value="rec[2].move_id"/>
+                            <td><span t-field="inv.invoice_date"/></td>
+                            <td><span t-field="inv.name"/></td>
+                            <td><span t-field="inv.ref"/></td>
+                            <td class="text-right"><span t-esc="int(inv.amount_total)"/></td>
+                            <td class="text-right"><span t-esc="int(amount)"/></td>
+                            <td class="text-right"><span t-esc="int(inv.amount_residual)"/></td>
+                        </tr>
+                    </tbody>
+                </table> 
+
+                    <t t-if="o.amount" class="text-center">
+                       <h6 style="font-size:16px;"> <b><t t-esc="'Total Paid Amount : '"/></b><i><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></i><br/></h6>   
+                    </t> 
+
+                    <t t-if="o.currency_id" class="text-center">
+                       <h6 style="font-size:16px;"> <b><t t-esc="'Amount in words : '"/></b><i><span t-esc="o.amount_words(o.amount)"/></i><br/><br/></h6>   
+                    </t>
+
+                    <h6 style="font-size:16px;"> <b><t t-esc="'Kindly Acknowledge'"/></b></h6>   
+
+                           
+            </div>
+
+          </xpath>
+      <!-- </t>
+          </xpath> -->
+    </template>                                
+  </data>                            
+</odoo>

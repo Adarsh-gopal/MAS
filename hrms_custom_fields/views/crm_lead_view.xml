@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	 <record id="crm_lead_form_extended" model="ir.ui.view">
+        <field name="name">crm.lead.form.extended</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+        	<page name="lead" position="after">
+        		<page name="demand" string="Demand">
+        			<group name="demand_group">
+	        			<group>
+                            <field name="is_demand" invisible="1"/>
+		        			<field name="project_id"/>
+                             <field name="product_id" options="{'no_create_edit': True, 'no_create': True}"/>     
+		        			<field name="certification_type"/>
+		        			<field name="certification"  widget="many2many_tags" domain="[('skill_type_id','=',certification_type)]"/>
+		        			<field name="domain"/>
+		        			<!-- <field name="years_of_exp_min"/>
+                            <field name="years_of_exp_max"  attrs="{'required': [('years_of_exp_min','!=', False)]}"/> -->
+                            <label for="years_of_exp_min" string="Experience Min-Max"/>
+                            <div class="o_row">
+                                <field name="years_of_exp_min" nolabel="1"/>
+                                <span>Years-</span>
+                                <field name="years_of_exp_max" attrs="{'required': [('years_of_exp_min','!=', False)]}" nolabel="1"/>
+                                <span>Years</span>
+                            </div>                    
+		        			<field name="delivery_site"/>
+                            <field name="is_employee_assigned" invisible="1"/>
+                            <field name="exp_min_val_float" invisible="1"/>
+                            <field name="exp_max_val_float" invisible="1"/>
+                            <field name="demand_closed_date"/>
+		        			<field name="employee_assigned" options="{'no_create': True, 'no_create_edit':True}" domain="[('employee_status.id', '=', 1),('domain','=',domain),('domain.id','!=',None),('employee_skill_ids.skill_type_id','=',certification_type),('employee_skill_ids.skill_type_id','!=',None),('employee_skill_ids.skill_id','in',certification),('employee_skill_ids.skill_id','!=',None),('relevant_yrs_of_exp_till_date','&gt;=',exp_min_val_float),('relevant_yrs_of_exp_till_date','&lt;=',exp_max_val_float),('relevant_yrs_of_exp_till_date','!=',None)]"/>
+		        			<field name="employee_assigned_date"/>
+                            <field name="demand_status"/>
+		        			<field name="job_description"/>
+		        		</group>
+		        	</group>
+
+        		</page>
+        	</page>
+        </field>
+    </record>
+    <record id="crm_case_kanban_view_leads_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.lead.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_content')]//div[2]" position="after">
+                <div style="float:right">
+                    <span attrs="{'invisible': [('demand_status','=', 'close')]}"  style="color:white;background-color:green;">
+                        <field name="demand_status"/>
+                    </span>
+                    <span attrs="{'invisible': [('demand_status','=', 'open')]}" style="color:white;background-color:red;">
+                        <field name="demand_status"/>
+                    </span>
+                </div>
+                <div style="color:green;font-weight:600">
+                    <field name="employee_assigned"/>
+                </div>
+            </xpath> 
+
+        </field>
+    </record>
+    <record id="crm_case_tree_view_oppor_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.tree.lead.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="demand_status" />
+                <field name="employee_assigned"/>
+            </field>
+
+        </field>
+    </record>
+    <record id="crm_case_tree_view_leads_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.tree.view.lead.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="demand_status" />
+                <field name="employee_assigned"/>
+            </field>
+
+        </field>
+    </record>
+
+    <!-- Lead Menu -->
+    <record model="ir.actions.act_window" id="crm_lead_all_demands">
+        <field name="name">Demands</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,kanban,graph,pivot,calendar,form,activity</field>
+        <field name="domain">['|', ('type','=','lead'), ('type','=',False),('is_demand','=',True)]</field>
+        <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
+        <!-- <field name="context">{
+                'default_is_demand':'True',
+
+            }
+        </field> -->
+    </record>
+    <menuitem id="crm_menu_demands"
+            name="Demands"
+            parent="crm.crm_menu_root"
+            groups="crm.group_use_lead"
+            action="hrms_custom_fields.crm_lead_all_demands"
+            sequence="6"/>
+
+     <record model="ir.actions.act_window" id="crm.crm_lead_all_leads">
+            <field name="name">Leads</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">tree,kanban,graph,pivot,calendar,form,activity</field>
+            <field name="domain">['|', ('type','=','lead'), ('type','=',False),('is_demand','=',False)]</field>
+            <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
+            <field name="context">{
+                    'default_type':'lead',
+                    'search_default_type': 'lead',
+                    'search_default_to_process':1,
+                }
+            </field>
+        </record>
+
+
+</odoo>

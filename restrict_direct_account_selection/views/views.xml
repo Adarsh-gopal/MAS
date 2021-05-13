@@ -1,0 +1,28 @@
+<odoo>
+  <data>
+    <!-- account.account inherit form view -->
+    <record id="view_account_form" model="ir.ui.view">
+      <field name="name">account.account.inherit.view.form</field>
+      <field name="model">account.account</field>
+      <field name="inherit_id" ref="account.view_account_form"/>
+      <field name="arch" type="xml">
+        <field name="deprecated" position="after">
+          <field name="rct_dir_selec"/>
+        </field>
+      </field>
+    </record>
+
+    <record id="invoice_supplier_form_inherit" model="ir.ui.view">
+      <field name="model">account.move</field>
+      <field name="inherit_id" ref="account.view_move_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="attributes">
+          <attribute name="domain">[('rct_dir_selec','=',False),('deprecated', '=', False), ('user_type_id.type', 'not in', ('receivable', 'payable')), ('company_id', '=', parent.company_id), ('is_off_balance', '=', False)]</attribute>
+        </xpath>
+        <xpath expr="//field[@name='line_ids']/tree/field[@name='account_id']" position="attributes">
+          <attribute name="domain">[('rct_dir_selec','=',False),('deprecated', '=', False), ('company_id', '=', parent.company_id)]</attribute>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

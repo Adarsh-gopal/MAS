@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Adding a salary rule for loan-->
+    <data noupdate="0">
+
+    	<record model="res.groups" id="group_loan_approval">
+            <field name="name">Loan Approval 1</field>
+        </record>
+        <!-- <record model="res.groups" id="group_loan_approval2">
+            <field name="name">Loan Approval 2</field>
+        </record> -->
+
+    </data>
+</odoo>

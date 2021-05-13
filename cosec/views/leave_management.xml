@@ -1,0 +1,85 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="cosec.leavemanagement">
+      <field name="name">cosec leave list</field>
+      <field name="model">leave.management</field>
+      <field name="arch" type="xml">
+        <tree create="false" edit="false">
+          <field name="userid" string="USER ID" readonly="1"/>
+          <field name="username" string="USER NAME" readonly="1"/>
+          <field name="leave_code"/>
+          <field name="leave_name"/>
+          <field name="leave_period"/>
+          <field name="opening_balance"/>
+          <field name="closing_balance"/>
+          <field name="leave_credit"/>
+          <field name="leave_debit"/>
+          <field name="leave_encashed"/>
+          <field name="leave_availed"/>
+          <field name="leave_overflow"/>
+
+
+        </tree>
+      </field>
+    </record>
+        
+
+    <record id="cosec_leavefilter" model="ir.ui.view">
+      <field name="name">cosec.leave.management</field>
+        <field name="model">leave.management</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+        <search string="Search Cosec leave management">
+
+          <field name="userid"/>
+          <field name="username"/>
+
+
+        </search>
+      </field>
+    </record>
+
+    <record id="ir_cron_scheduler_leave_action" model="ir.cron">
+        <field name="name">Leave Management Scheduler</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">8</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field ref="model_leave_management" name="model_id"/>
+        <field name="code">
+          model.fetch_leave_data()
+        </field>
+        <field name="state">code</field> 
+      </record>
+
+
+
+
+
+    <record model="ir.actions.act_window" id="cosec.leave_management_windows">
+      <field name="name">Leave Data</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">leave.management</field>
+      <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <!-- Top menu item -->
+
+
+    <menuitem id="menu_cosec_leave" name="Leave management" parent="hr_attendance.menu_hr_attendance_manage_attendances" groups="hr_attendance.group_hr_attendance_user" sequence="25" action="cosec.leave_management_windows"/>
+
+
+<!--         <menuitem
+            id="menu_cosec_leave_manage"
+            name="Leave management"
+            action="cosec.leave_action_windows"
+            parent="hr.menu_hr_employee_payroll"
+            sequence="4"
+            groups="hr_attendance.group_hr_attendance_user"/> -->
+
+  </data>
+
+</odoo>

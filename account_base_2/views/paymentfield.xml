@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+
+        <record id="view_payment_form_inherit" model="ir.ui.view">
+                <field name="name">Custom</field>
+                <field name="model">account.payment</field>
+                <field name="inherit_id" ref="account.view_account_payment_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//form//sheet//group[@name='group2']/field[@name='move_id']"  position="after">
+                           
+                            <!-- <field name="custom_payment_method" attrs="{'invisible': [('type','in', 'bank')]}"/> -->
+                            <field name="custom_payment_method" attrs="{'readonly': [('state', '!=', 'draft')],'invisible': [('payment_method_code', '!=', 'manual')]}"/>
+                            <field name="amt_in_wrds"/>
+                            
+                    </xpath>
+
+                    <xpath expr="//field[@name='ref']" position="after">
+                        <field name="extenal_ref"/>
+
+                    </xpath>
+
+                     <xpath expr="//form//header//button[@name='mark_as_sent']" position="after">
+                   <button name="journal_print" type="object" string="Journal Voucher"/>
+                    
+                </xpath>
+                    <!-- <xpath expr="//form//sheet//group[@name='group2']/field[@name='move_id']"  position="after">
+                           
+                            <field name="custom_cheque_no" attrs="{'invisible': [('payment_type','=', 'outbound')]}"/>
+                            <field name="confirmed_user" invisible="1"/>
+                            <field name="creditdebit"  attrs="{'invisible': [('payment_type','=', 'outbound')]}" />
+                    </xpath> -->
+
+                    
+                </field>
+        </record>
+
+        <record id="view_payment_form_inherit_cheque" model="ir.ui.view">
+                <field name="name">Custom Cheque</field>
+                <field name="model">account.payment</field>
+                <field name="inherit_id" ref="account.view_account_payment_form"/>
+                <field name="arch" type="xml">
+                
+                <xpath expr="//field[@name='check_number']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <field name="check_number" position="attributes">
+                        <attribute name="attrs">{'readonly': [('lot_id', '!=', False)]}</attribute>
+                   </field>
+                <field name="check_number" position="attributes">
+                        <attribute name="attrs">{'invisible': ['|', ('payment_method_code', '!=', 'check_printing'), ('check_number', '=', False)]}</attribute>
+                   </field>
+                <xpath expr="//field[@name='check_number']" position="after">
+                   <field name='check_date' attrs="{'invisible': [('check_number','=', False)]}"/>
+               </xpath>
+                </field>
+            </record>
+
+        <record model="ir.ui.view" id="view_account_supplier_payment_tree_external_1">
+            <field name="name">account.payment.tree.inherit.account_batch_payment</field>
+              <field name="model">account.payment</field>
+              <field name="inherit_id" ref="account.view_account_payment_tree" />
+              <field name="arch" type="xml">
+            <field name='currency_id' position='after'>
+              <field name='ref' string="Memo"/>
+            </field>
+            </field>
+        </record>
+       
+    </data>
+</odoo>

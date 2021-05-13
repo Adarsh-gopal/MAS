@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<record id="equipment_maintenance_inherit" model="ir.ui.view">
+    <field name="name">Manintenance Equipment Inherit</field>
+    <field name="model">maintenance.equipment</field>
+    <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+    <field name="arch" type="xml">
+      <field name="location" position="after">
+        <field name="account_assets_id"/>
+      </field>
+      <field name="cost" position="replace">
+        <label for="cost" groups="maintenance.group_equipment_manager"/>
+        <div class="o_row" name="cost" groups="maintenance.group_equipment_manager">
+            <field name="cost" groups="maintenance.group_equipment_manager" nolabel="1"/>
+            <button type="object"   name="update_cost" icon="fa-refresh" groups="maintenance.group_equipment_manager"/>
+            
+        </div>
+      </field>
+
+    </field>
+  </record>
+
+  <record id="hr_equipment_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">maintenance.equipment.kanban</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_kanban" />
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="js_class">maintenance_integ_with_asset_kanban</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_equipment_view_tree_inherit" model="ir.ui.view">
+        <field name="name">maintenance.equipment.inherited.tree</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">maintenance_integ_with_asset_tree</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

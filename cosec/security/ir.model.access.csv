@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_cosec_data,cosec_data,model_cosec_data,base.group_user,1,1,1,1
+access_cosec_month,cosec_month,model_cosec_month,base.group_user,1,1,1,1
+access_leave_management,leave_management,model_leave_management,base.group_user,1,1,1,1
+
+

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_cheque_lot,access_account_cheque_lot,model_account_cheque_lot,account.group_account_manager,1,1,1,1
+access_account_cheque_register,access_account_cheque_register,model_account_cheque_register,account.group_account_manager,1,1,1,1
+access_cheque_reason,access_cheque_reason,model_cheque_reason,account.group_account_manager,1,1,1,1

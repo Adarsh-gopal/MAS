@@ -1,0 +1,21 @@
+<odoo>
+
+    <record model="ir.ui.view" id="view_order_form_xslx_report">
+        <field name="name">sale.order.form.xlsx.report</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="inside">
+                <button name="generate_report" string="Generate Report" type="object" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//form/sheet/div[2]" position="after">
+                <field name="file_name" invisible="True"/>
+                <field name="sale_quotation_xlsx_report" readonly="True" filename="file_name"/>
+            </xpath>
+            <field name="material_group" position="after">    
+                <field name="with_pictures" attrs="{'invisible':[('material_group','!=','furniture')]}" widget="boolean_toggle"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

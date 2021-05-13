@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <record id="paperformat_cheque_srilanka" model="report.paperformat">
+        <field name="name">cheque Letter Page Format</field>
+        <field name="default" eval="False" />
+        <field name="format">custom</field>
+        <field name="page_height">88</field>
+        <field name="page_width">179</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_cheque_print_report" model="ir.actions.report">
+        <field name="name">Print Check Template Srilanka</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">check_printing_template.cheque_print_template</field>
+        <field name="report_file">check_printing_template.cheque_print_template</field>
+        <field name="print_report_name">'check Top - %s' % (object.partner_id.name or '',)</field>
+        <field name="paperformat_id" ref="check_printing_template.paperformat_cheque_srilanka"/>
+        <field name="attachment">'check_'+(object.partner_id.name)+'_'+(object.name)+'_top.pdf'</field>
+        <field name="attachment_use">False</field>
+    </record>
+
+    <template id="assets_common" name="check_printing_template pdf assets" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/check_printing_template/static/src/scss/report_check_top.scss"/>
+        </xpath>
+    </template>
+
+    <template id="cheque_print_template">
+        <!-- <t t-call="web.internal_layout"> -->
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div t-att-data-oe-model="o._name" t-att-data-oe-id="o.id" t-foreach="o._check_get_pages()" t-as="page" class="page article ckca_page ckca_top_page" t-attf-style="top: {{ o.company_id.account_check_printing_margin_top }}in; left: {{ o.company_id.account_check_printing_margin_left }}in; right: {{ o.company_id.account_check_printing_margin_right }}in;">
+                       <div class="ckca_check">
+                            <!-- <div class="sequence_number" t-if="page['sequence_number']" t-esc="page['sequence_number']" /> -->
+                           <!--  <div class="ckca_date_label" t-if="page['date_label']">Date:</div> -->
+                            <div class="ckca_date" t-esc="page['payment_date_srilanka']"/>
+                           <!--  <div class="ckca_date_format">YYYY-MM-DD</div> -->
+                            <div class="ckca_payee_address" t-esc="o.cheque_payee_name" />
+                            <div class="ckca_amount">
+                            **<t t-esc="page['amount'].strip(page['currency'].symbol)"/>
+                            </div>
+                            <div class="ckca_amount_in_word" t-esc="o.amount_to_text(o.amount).replace('-',' ')"/>
+                            <!-- <div class="ckca_memo" t-esc="page['memo']"/> -->
+                        </div>
+                    </div>
+                </t>
+            </t>
+        <!-- </t> -->
+    </template>
+
+
+
+</data>
+</odoo>

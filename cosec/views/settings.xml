@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+<!-- inherit form view for  cosec settings -->
+
+        <record model="ir.ui.view" id="res_config_settings_view_form">
+            <field name="name">res.config.settings.view.form.inherit.sale</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Cosec" string="Cosec" data-key="cosec">
+                        <h2>Cosec App Settings</h2>
+                        <div class="row mt16 o_settings_container">
+                            <label for="userid"/>
+                            <field name="userid"/>
+                            <label for="url"/>
+                            <field name="url"/>
+                            <label for="password"/>
+                            <field name="password"/>
+                            <!-- <field name="userid"/>
+                            <field name="hospital_name"/>
+                            <field name="hospital_name"/> -->
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+
+<!-- action for cosec  -->
+        <record id="action_cosec_settings" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_id" ref="res_config_settings_view_form"/>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module'  : 'cosec'}</field>
+        </record>
+
+
+
+
+
+
+            <!-- menu item for cosec -->
+
+
+        <menuitem id="menu_cosec_settings" name="Settings" parent="hr_attendance.menu_hr_attendance_manage_attendances" action="action_cosec_settings"/>
+    </data>
+</odoo>
+

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dimension_name,dimension_name,model_dimension_name,base.group_user,1,1,1,1
+access_dimension_line,dimension_line,model_dimension_line,base.group_user,1,1,1,1
+access_dimension_value,dimension_value,model_dimension_value,base.group_user,1,1,1,1

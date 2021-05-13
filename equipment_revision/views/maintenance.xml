@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+  <record id="equipment_maintenance_revision" model="ir.ui.view">
+    <field name="name">Manintenance Equipment</field>
+    <field name="model">maintenance.equipment</field>
+    <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+    <field name="arch" type="xml">
+
+    <field name='employee_id' position = 'after'>
+      <field name="revision_number" readonly='1' />
+    </field>
+    <xpath expr="//page[3]" position="after">
+
+         <page string="Revision History">
+          <field name='revision_lines' >
+          <tree>
+            <field name='equipment_number'/>
+            <field name='name'/>
+            <field name='updated_date'/>
+            <field name='updated_user_id'/>
+            <field name='revision_number'/>
+          </tree>
+          </field>
+
+         </page>
+     </xpath>
+  </field>
+  </record>
+
+  
+
+  <record id="equipment_maintenance_revision_server_action" model="ir.actions.server">
+            <field name="name">Revise</field>
+            <field name="model_id" ref="equipment_revision.model_maintenance_equipment"/>
+            <field name="binding_model_id" ref="equipment_revision.model_maintenance_equipment"/>
+            <field name="binding_view_types">form</field>
+            <field name="state">code</field>
+            <field name="code">records.equipment_revision()</field>
+  </record>
+
+
+</odoo>

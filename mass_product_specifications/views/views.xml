@@ -1,0 +1,186 @@
+<odoo>
+
+    <record model="ir.actions.act_window" id="specification_action">
+        <field name="name">Product Specifications</field>
+        <field name="res_model">product.specification.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_product_specification" parent="stock.menu_product_in_config_stock" action="specification_action"/>
+
+
+    <record  id="specification_value_product_action" model="ir.actions.act_window">
+        <field name="name">Product Specifications Value</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.specification.value</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_specification_product_value" parent="stock.menu_product_in_config_stock" action="specification_value_product_action" name='Product Specifications Value' sequence='2'/>
+
+
+
+    <record model="ir.ui.view" id="product_specification_group_form_view">
+        <field name="name">product specification group form view</field>
+        <field name="model">product.specification.group</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <!-- Changed from product_category to product_group_1 -->
+                        <field name="product_group_1"/>
+                    </group>
+                    <group>
+                        <field name="specifications">
+                            <tree>
+                                <field name="sequence" widget="handle"/>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_specification_form_view">
+        <field name="name">product specification form view</field>
+        <field name="model">product.specification</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="specification_group"/>
+                    </group>
+                    <group>
+                        <field name="values"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_specification_value_form_view">
+        <field name="name">product specification value form view</field>
+        <field name="model">product.specification.value</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="specification" required="True"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_only_form_view_specification_tree">
+        <field name="name">product.template.only.form.specification.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[@name='inventory']" position="after">
+                <page name="product_specifications" string="Specifications">
+                    <!-- added the default value -->
+                    <group>
+                        <field name="specification_group" domain="[('product_group_1','=', product_group_1)]" widget='selection'/>
+                    </group>
+                    
+                    <button name="specification_to_name" string="Add To Name" type="object" class="oe_highlight"/>
+                    
+                    <field name="specification_lines">
+                        <tree create="false" delete="false" editable="top">
+                            <!-- <field name="sequence" widget="handle"/> -->
+                            <field name="specification" readonly="True"/>
+                            <field name="value" domain="[('specification','=',specification)]" options="{'no_create_edit':True}"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_only_form_search_inherit">
+        <field name="name">product.template.only.form.search.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field string="Value" name="specification_lines" filter_domain="[('specification_lines.value', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_inherit_action" model="ir.actions.act_window">
+        <field name="name">Product Value</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,form,kanban,activity</field>
+        <field name="search_view_id" ref="product_template_only_form_search_inherit"/>
+        <field name="view_id" eval="False"/> <!-- Force empty -->
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new product variant
+          </p><p>
+            You must define a product for everything you sell or purchase,
+            whether it's a storable product, a consumable or a service.
+          </p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="quant_search_view_search_inherit">
+        <field name="name">quant.view.search.inherit</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.quant_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field string="Value" name="product_id" filter_domain="[('product_id.specification_lines.value', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="stock_valuation_layer_search_inherit">
+        <field name="name">stock.valuation.layer.search.inherit</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.view_inventory_valuation_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field string="Value" name="product_id" filter_domain="[('product_id.specification_lines.value', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_move_search_inherit">
+        <field name="name">move.view.search.inherit</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field string="Value" name="product_id" filter_domain="[('product_id.specification_lines.value', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="stock_move_line_view_search_inherit">
+        <field name="name">move.line.view.search.inherit</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.stock_move_line_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field string="Value" name="product_id" filter_domain="[('product_id.specification_lines.value', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>

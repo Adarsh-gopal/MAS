@@ -1,0 +1,9 @@
+.o_list_view .o_list_table thead > tr > th:not(.o_list_record_selector) {
+
+    display: table-cell;
+    max-width: 100%;
+    white-space: unset !important;
+    overflow: unset !important;
+    text-overflow: ellipsis;
+    vertical-align: top;
+   }

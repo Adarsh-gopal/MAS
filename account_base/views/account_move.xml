@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="invoice_form_inherit" model="ir.ui.view">
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+    <field name="arch" type="xml">
+      <div name="journal_div" position="after">
+        <field name="journal_type" invisible="1"/>
+        <field name="payment_type" attrs="{'invisible':[('journal_type','not in',('cash','bank'))],'required':[('journal_type','in',('cash','bank'))]}"/>
+      </div>
+    </field>
+  </record>
+
+  <!-- account.journal inherit form view -->
+  <record id="view_account_journal_form" model="ir.ui.view">
+    <field name="name">account.journal.inherit.view.form</field>
+    <field name="model">account.journal</field>
+    <field name="inherit_id" ref="account.view_account_journal_form"/>
+    <field name="arch" type="xml">
+      <field name="code" position="after">
+        <field name="make_seq_mandetory" invisible="1"/>
+        <field name="name_sequence_id" string="Custom Sequence" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
+        attrs="{'invisible':[('type','in',('cash','bank'))]}"/>
+        <field name="refund_sequence_id" string="Custom Refund Sequence" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
+        attrs="{'invisible':[('type','in',('cash','bank','general'))]}"/>
+        <field name="out_sequence_id" string="Outward Sequence" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
+        attrs="{'invisible':[('type','not in',('cash','bank'))],'required':[('make_seq_mandetory','=',True)]}"/>
+        <field name="in_sequence_id" string="Inward Sequence" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
+        attrs="{'invisible':[('type','not in',('cash','bank'))],'required':[('make_seq_mandetory','=',True)]}"/>
+      </field>
+      <xpath expr="//page[@name='advanced_settings']/group" position="inside">
+        <group>
+          <field name="ceiling_limit" widget="boolean_toggle"/>
+          <field name="ceiling_limit_value" widget="monetory" attrs="{'invisible':[('ceiling_limit','!=',True)],'required':[('ceiling_limit','=',True)]}"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+
+</odoo>
