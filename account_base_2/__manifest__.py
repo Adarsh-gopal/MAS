@@ -2,8 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Account Base 2',
-    'version': '14.0.12',
+    'name': 'Account Base 2(only for MAS)',
+    'version': '14.0.1.4',
     'category': 'Accounts',
     'summary': 'For Invoice due date visibility',
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
@@ -19,7 +19,6 @@ This module is display the Invoice due date in Invoice .
         'views/payment_reciept.xml',
         'views/paymentfield.xml',
         'views/customer_payment_method.xml',
-        'views/invoice_due_date.xml',
         'views/payment_inherit.xml',
     ],
    
