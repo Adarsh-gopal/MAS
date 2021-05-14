@@ -7,9 +7,20 @@
 
     'description': """
         Included Functionalities -
-            1) Roundoff.-------------------------------------------(roundoff.py/xml)
-            2) Unrelate Bill Date and Accounting date--------------(disconnect.py)
-            3) Currency Inverse and precision----------------------(currency_inverce.py/xml)
+            1)   Round Off automation
+            2)   Currency Inverse Precision
+            3)   Unrelated Bill Date and Accounting date only in case of Vendor Bills
+            4)   Accounting date not less than Bill date
+            5)   Negative filter in Aged payable and receivable
+            6)   Analytical Account group filter
+            7)   Custom Invoice Sequence
+            8)   Custom credit not and debit note sequence
+            9)  Bank/cash payment sequence
+            10)  Bank/cash receipt sequence
+            11)  Item group,PG1,PG2,PG3 in invoice report
+            12)  Journal wise Ceiling limit
+            13)  Payment Type in Journal entry
+            14)  Due date in Vendor bill tree view
     """,
 
     'author': "Prixgen Tech Solutions Pvt. Ltd.",
@@ -18,27 +29,20 @@
 
 
     'category': 'Customization',
-    'version': '14.0.1.5.1',
+    'version': '14.0.2.0',
 
-    'depends': ['base','account','stock','purchase'],
+    'depends': ['base','account','stock','purchase','account_reports'],
 
     'data': [
-        # 'security/ir.model.access.csv',
-        # 'security/account_cost_center_security.xml',
-        # 'data/account_financial_report_data.xml',
-        # 'views/account_invoice_report.xml',
-        # 'views/account_cost_center.xml',
-        # 'views/account_move_line.xml',
-        # 'views/report_financial.xml',
+        'views/assets.xml',
+        'views/account_reports_aged_receivable.xml',
         'views/currency_inverse.xml',
         'views/currency_rate_views.xml',
         'views/account_move.xml',
-        # 'views/account_account.xml',
-        # 'views/account_invoice.xml',
         'views/res_config_settings.xml',
         'views/round_off.xml',
         'views/account_reversal.xml',
     ],
-    'auto_install': True,
+    'auto_install': False,
     'installable': True,
 }
