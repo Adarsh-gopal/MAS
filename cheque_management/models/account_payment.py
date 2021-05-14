@@ -25,11 +25,13 @@ class AccountPayment(models.Model):
     @api.onchange('lot_id')
     def _onchange_cheque_lot_id(self):
         self.ensure_one()
+        pdb.set_trace()
         if self.lot_id.next_number:
             self.check_number = self.lot_id.next_number
 
     @api.onchange('partner_id')
     def _onchange_cheque_lot_id(self):
+        pdb.set_trace()
         self.ensure_one()
         if self.partner_id:
             self.cheque_payee_name = self.partner_id.cheque_payee_name
@@ -78,16 +80,17 @@ class PaymentRegister(models.TransientModel):
 
 
     def _create_payments(self):
-        res = super(PaymentRegister, self)._create_payments()
-        res.update({'check_number': int(self.lot_id.last_number) +1, 'lot_id': self.lot_id.id})
-        if self.lot_id:
-            register = self.env['account.cheque.register'].create({
-                            'cheque_number': str(int(self.lot_id.last_number) +1),
-                            'payment_id': res.id,
-                            'journal_entry_no': res.move_id.name,
-                            'partner_id': res.partner_id.id,
-                            'amount': res.amount,
-                            'date': res.date,
-                        })
-        self.lot_id.last_number =str(int(self.lot_id.last_number) +1)
+        for each in self:
+            res = super(PaymentRegister, each)._create_payments()
+            if each.lot_id:
+                res.update({'check_number': int(each.lot_id.last_number) +1, 'lot_id': each.lot_id.id})
+                register = each.env['account.cheque.register'].create({
+                                'cheque_number': str(int(each.lot_id.last_number) +1),
+                                'payment_id': res.id,
+                                'journal_entry_no': res.move_id.name,
+                                'partner_id': res.partner_id.id,
+                                'amount': res.amount,
+                                'date': res.date,
+                            })
+            each.lot_id.last_number =str(int(each.lot_id.last_number) +1)
         return res
