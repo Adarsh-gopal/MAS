@@ -13,7 +13,7 @@
     'website': "http://www.prixgen.com",
 
     'category': 'Accounting',
-    'version': '14.0.1.6',
+    'version': '14.0.1.5',
 
     'depends': ['base','product','account','account_accountant'],
 
