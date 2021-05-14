@@ -1,6 +1,9 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError, ValidationError
 
+
+    
+
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
@@ -24,24 +27,43 @@ class AccountJournal(models.Model):
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    invoice_due_date = fields.Date(related='invoice_date_due')
+
     journal_type = fields.Selection(related = 'journal_id.type', readonly=False, string='JType')
     payment_type = fields.Selection(related = 'payment_id.payment_type', readonly=False, store=True)
 
+
+
     def action_post(self):
         for rec in self:
+            if rec.move_type in ('in_invoice','in_refund','in_receipt'):
+                if rec.date < rec.invoice_date:
+                    raise UserError(_('Accounting Date should not less than Bill date !'))
+
             if rec.journal_type in ('cash','bank'):
                 if rec.payment_type == 'inbound':
                     if rec.journal_id.in_sequence_id:
-                        rec.write({'name':rec.journal_id.in_sequence_id.next_by_id()})
+                        rec.write({'name':rec.journal_id.in_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
                 elif rec.payment_type == 'outbound':
                     if rec.journal_id.out_sequence_id:
-                        rec.write({'name':rec.journal_id.out_sequence_id.next_by_id()})
+                        rec.write({'name':rec.journal_id.out_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
             if rec.move_type in ('in_refund','out_refund'):
                 if rec.journal_id.refund_sequence_id:
-                    rec.write({'name':rec.journal_id.refund_sequence_id.next_by_id()})
+                    rec.write({'name':rec.journal_id.refund_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
             elif rec.journal_id.name_sequence_id:
-                rec.write({'name':rec.journal_id.name_sequence_id.next_by_id()})
+                rec.write({'name':rec.journal_id.name_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
             else:
                 pass
                 # raise ValidationError(_("""No sequence mapped to Journal {}""".format(rec.journal_id.name)))
         return super(AccountMove, self).action_post()
+
+
+
+    @api.constrains('invoice_date')
+    def check_invoice_date(self):
+        if self.move_type in ('in_invoice','in_refund','in_receipt'):
+            if not self.invoice_date:
+                raise UserError(_('Invoice/Bill Date Not updated '))
+
+
+
