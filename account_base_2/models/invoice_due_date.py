@@ -5,6 +5,6 @@ from datetime import date
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    new_invoice_date_due = fields.Date(string="Due Days" ,related='invoice_date_due')
+    invoice_due_date = fields.Date(string="Due Date" ,related='invoice_date_due')
  
     
