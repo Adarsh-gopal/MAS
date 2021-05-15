@@ -14,7 +14,7 @@
     'website': "https://www.prixgen.com",
 
     'category': 'Maintenance',
-    'version': '14.0.3',
+    'version': '14.0.5',
 
     'depends': ['maintenance','maintenance_base','maintenance_integ_with_asset'],
 

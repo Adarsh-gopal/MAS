@@ -8,7 +8,7 @@ class MaintenanceEquipment(models.Model):
     _inherit = "maintenance.equipment"
 
 
-    revision_number = fields.Integer("Revision Number",default=1)
+    revision_number = fields.Integer("Revision Number",default=0)
     revision_lines  = fields.One2many('maintenance.revision.lines','maintenance_id')
     current_revision_id = fields.Many2one('maintenance.equipment')
     # parent_id = fields.Many2one('maintenance.equipment',index=True,ondelete='cascade')

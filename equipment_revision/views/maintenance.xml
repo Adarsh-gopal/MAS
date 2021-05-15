@@ -15,7 +15,7 @@
 
          <page string="Revision History">
           <field name='revision_lines' >
-          <tree>
+          <tree  create="false" edit="false">
             <field name='equipment_number'/>
             <field name='name'/>
             <field name='updated_date'/>
