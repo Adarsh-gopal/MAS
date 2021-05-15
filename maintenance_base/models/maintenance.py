@@ -26,6 +26,18 @@ class MaintenanceEquipment(models.Model):
 
     dimension = fields.Char()
 
+    location_id = fields.Many2one('stock.location', string="Stored Location",store=True)
+
+    is_seq = fields.Boolean(compute="_check_sequence", store=True)
+
+    @api.depends('category_id')
+    def _check_sequence(self):
+        for each in self:
+            if each.category_id and each.category_id.sequence:
+                each.is_seq = True
+            else:
+                each.is_seq = False
+
     # @api.onchange('category_id')
     # def _onchange_equipment(self):
     #     if self.category_id:
@@ -37,10 +49,16 @@ class MaintenanceEquipment(models.Model):
             categ = self.env['maintenance.equipment.category'].browse(vals['category_id'])
             if categ.sequence:
                 vals['equipment_number'] = categ.sequence.next_by_id()
-            else:
-                raise UserError(_("Sequence Not Found For the Category %s")%(categ.name))
+            if not vals['equipment_number']:
+                raise UserError(_("Please fill the Equipment Number"))
 
         return super(MaintenanceEquipment, self).create(vals)
+
+    def write(self, vals):
+        if not vals.get('equipment_number'):
+            raise UserError(_("Please fill the Equipment Number"))
+
+        return super(MaintenanceEquipment, self).write(vals)
 
 
         
