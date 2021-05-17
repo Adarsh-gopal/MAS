@@ -49,16 +49,16 @@ class MaintenanceEquipment(models.Model):
             categ = self.env['maintenance.equipment.category'].browse(vals['category_id'])
             if categ.sequence:
                 vals['equipment_number'] = categ.sequence.next_by_id()
-            if not vals['equipment_number']:
-                raise UserError(_("Please fill the Equipment Number"))
+            # if not vals['equipment_number']:
+            #     raise UserError(_("Please fill the Equipment Number"))
 
         return super(MaintenanceEquipment, self).create(vals)
 
-    def write(self, vals):
-        if not vals.get('equipment_number'):
-            raise UserError(_("Please fill the Equipment Number"))
+    # def write(self, vals):
+    #     if not vals.get('equipment_number'):
+    #         raise UserError(_("Please fill the Equipment Number"))
 
-        return super(MaintenanceEquipment, self).write(vals)
+    #     return super(MaintenanceEquipment, self).write(vals)
 
 
         
