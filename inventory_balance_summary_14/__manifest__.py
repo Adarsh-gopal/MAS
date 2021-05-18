@@ -5,7 +5,7 @@
     'summary': """
         Inventory Base Summary""",
 
-    'description': """
+    'description': """ 
         Inventory Base Summary
     """,
 
