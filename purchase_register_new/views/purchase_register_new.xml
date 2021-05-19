@@ -13,9 +13,10 @@
       <tree string="Purchase Register" editable="bottom" decoration-info="quantity == 0" create="false" edit="false" delete="false">
                 <!-- <field name="id"/> -->
                 <field name="product_id"/>
+                <field name="product_ref"/>
                 <field name="move_id" invisible="1"/>
                 <field name="move_name"/>
-                <field name="date"/>
+                <field name="date" string='Accounting/Bill Date'/>
                 <field name="ref"/>
                 <field name="company_id" invisible="1"/>
                 
@@ -45,6 +46,7 @@
                 <field name="igst_amount"/>
                 <field name="tds_rate"/>
                 <field name="tds_amount"/>
+                <field name="move_type_name"/>
                 <!-- <field name="ocean_rate"/> -->
                 <!-- <field name="ocean_amount"/> -->
                 

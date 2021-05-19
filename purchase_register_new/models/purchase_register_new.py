@@ -6,7 +6,7 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     journal_type_name = fields.Selection(string="Journal Name",related='move_id.journal_id.type')
-    move_type_name = fields.Selection(related='move_id.move_type')
+    move_type_name = fields.Selection(related='move_id.move_type',store=True)
     account_tax_name = fields.Char(related='tax_line_id.name')
     partner_name = fields.Char(related='partner_id.name',string="Partner Tag")
     partner_category_name = fields.Char(related='partner_id.category_id.name',string="Partner Category")
@@ -16,6 +16,7 @@ class AccountMoveLine(models.Model):
     product_group_1= fields.Char(string="Product Group 1",related='product_id.product_group_1.name')
     product_group_2 = fields.Char(string="Product Group 2",related='product_id.product_group_1.name')
     product_group_3 = fields.Char(string="Product Group 3",related='product_id.product_group_1.name')
+    product_ref = fields.Char(string="Product Ref",related='product_id.product_reference')
     # hsn_code_name = fields.Char(string="HSN Code",related='product_id.l10n_in_hsn_code.name')
     gst_name = fields.Char(related='partner_id.vat',string="Partner GST")
     cgst_rate = fields.Float(string="CGST %" ,compute='compute_tax_move_line')
@@ -90,6 +91,18 @@ class AccountMoveLine(models.Model):
                             # if each_tcs.tax_group_id.name == 'TCS':
                             #     line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
                             #     line.tcs_amount  = (line.price_subtotal *line.tcs_rate)/100
+
+            else:
+                line.cgst_rate = 0
+                line.cgst_amount = 0
+                line.sgst_rate = 0
+                line.sgst_amount = 0
+                line.igst_rate = 0
+                line.igst_amount = 0
+
+                line.tds_rate = 0
+                line.tds_amount = 0
+                line.amount_inclusive_tax = 0
 
             line.amount_inclusive_tax = line.price_subtotal + line.cgst_amount + line.sgst_amount + line.igst_amount + line.tds_amount
             # if line.product_id:
