@@ -6,6 +6,7 @@
     <record id="purchase_summary_view_report_tree" model="ir.ui.view">
       <field name="name">purchase.summary.view_report.form</field>
       <field name="model">account.move.line</field>
+
       <!-- <field name="inherit_id" ref="mrp.mrp_production_form_view"/> -->
       <field name="arch" type="xml">
 
