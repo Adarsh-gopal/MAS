@@ -6,7 +6,7 @@
         This module is used to capture Sale Register Report
     """,
 
-    'description': """
+    'description': """ 
         This module is used to capture the Sale Register Report
     """,
 

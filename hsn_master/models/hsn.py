@@ -26,14 +26,14 @@ class ProductTemplate(models.Model):
 			line.supplier_taxes_id = line.hsn_code_id.vendor_taxes_ids
 
 
-	# @api.constrains('taxes_id')
-	# def _check_taxes_id(self):
-	# 	for each in self:
-	# 		if each.taxes_id.ids !=  each.hsn_code_id.customer_taxes_ids.ids:
-	# 			raise UserError(("Customer Taxes are mismatching as per the %s HSN master. ")%each.hsn_code_id.name)
+	@api.constrains('taxes_id')
+	def _check_taxes_id(self):
+		for each in self:
+			if each.taxes_id.ids !=  each.hsn_code_id.customer_taxes_ids.ids:
+				raise UserError(("Customer Taxes are mismatching as per the %s HSN master. ")%each.hsn_code_id.name)
 
-	# @api.constrains('supplier_taxes_id')
-	# def _check_supplier_taxes_id(self):
-	# 	for each in self:
-	# 		if each.supplier_taxes_id.ids !=  each.hsn_code_id.vendor_taxes_ids.ids:
-	# 			raise UserError(("Vendor Taxes are mismatching as per the %s HSN master. ")%each.hsn_code_id.name)
+	@api.constrains('supplier_taxes_id')
+	def _check_supplier_taxes_id(self):
+		for each in self:
+			if each.supplier_taxes_id.ids !=  each.hsn_code_id.vendor_taxes_ids.ids:
+				raise UserError(("Vendor Taxes are mismatching as per the %s HSN master. ")%each.hsn_code_id.name)
