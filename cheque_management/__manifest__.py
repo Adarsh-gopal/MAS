@@ -8,7 +8,7 @@
 
     'category': 'Accounting',
     'summary': 'Cheque Management',
-    'description': """Cheque Management """,
+    'description': """Cheque Management""",
     'depends': ['account_accountant', 'account_check_printing'],
     'data': [
         'data/ir_sequence_data.xml',
