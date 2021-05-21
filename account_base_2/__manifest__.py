@@ -12,7 +12,7 @@
     'description': """
 This module is display the Invoice due date in Invoice .
     """,
-    'depends': ['account','l10n_in','web','base','product','sale','account_accountant','account_check_printing','cheque_management'],
+    'depends': ['account','l10n_in','web','base','product','sale','account_accountant','account_check_printing'],
     'data': [
         'security/ir.model.access.csv',
         'views/payment_custom_header.xml',
