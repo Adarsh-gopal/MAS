@@ -4,7 +4,7 @@
     'category': 'Inventory',
     
     'summary': 'HSN Master',
-    'description': " HSN  Master",
+    'description': " HSN Master",
     'author': "Prixgen Tech Solutions Pvt. Ltd.",
     'company': "Prixgen Tech Solutions Pvt. Ltd.",
     'website': "https://www.prixgen.com",
