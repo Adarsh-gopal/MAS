@@ -15,9 +15,9 @@
     'website': "http://www.prixgen.com",
 
     'category': 'Purchase',
-    'version': '14.0.1.12',
+    'version': '14.0.1.14',
 
-    'depends': ['base','account','mass_custom_fields'],
+    'depends': ['base','account','l10n_in'],
 
     'data': [
         # 'security/ir.model.access.csv',
