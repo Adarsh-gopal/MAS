@@ -7,11 +7,12 @@
     'website': 'https://www.prixgen.com', 
 
     'category': 'Warehouse',
-    'version': '14.0.1',
+    'version': '14.0.2',
 
     'depends': ['to_stock_picking_backdate'],
 
     'data': [
+        'security/ir.model.access.csv',
         'wizard/stock_inventory_backdate_wizard_views.xml',
         'wizard/stock_scrap_backdate_wizard_views.xml',
         'wizard/stock_warn_insufficient_qty_scrap_views.xml',
