@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Cheque Management',
-    'version': '14.2.3',
+    'version': '14.2.4',
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
     'company': 'Prixgen Tech Solutions Pvt. Ltd.',
     'website': 'https://www.prixgen.com',
