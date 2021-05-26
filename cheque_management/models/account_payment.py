@@ -25,7 +25,6 @@ class AccountPayment(models.Model):
     @api.onchange('lot_id')
     def _onchange_cheque_lot_id(self):
         self.ensure_one()
-        pdb.set_trace()
         if self.lot_id.next_number:
             self.check_number = self.lot_id.next_number
 
