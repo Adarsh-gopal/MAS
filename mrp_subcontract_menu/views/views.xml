@@ -1,0 +1,45 @@
+<odoo>
+  <data>
+    <record id="mrp_production_report_subcontract" model="ir.actions.act_window">
+      <field name="name">Manufacturing Orders</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">mrp.production</field>
+      <field name="view_mode">tree,graph,pivot,form</field>
+      <field name="target">current</field>
+      <field name="domain">[('operation_type_name','=','Subcontracting')]</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          No data yet!
+        </p>
+        <p>
+          Create a new manufacturing order
+        </p>
+      </field>
+    </record>
+
+    <menuitem id="manufacturing_subcontract" 
+              name="Sub Con Orders" 
+              parent="mrp.menu_mrp_manufacturing" 
+              action ="mrp_production_report_subcontract"/>
+
+
+
+     <record model="ir.ui.view" id="view_picking_form_sub_con_wiget">
+      <field name="name">view picking form landed cost</field>
+      <field name="model">stock.picking</field>
+      <field name="inherit_id" ref="stock.view_picking_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//form/field[@name='is_locked']" position="after">
+          <field name = "subcontract_track" invisible="1"/>
+          </xpath>
+
+        <xpath expr="//form/sheet/div[@name='button_box']/button[@name='action_see_packages']" position="after">
+          <button type="object" class="oe_inline oe_stat_button" name="view_sub_con" icon="fa-wrench" string="Sub-Contracting Orders" attrs="{'invisible':[('subcontract_track', '=', False)]}"
+                />
+                    <!-- attrs="{'invisible':[('json_popover', '=', False)]}" -->
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>
