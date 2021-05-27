@@ -1,6 +1,6 @@
 {
     "name": "Purchase order lines with discounts for MAS ",
-    "version": "14.0.5",
+    "version": "14.0.6",
     "category": "Purchase Management",
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
     'company': 'Prixgen Tech Solutions Pvt. Ltd.',

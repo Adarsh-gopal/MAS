@@ -4,7 +4,7 @@
     'company': 'Prixgen Tech Solutions Pvt. Ltd.',
     'website': 'https://www.prixgen.com',    
     
-    'version': '14.0.2',
+    'version': '14.0.3',
     
     'category': 'Purchase',
 
