@@ -1,0 +1,70 @@
+<odoo>
+  <data>
+
+    <record id="inventory_ageing_summmary_tree_view" model="ir.ui.view">
+      <field name="name">inventory ageing summmary tree view</field>
+      <field name="model">stock.quant</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="product_id" />
+          <field name="location_id" />
+          <!-- <field name="warehouse_id" /> -->
+          <field name="lot_id" />
+          <field name="quantity" />
+          <field name="value" />
+          <field name="range1_qty" />
+          <field name="range1_val" />
+          <field name="range2_qty" />
+          <field name="range2_val" />
+          <field name="range3_qty" />
+          <field name="range3_val" />
+          <field name="range4_qty" />
+          <field name="range4_val" />
+          <field name="range5_qty" />
+          <field name="range5_val" />
+          <field name="range6_qty" />
+          <field name="range6_val" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="inv_bal_summary_wiz_view_form" model="ir.ui.view">
+      <field name="name">inv.age.wiz.view.form</field>
+      <field name="model">inv.age.wiz</field>
+      <field name="arch" type="xml">
+        <form string="Inventory Balance Summary">
+          <sheet>
+            <h4>Range Format Example: "31 - 60"</h4>
+            <group>
+              <group>
+                <field name="range1"/>
+                <field name="range2"/>
+                <field name="range3"/>
+                <field name="range4"/>
+                <field name="range5"/>
+                <!-- <field name="location_ids" domain="[('usage','=','internal')]" context="{'group_by':'warehouse_id'}">
+                  <tree>
+                    <field name="complete_name" string="Warehouse/Location"/>
+                  </tree>
+                </field> -->
+              </group>
+            </group>
+            <footer>
+              <button name="action_open_report" type="object" class="oe_highlight" string="View Ageing Summary"/>
+            </footer>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="inv_age_wiz_action" model="ir.actions.act_window">
+      <field name="name">Inventory Summary</field>
+      <field name="res_model">inv.age.wiz</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+
+    <menuitem id="inv_age_menu_act" name="Inventory Ageing Summary" parent="stock.menu_warehouse_report" action="inv_age_wiz_action"/>
+
+  </data>
+</odoo>

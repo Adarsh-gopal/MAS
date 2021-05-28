@@ -1,0 +1,67 @@
+<odoo>
+  <data>
+    <record id="inventory_detailed_summmary_tree_view" model="ir.ui.view">
+      <field name="name">inventory detailed summmary tree view</field>
+      <field name="model">inv.bal.sum</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="default_code" optional="show"/>
+          <field name="product_id"/>
+          <field name="categ_id" optional="show"/>
+          <field name="item_group" optional="show"/>
+          <field name="product_group_1" optional="show"/>
+          <field name="product_group_2" optional="show"/>
+          <field name="product_group_3" optional="show"/>
+          <field name="uom_id" optional="show"/>
+          <field name="opening_stock" optional="show"/>
+          <field name="opening_value" sum="Total Value" optional="show"/>
+          <field name="stock_increase" class="alert-success" optional="show"/>
+          <field name="value_increase" sum="Total Value" class="alert-success" optional="show"/>
+          <field name="stock_decrease" class="alert-danger" optional="show"/>
+          <field name="value_decrease" sum="Total Value" class="alert-danger" optional="show"/>
+          <field name="stock_purchase" optional="show"/>
+          <field name="value_purchase" sum="Total Value" optional="show"/>
+          <field name="stock_sale" optional="show"/>
+          <field name="value_sale" sum="Total Value" optional="show"/>
+          <field name="stock_purchase_return" optional="show"/>
+          <field name="value_purchase_return" sum="Total Value" optional="show"/>
+          <field name="stock_sale_return" optional="show"/>
+          <field name="value_sale_return" sum="Total Value" optional="show"/>
+          <field name="stock_production" optional="show"/>
+          <field name="value_production" sum="Total Value" optional="show"/>
+          <field name="stock_consumption" optional="show"/>
+          <field name="value_consumption" sum="Total Value" optional="show"/>
+          <field name="stock_positive" optional="show"/>
+          <field name="value_positive" sum="Total Value" optional="show"/>
+          <field name="stock_negative" optional="show"/>
+          <field name="value_negative" sum="Total Value" optional="show"/>
+          <field name="stock_transfer_in" optional="show"/>
+          <field name="value_transfer_in" sum="Total Value" optional="show"/>
+          <field name="stock_transfer_out" optional="show"/>
+          <field name="value_transfer_out" sum="Total Value" optional="show"/>
+          <field name="stock_auto_pos" optional="show"/>
+          <field name="value_auto_pos" sum="Total Value" optional="show"/>
+          <field name="stock_auto_neg" optional="show"/>
+          <field name="value_auto_neg" sum="Total Value" optional="show"/>
+          <field name="transfer_in" optional="show"/>
+          <field name="transfer_out" optional="show"/>
+          <field name="closing_stock" optional="show"/>
+          <field name="closing_value" sum="Total Value" optional="show"/>
+          <field name="warehouses" optional="show"/>
+          <field name="locations" optional="show"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="inv_bal_summary_wiz_view_form" model="ir.ui.view">
+      <field name="name">inv.bal.sum.wiz.inherit.view.form</field>
+      <field name="model">inv.bal.sum.wiz</field>
+      <field name="inherit_id" ref="inventory_balance_summary_14.inv_bal_summary_wiz_view_form"/>
+      <field name="arch" type="xml">
+        <button name="action_open_report" position="after">
+          <button name="action_open_detailed_report" type="object" class="oe_highlight" string="View Detailed Summary"/>
+        </button>
+      </field>
+    </record>
+  </data>
+</odoo>

@@ -13,7 +13,7 @@
     'website': "http://www.prixgen.com",
 
     'category': 'Inventory',
-    'version': '14.0.1.5',
+    'version': '14.0.2.12',
 
     'depends': ['base','product','stock','stock_account','inventory_base'],
 
