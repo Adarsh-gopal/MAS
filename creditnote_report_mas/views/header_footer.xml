@@ -14,7 +14,7 @@
                     <td colspan="2" style="border:1px solid white;border-bottom:1px solid #143980;text-align:center;padding:1px;font-size:11px;">(See Rule Sec-24)</td>
                 </tr>
                 <tr>
-                    <td rowspan="2" style="border:1px solid #143980;padding:5px;padding:5px;width:70%;">
+                    <td rowspan="2" style="border:1px solid #143980;padding:5px;padding:5px;width:68%;">
                     <div class="row">
                         <div class="col-4" style="font-size:11px;">
                             <div style="margin-bottom:10px;">
@@ -59,7 +59,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:30%;border-bottom:1px solid #143980;height:50%;padding-bottom:25px;padding-top:25px;">
+                    <td style="width:32%;border-bottom:1px solid #143980;height:50%;padding-bottom:25px;padding-top:25px;">
                         <t t-if="doc.move_type == 'out_refund'">
                         <strong style="color:#143980;font-size:12px;padding:1px;">Credit Note Date &#160;&#160;:</strong>
                         <strong style="font-size:12px;"><span t-esc="doc.invoice_date.strftime('%d-%m-%Y')"/></strong>
@@ -71,7 +71,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="padding:1px;padding:3px;border-bottom:1px solid white !important;color:#143980;">
+                    <td colspan="2" style="padding:3px;border-bottom:1px solid white !important;color:#143980;">
                         <div class="row">
                             <div class="col-3" style="font-size:10px;">
                                 <strong><t t-esc="'GSTIN'"/>:</strong>

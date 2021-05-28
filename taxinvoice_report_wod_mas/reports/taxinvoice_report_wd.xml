@@ -117,7 +117,7 @@
                         <b><span style="color:#143980;">State Code: </span></b>
                         <span style="color:black;font-style: normal;" t-esc="doc.partner_shipping_id.state_id.l10n_in_tin"/><br/>
                         <b><span style="color:#143980;">GSTIN:</span></b>
-                        <span style="color:black;font-style: normal;" t-esc="doc.partner_shipping_id.vat"/><br/>
+                        <span style="color:black;font-style: normal;" t-esc="doc.partner_shipping_id.l10n_in_shipping_gstin"/><br/>
                         <b><span style="color:#143980;">PAN:</span></b>
                         <span style="color:black;font-style: normal;" t-esc="doc.partner_shipping_id.pan_no"/>
                     </td>

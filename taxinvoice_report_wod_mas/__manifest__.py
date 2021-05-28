@@ -1,6 +1,6 @@
 {
     'name': 'MAS invoice report Template',
-    'version': '14.0.0.17',
+    'version': '14.0.0.18',
     'description': """This module consists, the sale Invoice Templates""",
     'category': 'Localization',
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
