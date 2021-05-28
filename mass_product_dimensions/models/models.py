@@ -11,28 +11,28 @@ class ProductDimension(models.Model):
         ('frame','Frame'),
         ('shutter', 'Shutter'),
         ('door', 'Door'),
-        ('others', 'Others')],string='Type')
+        ('others', 'Others')],string='Type',force_save="1")
 
-    lengthx = fields.Float()
-    lengthx_UOM = fields.Many2one('uom.uom')
+    lengthx = fields.Float( force_save="1")
+    lengthx_UOM = fields.Many2one('uom.uom',force_save="1")
     
-    width = fields.Float()
-    width_UOM = fields.Many2one('uom.uom')
+    width = fields.Float(force_save="1")
+    width_UOM = fields.Many2one('uom.uom',force_save="1")
     
-    thickness = fields.Float()
-    thickness_UOM = fields.Many2one('uom.uom')
+    thickness = fields.Float(force_save="1")
+    thickness_UOM = fields.Many2one('uom.uom',force_save="1")
     
-    height = fields.Float()
-    height_UOM = fields.Many2one('uom.uom')
+    height = fields.Float(force_save="1")
+    height_UOM = fields.Many2one('uom.uom',force_save="1")
     
-    diameter = fields.Float()
-    diameter_UOM = fields.Many2one('uom.uom')
+    diameter = fields.Float(force_save="1")
+    diameter_UOM = fields.Many2one('uom.uom',force_save="1")
     
-    description = fields.Char()
+    description = fields.Char(force_save="1")
     
-    face_description = fields.Char()
-    back_description = fields.Char()
-    edge_banding = fields.Char()
+    face_description = fields.Char(force_save="1")
+    back_description = fields.Char(force_save="1")
+    edge_banding = fields.Char(force_save="1")
 
 
 

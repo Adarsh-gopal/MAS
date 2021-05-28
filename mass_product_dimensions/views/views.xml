@@ -51,8 +51,8 @@
                     <group>
                         <field name="material_group"/>
                     </group>
-
-                    <button name="dimension_to_name" string="Add To Name" type="object" class="oe_highlight"/>
+<!-- 
+                    <button name="dimension_to_name" string="Add To Name" type="object" class="oe_highlight"/> -->
                     
                     <field name="product_dimension_ids">
                         <tree create="false" delete="false">
@@ -73,11 +73,11 @@
                             <field name="diameter"/>
                             <field name="diameter_UOM" string="UOM"/>
 
-                            <field name="description" attrs="{'column_invisible': [('parent.material_group','!=','doorframe'),('parent.material_group','!=','frame')]}"/>
+                            <field name="description" />
                             
-                            <field name="face_description" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
-                            <field name="back_description" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
-                            <field name="edge_banding" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
+                            <field name="face_description"/>
+                            <field name="back_description" />
+                            <field name="edge_banding" />
                         </tree>
                     </field>
                 </page>
@@ -97,7 +97,7 @@
                         <field name="material_group"/>
                     </group>
 
-                    <button name="dimension_to_name" string="Add To Name" type="object" class="oe_highlight"/>
+                   <!--  <button name="dimension_to_name" string="Add To Name" type="object" class="oe_highlight"/> -->
                     
                     <field name="product_dimension_ids">
                         <tree create="false" delete="false">
@@ -118,11 +118,11 @@
                             <field name="diameter"/>
                             <field name="diameter_UOM" string="UOM"/>
 
-                            <field name="description" attrs="{'column_invisible': [('parent.material_group','!=','doorframe'),('parent.material_group','!=','frame')]}"/>
+                            <field name="description" />
                             
-                            <field name="face_description" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
-                            <field name="back_description" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
-                            <field name="edge_banding" attrs="{'column_invisible': [('parent.material_group','!=','door')]}"/>
+                            <field name="face_description" />
+                            <field name="back_description" />
+                            <field name="edge_banding" />
                         </tree>
                     </field>
                 </page>
@@ -170,33 +170,33 @@
             <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="after">
                
                 <field name="lengthx" string="Length" attrs="{'column_invisible': [('parent.show_lengthx','=',False)]}"/>
-                <field name="width" attrs="{'column_invisible': [('parent.show_width','=',False)]}"/>
-                <field name="thickness" attrs="{'column_invisible': [('parent.show_thickness','=',False)]}"/>
-                <field name="height" attrs="{'column_invisible': [('parent.show_height','=',False)]}"/>
-                <field name="diameter" attrs="{'column_invisible': [('parent.show_diameter','=',False)]}"/>
+                <field name="width" />
+                <field name="thickness" />
+                <field name="height" />
+                <field name="diameter" />
 
 
-                <field name="frame_lengthx" attrs="{'column_invisible': [('parent.show_frame_lengthx','=',False)]}"/>
-                <field name="frame_width" attrs="{'column_invisible': [('parent.show_frame_width','=',False)]}"/>
-                <field name="frame_thickness" attrs="{'column_invisible': [('parent.show_frame_thickness','=',False)]}"/>
-                <field name="frame_height" attrs="{'column_invisible': [('parent.show_frame_height','=',False)]}"/>
-                <field name="frame_diameter" attrs="{'column_invisible': [('parent.show_frame_diameter','=',False)]}"/>
-                <field name="frame_description" attrs="{'column_invisible': [('parent.show_frame_description','=',False)]}"/>
-                <field name="frame_price" attrs="{'column_invisible': [('parent.material_group','!=','doorframe')]}"/>
+                <field name="frame_lengthx" />
+                <field name="frame_width" />
+                <field name="frame_thickness" />
+                <field name="frame_height" />
+                <field name="frame_diameter" />
+                <field name="frame_description" />
+                <field name="frame_price" />
 
 
-                <field name="shutter_lengthx" attrs="{'column_invisible': [('parent.show_shutter_lengthx','=',False)]}"/>
-                <field name="shutter_width" attrs="{'column_invisible': [('parent.show_shutter_width','=',False)]}"/>
-                <field name="shutter_thickness" attrs="{'column_invisible': [('parent.show_shutter_thickness','=',False)]}"/>
-                <field name="shutter_height" attrs="{'column_invisible': [('parent.show_shutter_height','=',False)]}"/>
-                <field name="shutter_diameter" attrs="{'column_invisible': [('parent.show_shutter_diameter','=',False)]}"/>
-                <field name="shutter_description" attrs="{'column_invisible': [('parent.show_shutter_description','=',False)]}"/>
-                <field name="shutter_price" attrs="{'column_invisible': [('parent.material_group','!=','doorframe')]}"/>
+                <field name="shutter_lengthx" />
+                <field name="shutter_width" />
+                <field name="shutter_thickness" />
+                <field name="shutter_height" />
+                <field name="shutter_diameter" />
+                <field name="shutter_description" />
+                <field name="shutter_price" />
 
 
-                <field name="face_description" attrs="{'column_invisible': [('parent.show_face_description','=',False)]}"/>
-                <field name="back_description" attrs="{'column_invisible': [('parent.show_back_description','=',False)]}"/>
-                <field name="edge_banding" attrs="{'column_invisible': [('parent.show_edge_banding','=',False)]}"/>
+                <field name="face_description" />
+                <field name="back_description" />
+                <field name="edge_banding" />
             </xpath>
         </field>
     </record>

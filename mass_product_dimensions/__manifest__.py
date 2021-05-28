@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Mas Product Dimension',
-    'version': '14.0.2',
+    'version': '14.0.3',
     'category': 'Customization',
     'description': """
 This module adds product dimensions
