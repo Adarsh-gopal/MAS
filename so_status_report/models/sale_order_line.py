@@ -28,7 +28,7 @@ class SaleOrderLine(models.Model):
             if line.state == 'cancel':
                 line.z_status = 'Cancel'
             if line.qty_delivered == line.product_uom_qty == line.qty_invoiced:
-                line.z_status = "Fully Invoice"
+                line.z_status = "Fully Invoiced"
 
 
 
