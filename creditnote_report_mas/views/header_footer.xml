@@ -71,7 +71,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="padding:3px;border-bottom:1px solid white !important;color:#143980;">
+                    <td colspan="2" style="padding:3px;border-bottom:1px solid white !important;color:#143980;white-space: nowrap;">
                         <div class="row">
                             <div class="col-3" style="font-size:10px;">
                                 <strong><t t-esc="'GSTIN'"/>:</strong>
@@ -87,7 +87,7 @@
                             </div>
                             <div class="col-2" style="font-size:10px;">
                                 <strong><t t-esc="'STATE'"/>:</strong>
-                                <strong><span style="text-transform:uppercase" t-field="doc.company_id.state_id"/></strong>
+                                <strong><span style="text-transform:uppercase;font-size:9px;" t-field="doc.company_id.state_id"/></strong>
                             </div>
                             <div class="col-2" style="font-size:10px;">
                                 <strong><t t-esc="'STATE CODE'"/>:</strong>
