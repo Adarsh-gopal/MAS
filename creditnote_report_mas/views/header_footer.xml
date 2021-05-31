@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <template id="external_layout_standard_mass">
+        <div class="header">
+            <table class="table" style="border:1px solid #143980;width:100%;margin-bottom:0">
+                <tr>
+                    <td colspan="2" style="border:1px solid white;text-align:center;padding:1px;font-size:14px;color:#143980">
+                    <t t-if="doc.move_type == 'out_refund'"><strong>CREDIT NOTE</strong></t>
+                    <t t-if="doc.move_type == 'in_refund'"><strong>DEBIT NOTE</strong></t>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="border:1px solid white;border-bottom:1px solid #143980;text-align:center;padding:1px;font-size:11px;">(See Rule Sec-24)</td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="border:1px solid #143980;padding:5px;padding:5px;width:68%;">
+                    <div class="row">
+                        <div class="col-4" style="font-size:11px;">
+                            <div style="margin-bottom:10px;">
+                                <img class="text-center  " t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="width:160px;"/>
+                            </div>
+                        </div>
+                        <div class="text-center col-8" style="line-height: initial;"><strong>
+                            <span style="font-size:15px;color:#84302e;">MAS</span>
+                            <span style="font-size:15px;">FURNITURE</span></strong><br/>
+                            <span style="font-size:13px;">(Unit of Mulla Abdul Hussain Sons)</span><br/>
+                            <strong><span style="color:#143980;font-size:13px;padding:1px;" t-field="doc.company_id.partner_id.street"/>
+                            <span style="color:#143980;font-size:13px;padding:1px;" t-field="doc.company_id.partner_id.street2"/><br/>
+                            <span style="color:#143980;font-size:13px;padding:1px;" t-field="doc.company_id.city"/>
+                            <scan style="color:#143980;">-</scan>
+                            <span style="color:#143980;font-size:13px;padding:1px;" t-field="doc.company_id.partner_id.zip"/>
+                            <span style="color:#143980;font-size:13px;padding:1px;" t-field="doc.company_id.state_id"/>
+                            <scan style="color:#143980;">,</scan>
+                            <span style="color:#143980;font-size:13px;padding:1px;" t-field="doc.company_id.country_id"/>
+                            <br/></strong>
+                            <strong style="font-size:13px;padding:1px;"><t t-esc="'Phone'"/>:
+                                <span style="color:#143980;font-size:13px;" t-field="doc.company_id.phone"/>
+                            </strong><br/>
+                            <t t-if='doc.company_id.email'>
+                                <strong style="font-size:13px;padding:1px;"><t t-esc="'Email'"/>:</strong>
+                                <t t-set="emailstr" t-value="doc.email_split(doc.company_id.email)"/> 
+                                <strong><span style="color:#143980;font-size:13px;" t-esc="emailstr"/></strong><br/>
+                            </t>
+                            <strong style="font-size:13px;padding:1px;"><b><t t-esc="'Website'"/>:</b></strong>
+                                <b><span style="color:#143980;font-size:13px;" t-field="doc.company_id.website"/></b>
+                        </div>
+                    </div>
+                    </td>
+                    <td style="border:1px solid #143980;height:50%;width:30%;padding-top:25px;padding-bottom:25px;">
+                        <t t-if="doc.move_type == 'out_refund'">
+                            <strong style="color:#143980;font-size:12px;">Credit Note No.&#160;&#160;:</strong>
+                            <strong style="color:#f7412c;font-size:12px;">&#160;&#160;&#160;&#160;&#160;<span t-esc="doc.name"/></strong>
+                        </t>
+                        <t t-if="doc.move_type == 'in_refund'">
+                            <strong style="color:#143980;font-size:12px;">Debit Note No.&#160;&#160;:</strong>
+                            <strong style="color:#f7412c;font-size:12px;">&#160;&#160;&#160;&#160;&#160;<span t-esc="doc.name"/></strong>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:32%;border-bottom:1px solid #143980;height:50%;padding-bottom:25px;padding-top:25px;">
+                        <t t-if="doc.move_type == 'out_refund'">
+                        <strong style="color:#143980;font-size:12px;padding:1px;">Credit Note Date &#160;&#160;:</strong>
+                        <strong style="font-size:12px;"><span t-esc="doc.invoice_date.strftime('%d-%m-%Y')"/></strong>
+                    </t>
+                        <t t-if="doc.move_type == 'in_refund'">
+                        <strong style="color:#143980;font-size:12px;padding:1px;">Debit Note Date &#160;&#160;:</strong>
+                        <strong style="font-size:12px;"><span t-esc="doc.invoice_date.strftime('%d-%m-%Y')"/></strong>
+                    </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding:3px;border-bottom:1px solid white !important;color:#143980;">
+                        <div class="row">
+                            <div class="col-3" style="font-size:10px;">
+                                <strong><t t-esc="'GSTIN'"/>:</strong>
+                                <strong><span t-field="doc.company_id.vat"/></strong>
+                            </div>
+                            <div class="col-2" style="font-size:10px;">
+                                <strong><t t-esc="'PAN'"/>:</strong> 
+                                <strong><span t-field="doc.company_id.partner_id.pan_no"/></strong>
+                            </div>
+                            <div class="col-3" style="font-size:10px;">
+                                <strong><t t-esc="'MSME CODE'"/>:</strong>
+                                <strong><span t-field="doc.company_id.partner_id.mime_code"/></strong>
+                            </div>
+                            <div class="col-2" style="font-size:10px;">
+                                <strong><t t-esc="'STATE'"/>:</strong>
+                                <strong><span style="text-transform:uppercase" t-field="doc.company_id.state_id"/></strong>
+                            </div>
+                            <div class="col-2" style="font-size:10px;">
+                                <strong><t t-esc="'STATE CODE'"/>:</strong>
+                                <strong><span t-field="doc.company_id.state_id.l10n_in_tin"/></strong>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="article o_report_layout_standard"  t-att-data-oe-model="doc and doc._name" t-att-data-oe-id="doc and doc.id" t-att-data-oe-lang="doc and doc.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        
+    </template>
+
+</data>
+
+</odoo>

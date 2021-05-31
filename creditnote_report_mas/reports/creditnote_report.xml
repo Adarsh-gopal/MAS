@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="mas_page_format" model="report.paperformat">
+        <field name="name">MAS Credit Note page format</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">55</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">50</field>
+        <field name="dpi">90</field>
+    </record>
+    
+    <record id="creditnote" model="ir.actions.report">
+        <field name="name">Credit note Mas</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">creditnote_report_mas.creditnote_report</field>
+        <field name="report_file">taxicreditnote_report_masnvoice_report_mas.creditnote_report</field>
+        <field name="print_report_name">(object.move_type == 'out_refund') and 'INV - %s' % (object.name) or 'Inv - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="creditnote_report_mas.mas_page_format"/>
+    </record>
+
+    <record id="debitnote" model="ir.actions.report">
+        <field name="name">Debit note Mas</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">creditnote_report_mas.creditnote_report</field>
+        <field name="report_file">taxicreditnote_report_masnvoice_report_mas.creditnote_report</field>
+        <field name="print_report_name">(object.move_type == 'in_refund') and 'INV - %s' % (object.name) or 'Inv - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="creditnote_report_mas.mas_page_format"/>
+    </record>
+
+
+    <template id="creditnote_report">
+     <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+        <t t-call="creditnote_report_mas.external_layout_standard_mass">
+            <style>
+                .table td {
+ border-top:none !important;
+                }
+            </style>            
+            <table class="table" style="border:1px solid #143980;border-top:1px solid #143980;width:100%;padding-top:69px; margin-bottom:0;height:268mm;border-color:#143980;">
+            <thead>
+                <tr style="height:3px !important;">
+                    <td  colspan="3" style="width:35%;padding:1px;border:1px solid #143980;font-size:11px;">
+                        <strong><span style="color:#143980;">Consignee / Buyer :</span></strong><br/>
+                        <span style="color:black">
+                        <strong><span style="font-style: normal;" t-esc="doc.partner_id.name"/></strong><br/>
+                        <t t-if="doc.partner_id.street" t-esc="doc.partner_id.street"/> <br/>
+                        <t t-if="doc.partner_id.street2" t-esc="doc.partner_id.street2"/>
+                        <t t-if="doc.partner_id.city" t-esc="doc.partner_id.city"/>-
+                        <strong><t t-if="doc.partner_id.state_id.name" t-esc="doc.partner_id.state_id.name"/></strong><br/>
+                        <t t-if="doc.partner_id.mobile" t-esc="doc.partner_id.mobile"/>
+                        <t t-if="doc.partner_id.phone" t-esc="doc.partner_id.phone"/><br/> 
+                        <t t-if="doc.partner_id.email">
+                            <t t-set="emailstr" t-value="doc.email_split(doc.partner_id.email)"/> 
+                            <span style="color:black;font-style: normal;" t-esc="emailstr"/> 
+                        </t></span>         
+                    </td>
+                    <td colspan="2" style="padding:1px;width:32%;border:1px solid #143980;font-size:11px;">
+                        <strong style="color:#143980;">Shipping / Delivery : </strong><br/>
+                        <span style="color:black">
+                        <strong><span style="font-style: normal;" t-esc="doc.partner_shipping_id.name"/></strong><br/>
+                        <t t-if="doc.partner_shipping_id.street" t-esc="doc.partner_shipping_id.street"/> <br/>
+                        <t t-if="doc.partner_shipping_id.street2" t-esc="doc.partner_shipping_id.street2"/>
+                        <t t-if="doc.partner_shipping_id.city" t-esc="doc.partner_shipping_id.city"/>-
+                        <strong><t t-if="doc.partner_shipping_id.state_id.name" t-esc="doc.partner_shipping_id.state_id.name"/></strong><br/>
+                        <t t-if="doc.partner_shipping_id.phone" t-esc="doc.partner_shipping_id.phone"/>
+                        <t t-if="doc.partner_shipping_id.mobile" t-esc="doc.partner_shipping_id.mobile"/><br/> 
+                        <t t-if="doc.partner_id.email">
+                            <t t-set="emailstr" t-value="doc.email_split(doc.partner_id.email)"/> 
+                            <span style="color:black;font-style: normal;" t-esc="emailstr"/>
+                        </t> </span>
+                    </td>
+                    <td colspan="2" style="padding:1px;width:32%;border:1px solid #143980;font-size:11px;">
+                        <strong style="color:#143980">Sales Invoice No :</strong><br/>
+                        <t t-if="doc.move_type == 'out_refund'">
+                            <t t-set="refval" t-value="doc.get_ref(doc.ref)"/>
+                            <span style="color:black;"><t t-esc="refval"/></span><br/>
+                        </t>
+                        <t t-if="doc.move_type == 'in_refund'">
+                            <span style="color:black;"><!-- <t t-set="refvalue" t-value="doc.get_refdebit(doc.ref)"/> -->
+                            <t t-esc="doc.ref"/></span><br/>
+                        </t>
+                    </td>
+                </tr>
+                <tr style="height:3px !important;">
+                    <td colspan="3" style="padding:1px;width:35%;border:1px solid #143980;font-size:11px;">
+                        <b><span style="color:#143980;">State: </span></b>
+                        <strong style="color:black;"><t t-if="doc.partner_id.state_id.name" t-esc="doc.partner_id.state_id.name"/><br/></strong>
+                        <b><span style="color:#143980;">State Code:</span></b>
+                        <span style="color:black;"><span t-esc="doc.partner_id.state_id.l10n_in_tin"/></span><br/>
+                        <b><span style="color:#143980;">GSTIN:</span></b>
+                        <span style="color:black;"><span t-esc="doc.partner_id.vat"/></span><br/>
+                        <b><span style="color:#143980;">PAN:</span></b>
+                        <span style="color:black;"><span t-esc="doc.partner_id.pan_no"/></span>
+                    </td>
+                    <td colspan="2" style="padding:1px;width:35%;border:1px solid #143980;font-size:11px;">
+                        <b><span style="color:#143980;">State: </span></b>
+                        <strong style="color:black;"><t t-if="doc.partner_shipping_id.state_id.name" t-esc="doc.partner_shipping_id.state_id.name"/></strong><br/>
+                        <b><span style="color:#143980;">State Code: </span></b>
+                        <span style="color:black;"><span t-field="doc.partner_shipping_id.state_id.l10n_in_tin"/></span><br/>
+                        <b><span style="color:#143980;">GSTIN:</span></b>
+                        <span style="color:black;"><span t-esc="doc.partner_shipping_id.vat"/></span><br/>
+                        <b><span style="color:#143980;">PAN:</span></b>
+                        <span style="color:black;"><span t-esc="doc.partner_shipping_id.pan_no"/></span>
+                    </td>
+                    <td colspan="2" style="padding:1px;width:16%;border:1px solid #143980;font-size:11px;">
+                        <strong style="color:#143980">Sale Invoice Date :</strong><br/>
+                        <span style="color:black;">
+                        <t t-if="doc.invoice_date">
+                            <t t-esc="doc.invoice_date.strftime('%d-%m-%Y')"/>
+                        </t></span>
+                    </td>
+                </tr>
+                <tr style="color:#143980;height:3px !important;font-size:12px;">
+                    <th class="text-center" style="padding:1px;width:1%;border:1px solid #143980;">Sl. No</th>
+                    <th colspan="2" class="text-center" style="padding:1px;width:35%;border:1px solid #143980;">Description of Goods / Services</th>
+                    <th class="text-center" style="padding:1px;width:16%;border:1px solid #143980;">HSN / SAC Code</th>
+                    <th class="text-center" style="padding:1px;width:16%;border:1px solid #143980;">Quantity</th>
+                    <th class="text-center" style="padding:1px;width:16%;border:1px solid #143980;">Price/Unit&#160;(&#8377;)</th>
+                    <th class="text-center" style="padding:1px;width:16%;border:1px solid #143980;">Amount&#160;(&#8377;)</th>
+                </tr>
+            </thead>
+                <tbody style="width:100%;border:1px solid #143980;border-bottom:none !important;font-size:11px;">
+                    <!-- Variables declaration start -->
+                    <t t-set="i" t-value="1"/>
+                    <t t-set="disc" t-value="0"/>
+                    <t t-set="disc_tot" t-value="0"/>
+                    <t t-set="amttotal" t-value="0"/>
+                    <t t-set="current_subtotal" t-value="0"/>
+                    <t t-foreach="doc.invoice_line_ids" t-as="line">
+                        <tr style="height:1px;">
+                            <td class="text-center" style="width:1%;border-left:1px solid #143980;border-bottom:none !important;border-right:1px solid #143980;">
+                                <span t-esc="i"/>
+                                <t t-set="i" t-value="i+1"/>
+                            </td>
+                            <td colspan="2" class="text-left" style="width:35%;border-left:1px solid #143980;border-bottom:none !important;border-right:1px solid #143980;">
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td class="text-center" style="width:16%;border-left:1px solid #143980;border-bottom:none !important;border-right:1px solid #143980;">
+                                <span t-field="line.product_id.l10n_in_hsn_code"/>
+                            </td>
+                            <td class="text-left" style="width:16%;border-left:1px solid #143980;border-bottom:none !important;border-right:1px solid #143980;">
+                                <span t-esc="'%.2f'%(line.quantity)"/>&#160;<span t-esc="line.product_uom_id.name"/>
+                            </td>
+                            <td class="text-right" style="width:16%;border-left:1px solid #143980;border-bottom:none !important;border-right:1px solid #143980;">
+                                <span t-esc="'%.2f'%(line.price_unit)"/>
+                            </td>
+                            <td class="text-right" style="width:16%;border-left:1px solid #143980;border-bottom:none !important;border-right:1px solid #143980;">
+                                <span t-esc="'%.2f'%(line.price_subtotal)"/>
+                            </td>                        
+                        </tr>
+                    </t>
+                        <tr>
+                            <td style="border-left:1px solid #143980;border-top: none !important;border-right:1px solid #143980;"></td>
+                            <td colspan="2" style="border-left:1px solid #143980;border-top: none !important;border-right:1px solid #143980;"></td>
+                            <td style="border-left:1px solid #143980;border-top: none !important;border-right:1px solid #143980;"></td>
+                            <td style="border-left:1px solid #143980;border-top: none !important;border-right:1px solid #143980;"></td>
+                            <td style="border-left:1px solid #143980;border-top: none !important;border-right:1px solid #143980;"></td>
+                            <td style="border-left:1px solid #143980;border-top: none !important;border-right:1px solid #143980;"></td>
+                        </tr>
+                </tbody>
+                <tbody style="width:100%;border:1px solid #143980;font-size:11px;">
+                    <tr style="height:3px !important;font-size:11px;">
+                        <th colspan="4" class="text-left" style="padding:1px;border:1px solid #143980;border-top:1px solid #143980;font-size:11px;">
+                          <strong style="color:#143980">No. of Packages:</strong>&#160;&#160;&#160;<span style="color:black"><span t-esc="doc.no_of_packages"/></span>
+                        </th>
+                        <th class="text-center" style="padding:1px;border:1px solid #143980;">
+                            <t t-set="quantity" t-value="0"/>
+                            <t t-foreach="doc.invoice_line_ids" t-as="line">
+                            <t t-set="quantity" t-value="quantity + line.quantity"/>
+                        </t>
+                        <span t-esc="'%.2f'%(quantity)"/>
+                        </th>
+                        <td class="text-left" style="padding:1px;border:1px solid #143980;width:16%">
+                            <strong style="color:#143980">Total Taxable Value of Goods / Service</strong>
+                        </td>
+                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
+                            <span t-esc="'%.2f'%(doc.amount_untaxed)"/>
+                        </td>
+                    </tr>
+                    <tr style="height:3px !important;">
+                        <td colspan="4" rowspan="4" class="text-left" style="padding:5px;border:1px solid #143980;width:10%">
+                            <strong style="color:#143980">Remarks:</strong>
+                            <span t-field="doc.narration"/> 
+                        </td>
+                        <td class="text-left" style="padding:1px;border:1px solid #143980;width:16%">
+                            <b><span style="color:#143980">SGST</span></b>
+                        </td>
+                        <td class="text-center" style="padding:1px;border:1px solid #143980;width:16%">
+                            <t t-set="sgstrate" t-value="0.0"/>
+                                <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-if="doc.partner_id.state_id.id == 593">
+                                    <t t-set="sgstrate" t-value="sgstrate+line.calculaterate(line.tax_ids)"/>
+                                </t>
+                            </t>
+                            <span t-esc="'%.2f'%(sgstrate/len(doc.invoice_line_ids))"/><span>&#160;%</span>
+                        </td>
+                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
+                            <t t-set="gstsum" t-value="0.0"/>
+                            <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-if="doc.partner_id.state_id.id == 593">
+                                    <t t-set="gstsum" t-value=" gstsum + line.calculategst(line.move_id)"/>
+                                </t>
+                            </t>
+                            <span t-esc="gstsum/len(doc.invoice_line_ids)"/>
+                        </td>
+                    </tr>
+                    <tr style="height:3px !important;">
+                        <td class="text-left" style="padding:1px;border:1px solid #143980;width:16%">
+                            <b><span style="color:#143980">CGST</span></b>
+                        </td>
+                        <td class="text-center" style="padding:1px;border:1px solid #143980;width:16%">
+                            <t t-set="cgstrate" t-value="0.0"/>
+                                <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-if="doc.partner_id.state_id.id == 593">
+                                    <t t-set="cgstrate" t-value="cgstrate+line.calculaterate(line.tax_ids)"/>
+                                </t>
+                            </t>
+                            <span t-esc="'%.2f'%(cgstrate/len(doc.invoice_line_ids))"/><span>&#160;%</span>
+                        </td>
+                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
+                            <t t-set="gstsum" t-value="0.0"/>
+                            <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-if="doc.partner_id.state_id.id == 593">
+                                    <t t-set="gstsum" t-value=" gstsum + line.calculategst(line.move_id)"/>
+                                </t>
+                            </t>
+                            <span t-esc="gstsum/len(doc.invoice_line_ids)"/>
+                        </td>
+                    </tr>
+                    <tr style="height:3px !important;">
+                        <td class="text-left" style="padding:1px;border:1px solid #143980;width:16%">
+                            <b><span style="color:#143980">IGST</span></b>
+                        </td>
+                        <td class="text-center" style="padding:1px;border:1px solid #143980;width:16%">
+                            <t t-set="igstrate" t-value="0.0"/>
+                                <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-if="doc.partner_id.state_id.id != 593">
+                                    <t t-set="igstrate" t-value="igstrate+line.calculateigstrate(line.tax_ids)"/>
+                                </t>
+                            </t>
+                            <span t-esc="'%.2f'%(igstrate/len(doc.invoice_line_ids))"/><span>&#160;%</span>
+                        </td>
+                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
+                            <t t-set="taxsum" t-value="0.0"/>
+                            <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-if="doc.partner_id.state_id.id != 593">
+                                    <t t-set="taxsum" t-value=" taxsum + line.calculateigst(line.tax_ids)"/>
+                                </t>
+                            </t>
+                            <span t-esc="'%.2f'%(taxsum)"/>
+                        </td>
+                    </tr>
+                    <tr style="height:3px !important;">
+                        <td colspan="2" class="text-left" style="padding:1px;border:1px solid #143980;width:32%">
+                            <b><span style="color:#143980">Round Off(+/-)</span></b>
+                        </td>
+                        <td class="text-right" style="padding:1px;border:1px solid #143980;">
+                            <span t-esc="'%.2f'%(doc.amount_residual-doc.amount_total)"/>
+                        </td>
+                    </tr>
+                    <tr style="height:3px !important;"> 
+                        <td colspan="5" style="padding:1px;border:1px solid #143980;" >
+                            <strong style="color:#143980">Grand Total in Words:</strong>
+                            <t t-set="amountwords"  t-value="doc.amount_words(doc.amount_residual)"/>
+                            <span style="text-transform:uppercase" t-esc="amountwords"/>
+                        </td>
+                        <td class="text-left" style="padding:1px;border:1px solid #143980;width:16%">
+                            <strong style="color:#143980">Grand Total</strong>
+                        </td>
+                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
+                            <!-- <span t-esc="'%.2f'%(doc.amount_residual)"/> -->
+                            <span t-esc="'{0:,.2f}'.format(doc.amount_residual)"/>
+                        </td>
+                    </tr>
+                    <tr style="height:3px !important;">
+                        <td colspan="4" rowspan="4" style="padding:1px;border:1px solid #143980;color:#143980">
+                        </td>
+                        <td colspan="4" rowspan="4" class="text-center" style="padding:1px;border:1px solid #143980;width:30%;">
+                           <span style="font-weight:700">for <strong style="color:#84302e;">MAS</strong>&#160;&#160;<strong>FURNITURE</strong></span>
+                                 <div style="padding:15px"/>
+                                 <span>Authorized Signatory</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+    </t>
+</t>
+</template>
+</data>
+</odoo>
