@@ -21,7 +21,7 @@
 					<field name="z_currency_id" optional='show'/>
 					<field name="tax_id" widget="many2many_tags" optional='show'/>
 					<field name="price_subtotal"/>	
-					<field name="z_status" decoration-info="z_status == 'Pending Order' or z_status == 'Pending for Invoice'" decoration-danger="z_status == 'Cancel'" decoration-success="z_status == 'Fully Invoice'"/>
+					<field name="z_status" decoration-info="z_status == 'Pending for Invoice'" decoration-danger="z_status == 'Cancel'" decoration-success="z_status == 'Pending Order'"/>
 				</tree>				
 			</field>
 		</record>
