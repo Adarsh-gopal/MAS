@@ -42,15 +42,15 @@ class AccountMove(models.Model):
 
             if rec.journal_type in ('cash','bank'):
                 if rec.payment_type == 'inbound':
-                    if rec.journal_id.in_sequence_id:
+                    if rec.journal_id.in_sequence_id and not rec.posted_before:
                         rec.write({'name':rec.journal_id.in_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
                 elif rec.payment_type == 'outbound':
-                    if rec.journal_id.out_sequence_id:
+                    if rec.journal_id.out_sequence_id and not rec.posted_before:
                         rec.write({'name':rec.journal_id.out_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
             if rec.move_type in ('in_refund','out_refund'):
-                if rec.journal_id.refund_sequence_id:
+                if rec.journal_id.refund_sequence_id and not rec.posted_before:
                     rec.write({'name':rec.journal_id.refund_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
-            elif rec.journal_id.name_sequence_id:
+            elif rec.journal_id.name_sequence_id and not rec.posted_before:
                 rec.write({'name':rec.journal_id.name_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
             else:
                 pass

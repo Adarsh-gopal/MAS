@@ -29,7 +29,7 @@
 
 
     'category': 'Customization',
-    'version': '14.0.2.0',
+    'version': '14.0.2.1',
 
     'depends': ['base','account','stock','purchase','account_reports'],
 

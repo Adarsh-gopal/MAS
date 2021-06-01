@@ -18,3 +18,8 @@ V14.0.1.6 ----> V14.0.1.7(**30/04/2021**)*madhukumar*
 ================================================
 1. sequnece issue with differnet month and invoice due date feature updated.
 2. invoice date constraint check.
+
+
+ V14.0.2.9 ----> V14.0.2.1(**27/05/2021**)*madhukumar*
+================================================
+1. Invoice and vendor bill sequence issue if we do reset to draft of posted record and reposted skipping change regenerating of sequence again
