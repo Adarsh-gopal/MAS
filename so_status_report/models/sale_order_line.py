@@ -9,6 +9,7 @@ class SaleOrderLine(models.Model):
     z_partner_id = fields.Many2one('res.partner',' Partner',related="order_id.partner_id")
     z_remaining_qty = fields.Float("Pending Qty",compute="_qty_remaining",store=True)
     z_client_order_ref = fields.Char('Customer Reference',related="order_id.client_order_ref")
+    z_pending_order_value = fields.Float(compute='compute_value',string='Pending Order Value',store=True)
 
     @api.depends('qty_delivered','product_uom_qty')
     def _qty_remaining(self):
@@ -17,6 +18,11 @@ class SaleOrderLine(models.Model):
                 each.z_remaining_qty = each.product_uom_qty- each.qty_delivered
             else:
                 each.z_remaining_qty = 0.0
+
+    @api.depends('z_remaining_qty','price_unit')
+    def compute_value(self):
+        for l in self:
+            l.z_pending_order_value = l.price_unit * l.z_remaining_qty
 
     @api.depends('qty_delivered','qty_invoiced','product_uom_qty')
     def _compute_status_type(self):
