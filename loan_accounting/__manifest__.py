@@ -1,6 +1,6 @@
 {
     'name': 'Loan/Advance Accounting',
-    'version': '14.0.5',
+    'version': '14.0.6',
     'summary': 'Loan Accounting',
     'description': """
         Create accounting entries for loan requests.
