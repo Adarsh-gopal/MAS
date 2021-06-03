@@ -16,6 +16,7 @@
 					<field name="qty_delivered"/>
 					<field name="qty_invoiced"/>
 					<field name="z_remaining_qty"/>
+					<field name="z_pending_order_value"/>
 					<field name="customer_lead"/>
 					<field name="price_unit"/>
 					<field name="z_currency_id" optional='show'/>
