@@ -120,8 +120,8 @@ class taxorder(models.Model):
 	        				for each_group_line in  each_tax.children_tax_ids:
 	        					group = each_tax.tax_group_id.name
 	        					if each_group_line.tax_group_id.name != 'TCS':
-	        						tot_rax_rate  += each_tax.amount
-	        						igst_val =curr_val * (each_tax.amount/100)
+	        						tot_rax_rate  += each_group_line.amount
+	        						igst_val =curr_val * (each_group_line.amount/100)
 	        					elif each_group_line.tax_group_id.name == 'TCS':
 	        						tcs_rate = each_group_line.amount
 	        						tcs_val = (curr_val+igst_val) * (each_group_line.amount/100)
@@ -159,6 +159,7 @@ class taxorder(models.Model):
 					continue
 
 			sorted_tax.append({'tax':each_tax_id,'tax_rate':tot_rax_rate,'igst':igst_val,'sgst':sgst_val,'tcs':tcs_val,'tcs_rate':tcs_rate,'tax_group':group})
+		print(sorted_tax,"*******************************************************")
 
 		return sorted_tax
 	
