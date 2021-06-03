@@ -15,7 +15,7 @@ class SaleOrderLine(models.Model):
     def _qty_remaining(self):
         for each in self:
             if each.product_uom_qty and each.qty_delivered:
-                each.z_remaining_qty = each.product_uom_qty- each.qty_delivered
+                each.z_remaining_qty = each.qty_delivered - each.product_uom_qty
             else:
                 each.z_remaining_qty = 0.0
 
