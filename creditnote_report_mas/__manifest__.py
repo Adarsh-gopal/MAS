@@ -1,7 +1,7 @@
 {
     'name': 'MAS credit note report Template',
-    'version': '14.0.0.3',
-    'description': """This module consists,  the credit note Templates""",
+    'version': '14.0.0.4',
+    'description': """This module consists, the credit note Templates""",
     'category': 'Localization',
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
     'company': 'Prixgen Tech Solutions Pvt. Ltd.',

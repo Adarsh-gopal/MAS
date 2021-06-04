@@ -142,7 +142,9 @@
                     <t t-set="amttotal" t-value="0"/>
                     <t t-set="current_subtotal" t-value="0"/>
                     <t t-foreach="doc.invoice_line_ids" t-as="line">
+                        
                         <tr style="height:1px;">
+                            <t t-if="line.product_id.name">
                             <td class="text-center" style="width:1%;border-left:1px solid #143980;border-bottom:none !important;border-right:1px solid #143980;">
                                 <span t-esc="i"/>
                                 <t t-set="i" t-value="i+1"/>
@@ -161,7 +163,8 @@
                             </td>
                             <td class="text-right" style="width:16%;border-left:1px solid #143980;border-bottom:none !important;border-right:1px solid #143980;">
                                 <span t-esc="'%.2f'%(line.price_subtotal)"/>
-                            </td>                        
+                            </td>    
+                            </t>                    
                         </tr>
                     </t>
                         <tr>
@@ -193,7 +196,8 @@
                         </td>
                     </tr>
                     <tr style="height:3px !important;">
-                        <td colspan="4" rowspan="4" class="text-left" style="padding:5px;border:1px solid #143980;width:10%">
+                        <t t-set="tax_lines" t-value="doc.get_taxes()"/>
+                        <td colspan="4" rowspan="5" class="text-left" style="padding:5px;border:1px solid #143980;width:10%">
                             <strong style="color:#143980">Remarks:</strong>
                             <span t-field="doc.narration"/> 
                         </td>
@@ -201,22 +205,24 @@
                             <b><span style="color:#143980">SGST</span></b>
                         </td>
                         <td class="text-center" style="padding:1px;border:1px solid #143980;width:16%">
-                            <t t-set="sgstrate" t-value="0.0"/>
-                                <t t-foreach="doc.invoice_line_ids" t-as="line">
-                                <t t-if="doc.partner_id.state_id.id == 593">
-                                    <t t-set="sgstrate" t-value="sgstrate+line.calculaterate(line.tax_ids)"/>
+                            <t t-foreach="tax_lines" t-as="l">
+                                <t t-if="l['tax_group'] == 'GST'">
+                                    <span t-esc="'{0:,.2f}'.format(l['tax_rate']/2)"/><span>&#160;%</span>
+                                </t>
+                                <t t-if="not l['tax_group'] == 'GST'">
+                                    <span t-esc="0.0"/><span>&#160;%</span>
                                 </t>
                             </t>
-                            <span t-esc="'%.2f'%(sgstrate/len(doc.invoice_line_ids))"/><span>&#160;%</span>
                         </td>
                         <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
-                            <t t-set="gstsum" t-value="0.0"/>
-                            <t t-foreach="doc.invoice_line_ids" t-as="line">
-                                <t t-if="doc.partner_id.state_id.id == 593">
-                                    <t t-set="gstsum" t-value=" gstsum + line.calculategst(line.move_id)"/>
-                                </t>
-                            </t>
-                            <span t-esc="gstsum/len(doc.invoice_line_ids)"/>
+                            <t t-foreach="tax_lines" t-as="l">
+                                <t t-if="l['tax_group'] == 'GST'">
+                                    <span t-esc="'{0:,.2f}'.format(l['sgst'])"/>
+                                    </t>
+                                    <t t-if="not l['tax_group'] == 'GST'">
+                                                <span t-esc="0.0"/>
+                                     </t>
+                                 </t>
                         </td>
                     </tr>
                     <tr style="height:3px !important;">
@@ -224,22 +230,24 @@
                             <b><span style="color:#143980">CGST</span></b>
                         </td>
                         <td class="text-center" style="padding:1px;border:1px solid #143980;width:16%">
-                            <t t-set="cgstrate" t-value="0.0"/>
-                                <t t-foreach="doc.invoice_line_ids" t-as="line">
-                                <t t-if="doc.partner_id.state_id.id == 593">
-                                    <t t-set="cgstrate" t-value="cgstrate+line.calculaterate(line.tax_ids)"/>
+                            <t t-foreach="tax_lines" t-as="l">
+                                 <t t-if="l['tax_group'] == 'GST'">
+                                    <span t-esc="'{0:,.2f}'.format(l['tax_rate']/2)"/><span>&#160;%</span>
                                 </t>
-                            </t>
-                            <span t-esc="'%.2f'%(cgstrate/len(doc.invoice_line_ids))"/><span>&#160;%</span>
+                                <t t-if="not l['tax_group'] == 'GST'">
+                                            <span t-esc="0.0"/><span>&#160;%</span>
+                                 </t>
+                             </t>
                         </td>
                         <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
-                            <t t-set="gstsum" t-value="0.0"/>
-                            <t t-foreach="doc.invoice_line_ids" t-as="line">
-                                <t t-if="doc.partner_id.state_id.id == 593">
-                                    <t t-set="gstsum" t-value=" gstsum + line.calculategst(line.move_id)"/>
-                                </t>
-                            </t>
-                            <span t-esc="gstsum/len(doc.invoice_line_ids)"/>
+                            <t t-foreach="tax_lines" t-as="l">
+                                <t t-if="l['tax_group'] == 'GST'">
+                                    <span t-esc="'{0:,.2f}'.format(l['sgst'])"/>
+                                    </t>
+                                    <t t-if="not l['tax_group'] == 'GST'">
+                                                <span t-esc="0.0"/>
+                                     </t>
+                                 </t>
                         </td>
                     </tr>
                     <tr style="height:3px !important;">
@@ -247,22 +255,39 @@
                             <b><span style="color:#143980">IGST</span></b>
                         </td>
                         <td class="text-center" style="padding:1px;border:1px solid #143980;width:16%">
-                            <t t-set="igstrate" t-value="0.0"/>
-                                <t t-foreach="doc.invoice_line_ids" t-as="line">
-                                <t t-if="doc.partner_id.state_id.id != 593">
-                                    <t t-set="igstrate" t-value="igstrate+line.calculateigstrate(line.tax_ids)"/>
+                            <t t-foreach="tax_lines" t-as="l">
+                                <t t-if="l['tax_group'] == 'IGST'">
+                                    <span t-esc="'{0:,.2f}'.format(l['tax_rate'])"/><span>&#160;%</span>
                                 </t>
+                                <t t-if="not l['tax_group'] == 'IGST'">
+                                            <span t-esc="0.0"/><span>&#160;%</span>
+                                 </t>
                             </t>
-                            <span t-esc="'%.2f'%(igstrate/len(doc.invoice_line_ids))"/><span>&#160;%</span>
                         </td>
                         <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
-                            <t t-set="taxsum" t-value="0.0"/>
-                            <t t-foreach="doc.invoice_line_ids" t-as="line">
-                                <t t-if="doc.partner_id.state_id.id != 593">
-                                    <t t-set="taxsum" t-value=" taxsum + line.calculateigst(line.tax_ids)"/>
+                            <t t-foreach="tax_lines" t-as="l">
+                                <t t-if="l['tax_group'] == 'IGST'">
+                                    <span t-esc="'{0:,.2f}'.format(l['igst'])"/>
+                                </t>
+                                <t t-if="not l['tax_group'] == 'IGST'">
+                                    <span t-esc="0.0"/>
                                 </t>
                             </t>
-                            <span t-esc="'%.2f'%(taxsum)"/>
+                        </td>
+                    </tr>
+                    <tr style="height:3px !important;">
+                        <td class="text-left" style="padding:1px;border:1px solid #143980;width:16%">
+                            <b><span style="color:#143980">TCS</span></b>
+                        </td>
+                        <td class="text-center" style="padding:1px;border:1px solid #143980;width:16%">
+                            <t t-foreach="tax_lines" t-as="l">
+                                <span t-esc="'{0:,.2f}'.format(l['tcs_rate'])"/><span>&#160;%</span>
+                            </t>
+                        </td>
+                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
+                            <t t-foreach="tax_lines" t-as="l">
+                                <span t-esc="'{0:,.2f}'.format(l['tcs'])"/>
+                            </t>
                         </td>
                     </tr>
                     <tr style="height:3px !important;">
@@ -270,21 +295,24 @@
                             <b><span style="color:#143980">Round Off(+/-)</span></b>
                         </td>
                         <td class="text-right" style="padding:1px;border:1px solid #143980;">
-                            <span t-esc="'%.2f'%(doc.amount_residual-doc.amount_total)"/>
+                            <t t-foreach="doc.invoice_line_ids" t-as="lines">
+                                <t t-if="lines.name == 'Rounded Off'">
+                                    <span t-esc="lines.price_subtotal"/>
+                                </t>
+                            </t>
                         </td>
                     </tr>
                     <tr style="height:3px !important;"> 
                         <td colspan="5" style="padding:1px;border:1px solid #143980;" >
                             <strong style="color:#143980">Grand Total in Words:</strong>
-                            <t t-set="amountwords"  t-value="doc.amount_words(doc.amount_residual)"/>
+                            <t t-set="amountwords"  t-value="doc.amount_words(doc.amount_total)"/>
                             <span style="text-transform:uppercase" t-esc="amountwords"/>
                         </td>
                         <td class="text-left" style="padding:1px;border:1px solid #143980;width:16%">
                             <strong style="color:#143980">Grand Total</strong>
                         </td>
                         <td class="text-right" style="padding:1px;border:1px solid #143980;width:16%">
-                            <!-- <span t-esc="'%.2f'%(doc.amount_residual)"/> -->
-                            <span t-esc="'{0:,.2f}'.format(doc.amount_residual)"/>
+                            <span t-esc="doc.update_the_comma(doc.amount_total)"/>
                         </td>
                     </tr>
                     <tr style="height:3px !important;">
