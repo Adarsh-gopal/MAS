@@ -7,6 +7,7 @@ class MrpDistributeMoWiz(models.Model):
     _description = 'Mrp Distribute Mo Wiz'
 
     mo_id = fields.Many2one('mrp.production')
+    quantity = fields.Float(related='mo_id.product_qty')
     distribute_mo_lines = fields.One2many('mrp.distribute.mo.wiz.line','distribute_mo')
 
     def distribute(self):
@@ -18,8 +19,10 @@ class MrpDistributeMoWiz(models.Model):
                 'distribute_source_id':self.mo_id.id
             })
             rec._onchange_move_raw()
+            rec._onchange_product_qty()
             self.mo_id.product_qty -= line.quantity
         self.mo_id._onchange_move_raw()
+        self.mo_id._onchange_product_qty()
 
 class MrpDistributeMoWizLine(models.Model):
     _name = 'mrp.distribute.mo.wiz.line'
@@ -28,7 +31,7 @@ class MrpDistributeMoWizLine(models.Model):
     distribute_mo = fields.Many2one('mrp.distribute.mo.wiz')
     quantity = fields.Float()
     scheduled_date = fields.Datetime()
-    responsible = fields.Many2one('res.partner')
+    responsible = fields.Many2one('res.users')
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
@@ -60,7 +63,7 @@ class MrpProduction(models.Model):
     def distribute(self):
         view_id = self.env.ref('manufacturing_distribution.mrp_distribute_mo_wiz_view_form')
         return {
-            'name': _('Distribute MOs'),
+            'name': _("{}({})".format(self.name,self.product_qty)),
             'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'mrp.distribute.mo.wiz',
