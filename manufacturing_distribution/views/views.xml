@@ -40,12 +40,35 @@
               <field name="responsible" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
             </tree>
           </field>
+          <footer>
+            <button name="distribute" type="object" string="Distribute" class="oe_highlight"/>
+          </footer>
         </form>
-        <footer>
-          <button name="distribute" type="object" string="Distribute" class="oe_highlight"/>
-        </footer>
       </field>
     </record>
+    <record id="mrp_production_tree_view_extend" model="ir.ui.view">
+      <field name="model">mrp.production</field>
+      <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+      <field name="arch" type="xml">
+        <field name="origin" position="after">
+              <field name="distribute_source_id" optional="show"/>
+        </field>
+      </field>
+    </record>
+
+     <record id="view_mrp_production_filter_extend" model="ir.ui.view">
+      <field name="model">mrp.production</field>
+      <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+      <field name="arch" type="xml">
+        <field name="origin" position="after">
+              <field name="distribute_source_id"/>
+        </field>
+        <xpath expr="//group" position="inside">
+          <filter string="Distribution Source" name="distribute_source_id" domain="[]" context="{'group_by': 'distribute_source_id'}"/>
+        </xpath>
+      </field>
+    </record>
+
     
   </data>
 </odoo>

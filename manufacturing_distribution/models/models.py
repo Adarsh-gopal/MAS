@@ -16,8 +16,8 @@ class MrpDistributeMoWiz(models.Model):
                 'product_qty':line.quantity,
                 'date_planned_start':line.scheduled_date,
                 'user_id':line.responsible.id,
-                'distribute_source_id':self.mo_id.id
-            })
+                'distribute_source_id':self.mo_id.id,
+                'origin':self.mo_id.origin,            })
             rec._onchange_move_raw()
             rec._onchange_product_qty()
             self.mo_id.product_qty -= line.quantity

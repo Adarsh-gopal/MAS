@@ -13,7 +13,7 @@
     'website': "https://www.prixgen.com",
 
     'category': 'Manufacturing',
-    'version': '14.0.1.2',
+    'version': '14.0.1.3',
 
     'depends': ['base','mrp'],
 
