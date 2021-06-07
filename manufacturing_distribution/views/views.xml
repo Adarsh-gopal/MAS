@@ -6,14 +6,14 @@
       <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
       <field name="arch" type="xml">
         <button name="action_confirm" position="after">
-          <button name="distribute" type="object" string="Distribute"
+          <button name="distribute" type="object" string="Distribute" class="oe_highlight"
                   attrs="{'invisible':[('state','!=','draft')]}"/>
         </button>
         <field name="user_id" position="after">
-          <field name="distribute_source_id" readonly="True"/>
+          <field name="distribute_source_id"/>
         </field>
         <div name="button_box" position="inside">
-          <button type="object" name="action_view_mo_distributions" class="oe_stat_button" icon="fa-wrench" groups="base.group_user" attrs="{'invisible': [('distribution_count', '=', 0)]}">
+          <button type="object" name="action_view_mo_distributions" class="oe_stat_button" icon="fa-sitemap" groups="base.group_user" attrs="{'invisible': [('distribution_count', '=', 0)]}">
             <field name="distribution_count" widget="statinfo" string="Distributions"/>
         </button>
         </div>
@@ -25,25 +25,17 @@
       <field name="model">mrp.distribute.mo.wiz</field>
       <field name="arch" type="xml">
         <form string="Distribute MO">
-          <!-- <group>
-            <group>
-              <field name="mo_id" string="Source No." readonly="True"/>
-            </group>
-            <group>
-              <field name="quantity" string="To Produce Qty" readonly="True"/>
-            </group>
-          </group> -->
           <field name="distribute_mo_lines">
             <tree editable="bottom">
               <field name="quantity"/>
               <field name="scheduled_date"/>
-              <field name="responsible" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+              <field name="responsible"/>
             </tree>
           </field>
         </form>
-        <footer>
+        <!-- <footer>
           <button name="distribute" type="object" string="Distribute" class="oe_highlight"/>
-        </footer>
+        </footer> -->
       </field>
     </record>
     
