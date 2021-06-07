@@ -1,0 +1,51 @@
+<odoo>
+  <data>
+    
+    <record id="mrp_production_form_view" model="ir.ui.view">
+      <field name="model">mrp.production</field>
+      <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+      <field name="arch" type="xml">
+        <button name="action_confirm" position="after">
+          <button name="distribute" type="object" string="Distribute"
+                  attrs="{'invisible':[('state','!=','draft')]}"/>
+        </button>
+        <field name="user_id" position="after">
+          <field name="distribute_source_id" readonly="True"/>
+        </field>
+        <div name="button_box" position="inside">
+          <button type="object" name="action_view_mo_distributions" class="oe_stat_button" icon="fa-wrench" groups="base.group_user" attrs="{'invisible': [('distribution_count', '=', 0)]}">
+            <field name="distribution_count" widget="statinfo" string="Distributions"/>
+        </button>
+        </div>
+      </field>
+    </record>
+
+    <record id="mrp_distribute_mo_wiz_view_form" model="ir.ui.view">
+      <field name="name">mrp.distribute.mo.wiz.view.form</field>
+      <field name="model">mrp.distribute.mo.wiz</field>
+      <field name="arch" type="xml">
+        <form string="Distribute MO">
+          <!-- <group>
+            <group>
+              <field name="mo_id" string="Source No." readonly="True"/>
+            </group>
+            <group>
+              <field name="quantity" string="To Produce Qty" readonly="True"/>
+            </group>
+          </group> -->
+          <field name="distribute_mo_lines">
+            <tree editable="bottom">
+              <field name="quantity"/>
+              <field name="scheduled_date"/>
+              <field name="responsible" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+            </tree>
+          </field>
+        </form>
+        <footer>
+          <button name="distribute" type="object" string="Distribute" class="oe_highlight"/>
+        </footer>
+      </field>
+    </record>
+    
+  </data>
+</odoo>
