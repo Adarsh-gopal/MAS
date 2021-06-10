@@ -9,6 +9,8 @@ class AccountMoveLine(models.Model):
     tcs_rate = fields.Float(string="TCS %",compute='compute_tcs_tax_move_line')
     tcs_amount = fields.Float(string="TCS Amount",compute='compute_tcs_tax_move_line')
     invoice_date = fields.Date(related='move_id.invoice_date', store=True)
+    hsn_code = fields.Char(related='product_id.l10n_in_hsn_code', store=True)
+    uqc = fields.Char(related='product_uom_id.l10n_in_code', store=True)
    
 
     @api.depends('price_subtotal','tax_ids')
