@@ -18,8 +18,8 @@
                 <!-- <field name="date"/> -->
                 <field name="invoice_date" string="Accounting Date"/>
                 <field name="date" string="Bill Date"/>
-                <!-- <field name="hsn_code"/> -->
-                <!-- <field name="uqc"/> -->
+                <field name="hsn_code"/>
+                <field name="uqc"/>
                 <!-- <field name="ref"/> -->
                 <field name="company_id" invisible="1"/>
                 
