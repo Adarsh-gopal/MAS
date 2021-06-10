@@ -15,7 +15,7 @@
     'website': "http://www.prixgen.com",
 
     'category': 'Sale',
-    'version': '14.0.5',
+    'version': '14.0.6',
 
     'depends': ['base','account','purchase_register_new'],
 
