@@ -4,6 +4,8 @@ class ProductDimension(models.Model):
     _name = 'product.dimension'
     _description = 'product.dimension'
 
+    # name = fields.Char('Name', compute="_get_name_by_type",store=True)
+
     product_varient_id = fields.Many2one('product.product')
     product_template_id = fields.Many2one('product.template')
 
@@ -11,7 +13,7 @@ class ProductDimension(models.Model):
         ('frame','Frame'),
         ('shutter', 'Shutter'),
         ('door', 'Door'),
-        ('others', 'Others')],string='Type')
+        ('others', 'Others')],string='Type',  store=True)
 
     lengthx = fields.Float()
     lengthx_UOM = fields.Many2one('uom.uom')
@@ -34,6 +36,14 @@ class ProductDimension(models.Model):
     back_description = fields.Char()
     edge_banding = fields.Char()
 
+    # @api.depends('typee')
+    # def _get_name_by_type(self):
+    #     for rec in self:
+    #         if rec.typee:
+    #             rec.name = rec.typee
+    #         else:
+    #             rec.name = ''
+
 
 
 
@@ -55,17 +65,22 @@ class ProductTemplate(models.Model):
             self.product_dimension_ids = [(2,dimension.id)]
 
         if self.material_group == 'door':
-            self.product_dimension_ids.create({'typee':'door','product_template_id':self.id})
+            self.update({'product_dimension_ids':[(0, 0, {'product_template_id':self.id,'typee':'door'})]})
+            # self.product_dimension_ids.create({'typee':'door','product_template_id':self.id})
 
         if self.material_group == 'frame':
-            self.product_dimension_ids.create({'typee':'frame','product_template_id':self.id})
+            # self.product_dimension_ids.create({'typee':'frame','product_template_id':self.id})
+            self.update({'product_dimension_ids':[(0, 0, {'product_template_id':self.id,'typee':'frame'})]})
         
         if self.material_group == 'doorframe':
-            self.product_dimension_ids.create({'typee':'shutter','product_template_id':self.id})
-            self.product_dimension_ids.create({'typee':'frame','product_template_id':self.id})
+            self.update({'product_dimension_ids':[(0, 0, {'product_template_id':self.id,'typee':'shutter'})]})
+            self.update({'product_dimension_ids':[(0, 0, {'product_template_id':self.id,'typee':'frame'})]})
+            # self.product_dimension_ids.create({'typee':'shutter','product_template_id':self.id})
+            # self.product_dimension_ids.create({'typee':'frame','product_template_id':self.id})
 
         if self.material_group == 'furniture' or self.material_group == 'others':
-            self.product_dimension_ids.create({'typee':'others','product_template_id':self.id})
+            # self.product_dimension_ids.create({'typee':'others','product_template_id':self.id})
+            self.update({'product_dimension_ids':[(0, 0, {'product_template_id':self.id,'typee':'others'})]})
 
     #concatinate dimension values to product name
     def dimension_to_name(self):
@@ -169,17 +184,22 @@ class ProductProduct(models.Model):
             self.product_dimension_ids = [(2,dimension.id)]
 
         if self.material_group == 'door':
-            self.product_dimension_ids.create({'typee':'door','product_varient_id':self.id})
+            self.update({'product_dimension_ids':[(0, 0, {'typee':'door','product_varient_id':self.id})]})
+            # self.product_dimension_ids.create({'typee':'door','product_varient_id':self.id})
 
         if self.material_group == 'frame':
-            self.product_dimension_ids.create({'typee':'frame','product_varient_id':self.id})
-
+            # self.product_dimension_ids.create({'typee':'frame','product_varient_id':self.id})
+            self.update({'product_dimension_ids':[(0, 0, {'typee':'frame','product_varient_id':self.id})]})
+        
         if self.material_group == 'doorframe':
-            self.product_dimension_ids.create({'typee':'shutter','product_varient_id':self.id})
-            self.product_dimension_ids.create({'typee':'frame','product_varient_id':self.id})
+            self.update({'product_dimension_ids':[(0, 0, {'typee':'shutter','product_varient_id':self.id})]})
+            self.update({'product_dimension_ids':[(0, 0, {'typee':'frame','product_varient_id':self.id})]})
+            # self.product_dimension_ids.create({'typee':'shutter','product_varient_id':self.id})
+            # self.product_dimension_ids.create({'typee':'frame','product_varient_id':self.id})
 
         if self.material_group == 'furniture' or self.material_group == 'others':
-            self.product_dimension_ids.create({'typee':'others','product_varient_id':self.id})
+            # self.product_dimension_ids.create({'typee':'others','product_varient_id':self.id})
+            self.update({'product_dimension_ids':[(0, 0, {'typee':'others','product_varient_id':self.id})]})
 
 
     #concatinate dimension values to product name

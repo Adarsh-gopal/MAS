@@ -11,7 +11,8 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="typee" readonly="True"/>
+                    <field name="typee" invisible="True"/>
+                    <!-- <field name="name" /> -->
                 </group>
                 <group>
                     <group>
