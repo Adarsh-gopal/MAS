@@ -6,7 +6,7 @@
             <table class="table" style="border:1px solid #143980;width:100%;margin-bottom:0">
                 <tr>
                     <td colspan="2" style="border:1px solid white;text-align:center;padding:1px;font-size:14px;color:#143980">
-                        <t t-if="doc.move_type == 'out_refund'"><strong>DEBIT NOTE</strong></t>
+                        <t t-if="doc.move_type == 'out_invoice'"><strong>DEBIT NOTE</strong></t>
                     </td>
                 </tr>
                 <tr>
@@ -47,7 +47,7 @@
                     </div>
                     </td>
                     <td style="border:1px solid #143980;height:50%;width:30%;padding-top:25px;padding-bottom:25px;">
-                        <t t-if="doc.move_type == 'out_refund'">
+                        <t t-if="doc.move_type == 'out_invoice'">
                             <strong style="color:#143980;font-size:12px;">Debit Note No.&#160;&#160;:</strong>
                             <strong style="color:#f7412c;font-size:12px;">&#160;&#160;&#160;&#160;&#160;<span t-esc="doc.name"/></strong>
                         </t>
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td style="width:32%;border-bottom:1px solid #143980;height:50%;padding-bottom:25px;padding-top:25px;">
-                        <t t-if="doc.move_type == 'out_refund'">
+                        <t t-if="doc.move_type == 'out_invoice'">
                             <strong style="color:#143980;font-size:12px;padding:1px;">Debit Note Date &#160;&#160;:</strong>
                             <strong style="font-size:12px;"><span t-esc="doc.invoice_date.strftime('%d-%m-%Y')"/></strong>
                         </t>

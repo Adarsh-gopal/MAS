@@ -23,6 +23,10 @@ class taxorder(models.Model):
 
 		return refspt[0]
 
+	def get_reference_date(self,reference):
+		refdata=reference.split(",")
+		print(refdata)
+
 	def get_refdebit(self,reference):
 		refsplitd=reference.split(" ")
 		return refsplitd[2]

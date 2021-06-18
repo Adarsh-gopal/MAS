@@ -21,7 +21,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">creditnote_report_mas.debitnote_report</field>
         <field name="report_file">creditnote_report_mas.debitnote_report</field>
-        <field name="print_report_name">(object.move_type == 'out_refund') and 'INV - %s' % (object.name) or 'Inv - %s' % (object.name)</field>
+        <field name="print_report_name">(object.move_type == 'out_invoice') and 'INV - %s' % (object.name) or 'Inv - %s' % (object.name)</field>
         <field name="binding_model_id" ref="account.model_account_move"/>
         <field name="binding_type">report</field>
         <field name="paperformat_id" ref="creditnote_report_mas.mas_page_format"/>
@@ -73,15 +73,15 @@
                     <td colspan="2" style="padding:1px;width:32%;border:1px solid #143980;font-size:11px;">
                         <strong style="color:#143980">Sales Invoice No :</strong><br/>
                         <t t-if="doc.ref">
-                            <t t-if="doc.move_type == 'out_refund'">
-                                <t t-set="refval" t-value="doc.get_ref(doc.ref)"/>
-                                <span style="color:black;"><t t-esc="refval"/></span><br/>
-                            </t>
-                            <t t-if="doc.move_type == 'in_refund'">
-                                <span style="color:black;"><!-- <t t-set="refvalue" t-value="doc.get_refdebit(doc.ref)"/> -->
+                           
+                            <t t-if="doc.move_type == 'out_invoice'">
+                                <span style="color:black;">
                                 <t t-esc="doc.ref"/></span><br/>
                             </t>
+                            
                         </t>
+
+
                     </td>
                 </tr>
                 <tr style="height:3px !important;">
@@ -108,8 +108,8 @@
                     <td colspan="2" style="padding:1px;width:16%;border:1px solid #143980;font-size:11px;">
                         <strong style="color:#143980">Sale Invoice Date :</strong><br/>
                         <span style="color:black;">
-                       <t t-if="doc.reversed_entry_id.invoice_date">
-                            <t t-esc="doc.reversed_entry_id.invoice_date.strftime('%d-%m-%Y')"/>
+                       <t t-if="doc.debit_origin_id">
+                            <t t-esc="doc.debit_origin_id.invoice_date.strftime('%d-%m-%Y')"/>
                         </t></span>
                     </td>
                 </tr>

@@ -8,6 +8,7 @@
                     <td colspan="2" style="border:1px solid white;text-align:center;padding:1px;font-size:14px;color:#143980">
                         <t t-if="doc.move_type == 'out_refund'"><strong>CREDIT NOTE</strong></t>
                         <t t-if="doc.move_type == 'in_refund'"><strong>DEBIT NOTE</strong></t>
+                        
                     </td>
                 </tr>
                 <tr>
