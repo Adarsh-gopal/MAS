@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="view_purchase_approval_form" model="ir.ui.view">
+        <field name="name">purchase.approval.form</field>
+        <field name="model">purchase.approval</field>
+        <field name="arch" type="xml">
+          <form string="Purchase Approval" >
+            <sheet>
+            <group>
+            <group>
+                <field name="document_type_id" required='1'/>
+                <field name="name" />
+                <field name="warehouse_id" required='1'/>
+                <field name="approval_method" required='1'  widget="radio"/>
+            </group>
+            <group>
+            </group>
+            </group>
+            <notebook>
+                <page string="Products" name="products">
+                    <field name="approval_lines" widget="section_and_note_one2many" >
+                        <tree string="Purchase Approval Lines" editable="bottom">
+                            <field name='user_ids'  widget="many2many_tags" required='1'/>
+                            <field name='role' />
+                            <field name='approval_amount' attrs="{'column_invisible':[('parent.approval_method', '!=','amount')]}"/>
+                            <field name='approval_one' attrs="{'column_invisible':[('parent.approval_method', '==','amount')]}"/>
+                            <field name='approval_two' attrs="{'column_invisible':[('parent.approval_method', '==','amount')]}"/>
+                            <field name='approval_three' attrs="{'column_invisible':[('parent.approval_method', '==','amount')]}"/>
+                            <!-- <field name='approval_all' attrs="{'column_invisible':[('parent.approval_method', '==','amount')]}" /> -->
+                            
+                        </tree>
+            </field>
+        </page>
+
+            </notebook>
+            </sheet>
+          </form>
+        </field>
+      </record>
+
+       <record id="view_purchase_approval_form_tree" model="ir.ui.view">
+            <field name="name">purchase.approval.tree</field>
+            <field name="model">purchase.approval</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <tree string="Purchase Approval" >
+                    <field name="document_type_id"/>
+                    <field name="warehouse_id"/>
+                    <field name="approval_method"/>
+                </tree>
+            </field>
+        </record>
+
+       
+
+        <record id="action_purchase_approval" model="ir.actions.act_window">
+            <field name="name">Purchase Approval</field>
+            <field name="res_model">purchase.approval</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem 
+            id="menu_purchase_approval" 
+            name="Purchase Approval" 
+            parent="purchase.menu_product_in_config_purchase"
+            action="action_purchase_approval" 
+        />
+
+
+    <record id="purchase_order__approval" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <button name="button_draft" position="after" >
+                <button name="get_approval" type="object" attrs="{'invisible': [('state', 'in', ('purchase', 'done'))]} " style="color:green" title="Approve" icon="fa-check" />
+                <button name="%(purchase_approval.action_purchase_approval_remarks)d" type="action" title="Reject"  attrs="{'invisible': [('state', 'in', ('purchase', 'done'))]} "  style="color:red" icon="fa-times"/>
+            </button>
+            <field name="currency_id" position='after'>
+                <field name ="current_approvall" invisible ='1'/>
+                <field name ="approval_method" invisible ='1'/>
+            </field>
+
+             <notebook position="inside">
+                <page string="Approvals">
+                    <field name='purchase_approval_line' widget="section_and_note_one2many" readonly="1">
+                        <tree>
+                            <field name='user_ids' widget="many2many_tags"/>
+                            <field name='role'/>
+                            <field name='approvals'/>
+                            <field name='approved_date'/>
+                            <field name='is_approve'/>
+                            <field name='remarks'/>
+                            <field name='amount' invisible='1'/>
+                            <field name='approval_method' invisible='1'/>
+                        </tree>
+                    </field>
+                </page>
+             </notebook>
+        </field>
+    </record>
+
+
+
+
+
+</odoo>
