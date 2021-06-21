@@ -1,6 +1,6 @@
 {
     'name': 'Purchase report Template MAS',
-    'version': '14.0.0.9',
+    'version': '14.0.0.10',
     'description': """This module consists, the customized purchase order Templates""",
     'category': 'Localization',
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',

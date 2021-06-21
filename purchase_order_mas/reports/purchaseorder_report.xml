@@ -181,67 +181,80 @@
                     <t t-set="amttotal" t-value="0"/>
                     <t t-set="consol" t-value="doc.consolidated_quantities()"/>
                     <t t-foreach="consol" t-as="consolines">
-                    <t t-set="tot_amt" t-value="0"/>
-                    <t t-set="tot_qty" t-value="0"/>
-                        <t t-foreach="doc.order_line" t-as="line">
-                            <t t-if="line.product_id == consolines['product']">
-                                <t t-set="tot_qty" t-value="tot_qty + line.product_uom_qty"/>
-                                <t t-set="tot_amt" t-value="tot_amt + line.price_subtotal"/>
+                        <t t-set="tot_amt" t-value="0"/>
+                        <t t-set="tot_qty" t-value="0"/>
+                            <t t-foreach="doc.order_line" t-as="line">
+                                <t t-if="line.product_id == consolines['product']">
+                                    <t t-set="tot_qty" t-value="tot_qty + line.product_uom_qty"/>
+                                    <t t-set="tot_amt" t-value="tot_amt + line.price_subtotal"/>
+                                </t>
                             </t>
-                        </t>
-                        <tr style="height:1px;">
-                            <td class="text-center" style="width:1%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="i"/>
-                                <t t-set="i" t-value="i+1"/>
-                            </td>
-                            <t t-if="ddd != 0">
-                            <td colspan="2" class="text-left" style="width:35%;color:black;border-left:1px solid #143980; border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="consolines['description']"/>
-                            </td>
+                            <tr style="height:1px;">
+                            <!-- <t t-if="consolines['display_type'] == 'line_section'">
+                                <td name="td_section_line" style=";border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;" t-att-colspan="10">
+                                    <span t-esc="consolines['description']"/>
+                                </td>
+                              
                             </t>
-                            <t t-else="">
-                                <td colspan="3" class="text-left" style="width:35%;color:black;border-left:1px solid #143980; border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="consolines['description']"/>
-                            </td>
-                            </t>
-                            <td class="text-center" style="width:8%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="consolines['hsncode']"/>
-                            </td>
-                            <td class="text-center" style="width:6%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="'{0}'.format(int(consolines['taxids']))"/><span>&#160;%</span>
-                            </td>
-                            <td class="text-right" style="width:10%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="'%.2f'%(tot_qty)"/>&#160;<span t-esc="consolines['measure']"/>
-                            </td>
-                            <td class="text-right" style="width:5%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="'%.2f'%(consolines['price'])"/>
-                            </td>
+                            <t t-if="consolines['display_type'] == 'line_note'">
+                                <td name="td_note_line" style=";border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;" t-att-colspan="10">
+                                    <span t-esc="consolines['description']"/>
+                                </td>
+                            </t> -->
+                            <t t-if="not consolines['display_type']">
+                                <td class="text-center" style="width:1%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="i"/>
+                                    <t t-set="i" t-value="i+1"/>
+                                </td>
+                                <t t-if="ddd != 0">
+                                <td colspan="2" class="text-left" style="width:35%;color:black;border-left:1px solid #143980; border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="consolines['description']"/>
+                                </td>
+                                </t>
+                                <t t-else="">
+                                    <td colspan="3" class="text-left" style="width:35%;color:black;border-left:1px solid #143980; border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="consolines['description']"/>
+                                </td>
+                                </t>
+                                <td class="text-center" style="width:8%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="consolines['hsncode']"/>
+                                </td>
+                                <td class="text-center" style="width:6%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="'{0}'.format(int(consolines['taxids']))"/><span>&#160;%</span>
+                                </td>
+                                <td class="text-right" style="width:10%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="'%.2f'%(tot_qty)"/>&#160;<span t-esc="consolines['measure']"/>
+                                </td>
+                                <td class="text-right" style="width:5%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="'%.2f'%(consolines['price'])"/>
+                                </td>
 
-                            <t t-if="ddd != 0">
-                            <t t-if="consolines['disc']">
-                            <td class="text-center" style="width:5%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="'{0}'.format(int(consolines['disc']))"/>
-                            </td>
-                            </t>
-                            <t t-else="">
+                                <t t-if="ddd != 0">
+                                <t t-if="consolines['disc']">
                                 <td class="text-center" style="width:5%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="'0'"/>
-                            </td>
-                            </t>
-                            </t>
+                                    <span t-esc="'{0}'.format(int(consolines['disc']))"/>
+                                </td>
+                                </t>
+                                <t t-else="">
+                                    <td class="text-center" style="width:5%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="'0'"/>
+                                </td>
+                                </t>
+                                </t>
 
-                            <td class="text-right" style="width:10%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="'%.2f'%(consolines['taxprice'])"/>
-                            </td>
-                            <td class="text-right" style="width:10%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
-                                <span t-esc="'%.2f'%(tot_amt)"/>
-                            </td>                
-                        </tr>
-                    </t>
+                                <td class="text-right" style="width:10%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="'%.2f'%(consolines['taxprice'])"/>
+                                </td>
+                                <td class="text-right" style="width:10%;color:black;border-left:1px solid #143980;border-bottom:none !important;border:1px solid #143980;">
+                                    <span t-esc="'%.2f'%(tot_amt)"/>
+                                </td>   
+                                </t>             
+                            </tr>
+                        </t>
                         <tr>
                             <td style="border-left:1px solid #143980;border-top: none !important;"></td>
                             <t t-if="ddd != 0">
-                            <td colspan="2" style="border-left:1px solid #143980;border-top: none !important;"></td>
+                                <td colspan="2" style="border-left:1px solid #143980;border-top: none !important;"></td>
                             </t>
                             <t t-else="">
                                 <td colspan="3" style="border-left:1px solid #143980;border-top: none !important;"></td>
@@ -258,88 +271,101 @@
                         </tr>
                 </tbody>
                 <tbody style="width:100%;border:1px solid #143980;font-size:12px;">
+                    <tr style="height:3px !important;">
+                        <td colspan="10" class="text-left" style="padding:5px;border:1px solid #143980;width:10%">    
+                            <t t-foreach="consol" t-as="consolines">
+                                <t t-if="consolines['display_type'] == 'line_section'">
+                                    <span t-esc="consolines['description']"/>&#160;
+                                </t>
+                                <t t-if="consolines['display_type'] == 'line_note'">
+                                    <span t-esc="consolines['description']"/>&#160;
+                                </t>
+                            </t>
+                        </td>
+                    </tr>
                     <tr style="height:3px !important;font-size:12px;">
-                        <th colspan="5" class="text-right" style="padding:1px;border:1px solid #143980;border-top:1px solid #143980;font-size:12px;">
-                          <strong style="color:#143980">Total&#160;&#160;</strong>
-                        </th>
-                        <th class="text-center" style="padding:1px;border:1px solid #143980;">
-                            <t t-set="product_qty" t-value="0"/>
-                            <t t-foreach="doc.order_line" t-as="line">
+                    <td colspan="5" class="text-right" style="padding:1px;border:1px solid #143980;border-top:1px solid #143980;font-size:12px;">
+                      <strong style="color:#143980">Total&#160;&#160;</strong>
+                    </td>
+                    <td class="text-center" style="padding:1px;border:1px solid #143980;">
+                        <t t-set="product_qty" t-value="0"/>
+                        <t t-foreach="doc.order_line" t-as="line">
                             <t t-set="product_qty" t-value="product_qty + line.product_uom_qty"/>
                         </t>
                         <span t-esc="'%.2f'%(product_qty)"/>
-                        </th>
-                        <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;width:90%">
-                            <strong style="color:#143980">Taxable Value</strong>
-                        </td>
-                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:90%">
-                            <span t-esc="'{0:,.2f}'.format(int(doc.amount_untaxed))"/>
-                        </td>
-                    </tr>
-                    <tr style="height:3px !important;">
-                        <td colspan="6" rowspan="4" class="text-left" style="padding:5px;border:1px solid #143980;width:10%">
-                            <strong style="color:#143980">Remarks:</strong>
-                            <span t-field="doc.notes"/> 
-                        </td>
-                        <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;width:90%">
-                            <span style="color:#143980">SGST</span>
-                        </td>
-                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:90%">
-                            <t t-if="doc.partner_id.state_id.id == 593">
-                                <t t-set="sgst" t-value="doc.amount_tax / 2"/>
-                                <span t-esc="sgst"/>
-                            </t>
-                        </td>
-                    </tr>
-                    <tr style="height:3px !important;">
-                        <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;">
-                            <span style="color:#143980">CGST</span>
-                        </td>
-                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:90%">
-                            <t t-if="doc.partner_id.state_id.id == 593">
-                                <t t-set="cgst" t-value="doc.amount_tax / 2"/>
-                                <span t-esc="cgst"/>
-                            </t>
-                        </td>
-                    </tr>
-                    <tr style="height:3px !important;">
-                        <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;">
-                            <span style="color:#143980">IGST</span>
-                        </td>
-                        <td class="text-right" style="padding:1px;border:1px solid #143980;width:90%">
-                            <t t-if="doc.partner_id.state_id.id != 593">
-                            <span t-esc="'%.2f'%(doc.amount_tax)"/>
+                    </td>
+                    <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;width:90%">
+                        <strong style="color:#143980">Taxable Value</strong>
+                    </td>
+                    <td class="text-right" style="padding:1px;border:1px solid #143980;width:90%">
+                        <span t-esc="'{0:,.2f}'.format(int(doc.amount_untaxed))"/>
+                    </td>
+                </tr>
+                
+                <tr style="height:3px !important;">
+                    <td colspan="6" rowspan="4" class="text-left" style="padding:5px;border:1px solid #143980;width:10%">
+                        <strong style="color:#143980">Remarks:</strong>
+                        <span t-field="doc.notes"/> 
+                    </td>
+                    <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;width:90%">
+                        <span style="color:#143980">SGST</span>
+                    </td>
+                    <td class="text-right" style="padding:1px;border:1px solid #143980;width:90%">
+                        <t t-if="doc.partner_id.state_id.id == 593">
+                            <t t-set="sgst" t-value="doc.amount_tax / 2"/>
+                            <span t-esc="sgst"/>
                         </t>
-                        </td>
-                    </tr>
-                    <tr style="height:3px !important;">
-                       <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;">
-                            <strong style="color:#143980">Grand Total:</strong>
-                        </td>
-                        <td class="text-right" style="padding:1px;border:1px solid #143980;">
-                            <span t-esc="'%.2f'%(doc.amount_total)"/>
-                        </td>
-                    </tr>
-                    <tr style="height:3px !important;"> 
-                        <td colspan="10" class="text-left" style="padding:1px;border:1px solid #143980;width:100%">
-                            <strong style="color:#143980">Grand Total in Words:&#160;&#160;&#160;&#160;</strong>
-                            <t t-set="amt_tot" t-value="'%.2f'%(doc.amount_total)"/>
-                            <t t-set="amountwords"  t-value="doc.amt_in_words_po(amt_tot)"/>
-                            <span style="text-transform:uppercase" t-esc="amountwords"/>
-                        </td>
-                    </tr>
-                    <tr style="height:3px !important;">
-                        <td colspan="10" style="padding:1px;border:1px solid #143980;color:#143980">
-                            <strong>Terms and Conditions:</strong><br/>
-                                <p style="margin-bottom:0">1.Kindly mention our purchase order number on your invoice.<br/>
-                                2.Material to be supplied on working days between 8.30AM to 5PM.<br/>
-                                3.Invoices shall be issued in accordance with GST Laws,Rules and Notifications etc.<br/>
-                                4.All materials will be subject to inspection at our works and any material rejected shall be replaced free of cost by the vendor.
-                            </p>
-                        </td>
-                        
-                    </tr>
-                </tbody>
+                    </td>
+                </tr>
+                <tr style="height:3px !important;">
+                    <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;">
+                        <span style="color:#143980">CGST</span>
+                    </td>
+                    <td class="text-right" style="padding:1px;border:1px solid #143980;width:90%">
+                        <t t-if="doc.partner_id.state_id.id == 593">
+                            <t t-set="cgst" t-value="doc.amount_tax / 2"/>
+                            <span t-esc="cgst"/>
+                        </t>
+                    </td>
+                </tr>
+                <tr style="height:3px !important;">
+                    <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;">
+                        <span style="color:#143980">IGST</span>
+                    </td>
+                    <td class="text-right" style="padding:1px;border:1px solid #143980;width:90%">
+                        <t t-if="doc.partner_id.state_id.id != 593">
+                        <span t-esc="'%.2f'%(doc.amount_tax)"/>
+                    </t>
+                    </td>
+                </tr>
+                <tr style="height:3px !important;">
+                   <td colspan="3" class="text-left" style="padding:1px;border:1px solid #143980;">
+                        <strong style="color:#143980">Grand Total:</strong>
+                    </td>
+                    <td class="text-right" style="padding:1px;border:1px solid #143980;">
+                        <span t-esc="'%.2f'%(doc.amount_total)"/>
+                    </td>
+                </tr>
+                <tr style="height:3px !important;"> 
+                    <td colspan="10" class="text-left" style="padding:1px;border:1px solid #143980;width:100%">
+                        <strong style="color:#143980">Grand Total in Words:&#160;&#160;&#160;&#160;</strong>
+                        <t t-set="amt_tot" t-value="'%.2f'%(doc.amount_total)"/>
+                        <t t-set="amountwords"  t-value="doc.amt_in_words_po(amt_tot)"/>
+                        <span style="text-transform:uppercase" t-esc="amountwords"/>
+                    </td>
+                </tr>
+                <tr style="height:3px !important;">
+                    <td colspan="10" style="padding:1px;border:1px solid #143980;color:#143980">
+                        <strong>Terms and Conditions:</strong><br/>
+                            <p style="margin-bottom:0">1.Kindly mention our purchase order number on your invoice.<br/>
+                            2.Material to be supplied on working days between 8.30AM to 5PM.<br/>
+                            3.Invoices shall be issued in accordance with GST Laws,Rules and Notifications etc.<br/>
+                            4.All materials will be subject to inspection at our works and any material rejected shall be replaced free of cost by the vendor.
+                        </p>
+                    </td>
+                    
+                </tr>
+            </tbody>
             </table>
         </t>
     </t>

@@ -32,8 +32,10 @@ class purchaseorder(models.Model):
 	def consolidated_quantities(self):
 		prods = []
 		for line in self.order_line:
-			if line.product_id not in [prod['product'] for prod in prods]:
-				prods.append({'product':line.product_id,'description':line.name,'hsncode':line.product_id.l10n_in_hsn_code,'taxids':line.calculateigstrate(line.taxes_id),'prodqty':line.product_qty,'price':line.price_unit,'measure':line.product_uom.name,'disc':line.discount,'taxprice':line.price_subtotal/line.product_qty})
+			if line.product_id not in [prod['product'] for prod in prods] and line.display_type not in ('line_note','line_section') :
+				prods.append({'product':line.product_id,'description':line.name,'hsncode':line.product_id.l10n_in_hsn_code,'display_type':line.display_type,'taxids':line.calculateigstrate(line.taxes_id),'prodqty':line.product_qty,'price':line.price_unit,'measure':line.product_uom.name,'disc':line.discount,'taxprice':line.price_subtotal/line.product_qty})
+			elif line.display_type in ('line_note','line_section'):
+				prods.append({'product':False,'description':line.name,'hsncode':False,'display_type':line.display_type,'taxids':False,'prodqty':False,'price':False,'measure':False,'disc':False,'taxprice':False})
 		print(prods)
 		return prods
 
