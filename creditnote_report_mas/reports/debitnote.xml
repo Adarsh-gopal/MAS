@@ -76,7 +76,7 @@
                            
                             <t t-if="doc.move_type == 'out_invoice'">
                                 <span style="color:black;">
-                                <t t-esc="get_debit_invoice(doc.ref)"/></span><br/>
+                                <t t-esc="doc.debit_origin_id.name"/></span><br/>
                             </t>
                             
                         </t>
