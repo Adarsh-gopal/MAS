@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_maintenance_request_form">
+            <field name="name">maintenance.request.form.inherit</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="vehicle_no"/>
+                    <field name="transporter"/>
+                    <field name="customer_name"/>
+                    <field name="vendor_name"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

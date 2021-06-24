@@ -60,8 +60,15 @@ class MaintenanceEquipment(models.Model):
 
     #     return super(MaintenanceEquipment, self).write(vals)
 
-
-        
+    #to add name and id
+    def name_get(self):
+        res = []
+        for rec in self:
+            if rec.equipment_number:
+                res.append((rec.id, "%s - %s" % (rec.name, rec.equipment_number or " ")))
+            else:
+                res.append((rec.id, "%s" % rec.name))
+        return res
 
 
 class MaintenanceStage(models.Model):
