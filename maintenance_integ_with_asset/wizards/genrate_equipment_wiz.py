@@ -10,6 +10,7 @@ class GenerateEquipmentWiz(models.Model):
     asset_id = fields.Many2one('account.asset',required=True)
     category_id = fields.Many2one('maintenance.equipment.category',string="Equipment Category")
     number_of_equiments = fields.Float('Number of Equipments')
+    hsn_code_id = fields.Many2one('hsn.master',string="HSN SAC Code ",tracking=True)
 
     @api.onchange('asset_id')
     def update_number_of_equipements(self):
@@ -28,6 +29,7 @@ class GenerateEquipmentWiz(models.Model):
                             'category_id': self.category_id.id,
                             'account_assets_id': self.asset_id.id,
                             'cost':self.asset_id.value_residual/self.asset_id.quantity,
+                             'hsn_code_id': self.hsn_code_id.id,
                         })
                 return True
 
