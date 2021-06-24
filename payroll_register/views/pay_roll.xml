@@ -1,0 +1,97 @@
+<odoo>
+	<data>
+
+    <record id="view_hr_payslip_line_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.line.tree.inherit</field>
+        <field name="model">hr.payslip.line</field>
+        <field name="arch" type="xml">
+            <tree string="Salary Structure" editable="bottom" decoration-info="total == 0" create="false" edit="false">
+                <field name="employee_id"/>
+                <field name="category_id"/>
+                <field name="related_registered_id"/>
+                <field name="related_identify_id"/>
+                <field name="related_job_title"/>
+                <field name="related_pf_no"/>
+
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="quantity"/>
+                <field name="rate"/>
+                <field name="amount"/>
+                <field name="total"/>
+                <field name="amount_select" invisible="1"/>
+                <field name="partner_id" invisible="1"/>
+                
+                
+                
+                <!-- <field name="state"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_pivot_payroll_data" model="ir.ui.view">
+      <field name="name">pivot</field>
+      <field name="model">hr.payslip.line</field>
+      <field name="arch" type="xml">
+        <pivot string="Pivot View">
+           <!-- <field name="product_name" type="row"/> -->
+                <field name="category_id"/>
+                <field name="employee_id" type="row"/>
+                <field name="sequence"/>
+                <field name="name" type="row"/>
+                <field name="related_registered_id" />
+                <field name="related_identify_id" />
+                <field name="related_job_title" />
+                <field name="related_pf_no" />
+                
+                
+                <!-- <field name="code"/> -->
+                <!-- <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/> -->
+                <field name="quantity" type="measure"/>
+                <field name="rate" type="measure"/>
+                <field name="amount" type="measure"/>
+                <field name="total" type="measure"/>
+                <!-- <field name="amount_select" invisible="1"/> -->
+                <!-- <field name="partner_id" invisible="1"/>            -->
+           <!-- <field name="value" type="measure"/> -->
+        </pivot>
+      </field>
+    </record>  
+
+      <record id="payroll_register_search" model="ir.ui.view">
+            <field name="name">hr.payslip.line.search</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <search string="Inventorty">
+                    <field name="employee_id"/>
+
+                    <!-- <field name="transaction_types"/> -->
+
+                <group expand="0" string="Group By">
+                    <filter string="Employee" name="employee_id" domain="" context="{'group_by':'employee_id'}"/>
+                    <!-- <filter string="Date" name="date" domain="" context="{'group_by':'date'}"/> -->
+
+                    <!-- <filter string="Transaction Type" name="transaction_types" domain="" context="{'group_by':'transaction_types'}"/> -->
+                </group>
+                
+                </search>
+            </field>
+        </record>  		
+
+      <record id="menu_payroll_tree_report" model="ir.actions.act_window">
+            <field name="name">Payroll Register Report</field>
+            <field name="res_model">hr.payslip.line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,pivot</field>
+            <field name="view_id" ref="view_hr_payslip_line_tree_inherit"/>    
+      </record>
+
+    <!-- **** Reporting **** -->
+    <menuitem id="menu_payroll_tree_report_view"
+        name="Payroll Regsiter"
+        action="menu_payroll_tree_report"
+        parent="hr_payroll.menu_hr_payroll_report"/>
+	</data>
+</odoo>
