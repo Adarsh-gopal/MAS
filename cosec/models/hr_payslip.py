@@ -23,7 +23,7 @@ class HrPayslip(models.Model):
 	def set_paid_unpaid(self):
 		attend_dtls = self.env['cosec.month'].search([('userid','=',self.employee_id.cosec_id),('pmonth','=',self.process_month)])
 		if attend_dtls:
-			self.unpaid_leaves = attend_dtls.uldays
+			self.unpaid_leaves = attend_dtls.uldays + attend_dtls.abdays
 			self.paid_leaves = attend_dtls.pldays
 			self.present_days = attend_dtls.prdays + attend_dtls.trdays
 			self.working_time = attend_dtls.work_time/60

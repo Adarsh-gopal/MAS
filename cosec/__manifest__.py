@@ -17,7 +17,7 @@
     'company': 'Prixgen Tech Solutions Pvt. Ltd.',
     'website': 'https://www.prixgen.com',
     'category': 'Attendence',
-    'version': '14.0.9',
+    'version': '14.0.10',
     'depends': ['base','hr_attendance','hr','hr_payroll'],
     'data': [
         'security/ir.model.access.csv',
