@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="product_template_only_form_search_inherit_1">
+        <field name="name">product.template.only.form.search.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="after">
+                <field string="Internal Notes" name="description" filter_domain="[('description', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
