@@ -21,48 +21,48 @@ class HrLoanAcc(models.Model):
         if loan_approve:
             self.write({'state': 'waiting_approval_2'})
         if self.state == 'waiting_approval_2' and loan_amount >= self.loan_amount:
-            if not self.emp_account_id or not self.treasury_account_id or not self.journal_id:
-                raise UserError(_(
-                                 "You must enter employee account & Treasury account and journal to approve "))
+            # if not self.emp_account_id or not self.treasury_account_id or not self.journal_id:
+            #     raise UserError(_(
+            #                      "You must enter employee account & Treasury account and journal to approve "))
             if not self.loan_lines:
                 raise UserError(_('You must compute Loan Request before Approved'))
             timenow = time.strftime('%Y-%m-%d')
-            for loan in self:
-                amount = loan.loan_amount
-                loan_name = loan.employee_id.name
-                reference = loan.name
-                journal_id = loan.journal_id.id
-                debit_account_id = loan.treasury_account_id.id
-                credit_account_id = loan.emp_account_id.id
-                debit_vals = {
-                    'name': loan_name,
-                    'account_id': debit_account_id,
-                    'journal_id': journal_id,
-                    'date': timenow,
-                    'debit': amount > 0.0 and amount or 0.0,
-                    'credit': amount < 0.0 and -amount or 0.0,
-                    'move_id': loan.id,
-                }
-                credit_vals = {
-                    'name': loan_name,
-                    'account_id': credit_account_id,
-                    'journal_id': journal_id,
-                    'date': timenow,
-                    'debit': amount < 0.0 and -amount or 0.0,
-                    'credit': amount > 0.0 and amount or 0.0,
-                    'move_id': loan.id,
-                }
-                vals = {
-                    #'name': 'Loan For' + ' ' + loan_name,
-                    'narration': loan_name,
-                    'ref': reference,
-                    'journal_id': journal_id,
-                    'date': timenow,
-                    'line_ids': [(0, 0, debit_vals), (0, 0, credit_vals)]
-                }
-                # print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',vals)
-                move = self.env['account.move'].create(vals)
-                move.post()
+            # for loan in self:
+            #     amount = loan.loan_amount
+            #     loan_name = loan.employee_id.name
+            #     reference = loan.name
+            #     journal_id = loan.journal_id.id
+            #     debit_account_id = loan.treasury_account_id.id
+            #     credit_account_id = loan.emp_account_id.id
+            #     debit_vals = {
+            #         'name': loan_name,
+            #         'account_id': debit_account_id,
+            #         'journal_id': journal_id,
+            #         'date': timenow,
+            #         'debit': amount > 0.0 and amount or 0.0,
+            #         'credit'0.00: amount < 0.0 and -amount or 0.0,
+            #         'move_id': loan.id,
+            #     }
+            #     credit_vals = {
+            #         'name': 0.00loan_name,
+            #         'account_id': credit_account_id,
+            #         'journal_id': journal_id,
+            #         'date': timenow,
+            #         'debit': amount < 0.0 and -amount or 0.0,
+            #         'credit': amount > 0.0 and amount or 0.0,
+            #         'move_id': loan.id,
+            #     }
+            #     vals = {
+            #         #'name': 'Loan For' + ' ' + loan_name,
+            #         'narration': loan_name,
+            #         'ref': reference,
+            #         'journal_id': journal_id,
+            #         'date': timenow,
+            #         'line_ids': [(0, 0, debit_vals), (0, 0, credit_vals)]
+            #     }
+            #     # print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',vals)
+            #     move = self.env['account.move'].create(vals)
+            #     move.post()
             self.write({'state': 'approve'})
             for line in self:
                 var = self.env['hr.employee'].search([('id','=',line.employee_id.id)])
@@ -83,41 +83,41 @@ class HrLoanAcc(models.Model):
             if not self.loan_lines:
                 raise UserError(_('You must compute Loan Request before Approved'))
             timenow = time.strftime('%Y-%m-%d')
-            for loan in self:
-                amount = loan.loan_amount
-                loan_name = loan.employee_id.name
-                reference = loan.name
-                journal_id = loan.journal_id.id
-                debit_account_id = loan.treasury_account_id.id
-                credit_account_id = loan.emp_account_id.id
-                debit_vals = {
-                    'name': loan_name,
-                    'account_id': debit_account_id,
-                    'journal_id': journal_id,
-                    'date': timenow,
-                    'debit': amount > 0.0 and amount or 0.0,
-                    'credit': amount < 0.0 and -amount or 0.0,
-                    'move_id': loan.id,
-                }
-                credit_vals = {
-                    'name': loan_name,
-                    'account_id': credit_account_id,
-                    'journal_id': journal_id,
-                    'date': timenow,
-                    'debit': amount < 0.0 and -amount or 0.0,
-                    'credit': amount > 0.0 and amount or 0.0,
-                    'move_id': loan.id,
-                }
-                vals = {
-                    'name': 'Loan For' + ' ' + loan_name,
-                    'narration': loan_name,
-                    'ref': reference,
-                    'journal_id': journal_id,
-                    'date': timenow,
-                    'line_ids': [(0, 0, debit_vals), (0, 0, credit_vals)]
-                }
-                move = self.env['account.move'].create(vals)
-                move.post()
+            # for loan in self:
+            #     amount = loan.loan_amount
+            #     loan_name = loan.employee_id.name
+            #     reference = loan.name
+            #     journal_id = loan.journal_id.id
+            #     debit_account_id = loan.treasury_account_id.id
+            #     credit_account_id = loan.emp_account_id.id
+            #     debit_vals = {
+            #         'name': loan_name,
+            #         'account_id': debit_account_id,
+            #         'journal_id': journal_id,
+            #         'date': timenow,
+            #         'debit': amount > 0.0 and amount or 0.0,
+            #         'credit': amount < 0.0 and -amount or 0.0,
+            #         'move_id': loan.id,
+            #     }
+            #     credit_vals = {
+            #         'name': loan_name,
+            #         'account_id': credit_account_id,
+            #         'journal_id': journal_id,
+            #         'date': timenow,
+            #         'debit': amount < 0.0 and -amount or 0.0,
+            #         'credit': amount > 0.0 and amount or 0.0,
+            #         'move_id': loan.id,
+            #     }
+            #     vals = {
+            #         'name': 'Loan For' + ' ' + loan_name,
+            #         'narration': loan_name,
+            #         'ref': reference,
+            #         'journal_id': journal_id,
+            #         'date': timenow,
+            #         'line_ids': [(0, 0, debit_vals), (0, 0, credit_vals)]
+            #     }
+            #     move = self.env['account.move'].create(vals)
+            #     move.post()
             self.write({'state': 'approve'})
             return True
 
@@ -133,28 +133,28 @@ class HrLoanLineAcc(models.Model):
         for line in self:
             if line.loan_id.state != 'approve':
                 raise UserError(_("Loan Request must be approved"))
-            amount = line.amount
-            loan_name = line.employee_id.name
-            reference = line.loan_id.name
-            journal_id = line.loan_id.journal_id.id
-            debit_account_id = line.loan_id.emp_account_id.id
-            credit_account_id = line.loan_id.treasury_account_id.id
-            debit_vals = {
-                'name': loan_name,
-                'account_id': debit_account_id,
-                'journal_id': journal_id,
-                'date': timenow,
-                'debit': amount > 0.0 and amount or 0.0,
-                'credit': amount < 0.0 and -amount or 0.0,
-            }
-            credit_vals = {
-                'name': loan_name,
-                'account_id': credit_account_id,
-                'journal_id': journal_id,
-                'date': timenow,
-                'debit': amount < 0.0 and -amount or 0.0,
-                'credit': amount > 0.0 and amount or 0.0,
-            }
+            # amount = line.amount
+            # loan_name = line.employee_id.name
+            # reference = line.loan_id.name
+            # journal_id = line.loan_id.journal_id.id
+            # debit_account_id = line.loan_id.emp_account_id.id
+            # credit_account_id = line.loan_id.treasury_account_id.id
+            # debit_vals = {
+            #     'name': loan_name,
+            #     'account_id': debit_account_id,
+            #     'journal_id': journal_id,
+            #     'date': timenow,
+            #     'debit': amount > 0.0 and amount or 0.0,
+            #     'credit': amount < 0.0 and -amount or 0.0,
+            # }
+            # credit_vals = {
+            #     'name': loan_name,
+            #     'account_id': credit_account_id,
+            #     'journal_id': journal_id,
+            #     'date': timenow,
+            #     'debit': amount < 0.0 and -amount or 0.0,
+            #     'credit': amount > 0.0 and amount or 0.0,
+            # }
             """vals = {
                 'name': 'Loan For' + ' ' + loan_name,
                 'narration': loan_name,
