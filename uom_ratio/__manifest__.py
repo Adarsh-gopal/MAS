@@ -1,9 +1,9 @@
 {
     'name': 'Automated UOM Ratio calculation',
     'category': 'Tools',
-    'summary': 'Automated UOM Ratio calculation',
-    'version': '14.0.1',
-    'description': """ """,
+    'summary': 'This module is used to calculate the UOM Ratio based on Length, Width & Thickness formula."',
+    'version': '14.0.0.2',
+    'description': """This module is used to calculate the UOM Ratio based on Length, Width & Thickness formula.""",
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
     'company': 'Prixgen Tech Solutions Pvt. Ltd.',
     'website': 'https://www.prixgen.com',

@@ -54,9 +54,9 @@ class UoM(models.Model):
             # values['name'] = re.sub(r'\([^)]*\)', '', values.get('name') or self.name)+'('+str(values.get('length') or self.length)+'X'+str(values.get('width') or self.width)+'X'+str(values.get('thickness') or self.thickness)+')'
             if self.category_id.width != 0.0 and self.category_id.length != 0.0:
                 if  ('length' in values  and values.get('length') != 0) or ('width' in values and values.get('width') != 0) or ('thickness'in values and values.get('thickness') != 0): 
-                    # print('looop in **************************')
+                    # print((values.get('length') or self.length),(values.get('width') or self.width),(values.get('thickness') or self.thickness),'looop in **************************')
                 # if  ((values.get('length') or self.length )!= 0.0) and ((values.get('width') or self.width )!= 0.0) and ((values.get('thickness') or self.thickness) != 0.0):
-                    values['factor'] = ((values.get('length') or self.length)/self.category_id.length)*((values.get('width') or self.width)/self.category_id.width)*(values.get('length') or self.thickness)
+                    values['factor'] = ((values.get('length') or self.length)/self.category_id.length)*((values.get('width') or self.width)/self.category_id.width)*(values.get('thickness') or self.thickness)
                 else:
                     values['factor'] = 1
 
