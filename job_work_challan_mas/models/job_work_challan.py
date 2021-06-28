@@ -49,7 +49,7 @@ class deliveryorder(models.Model):
 	vehicle_no=fields.Char(string="Vehicle No")
 	transporter=fields.Char(string="Transporter")
 	customer_name=fields.Many2one('res.partner',string="Customer Name",store=True)
-	vendor_name=fields.Many2one('res.partner',string="Vendor Name",store=True)
+	# vendor_name=fields.Many2one('res.partner',string="Vendor Name",store=True)
 
 	def email_split(self,email):
 		esplit=email.split(",")

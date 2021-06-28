@@ -65,7 +65,7 @@
                             <span style="color:black;font-style: normal;" t-esc="emailstr"/> 
                             </t> 
                         </t> 
-                        <t t-elif="doc.vendor_name">
+                        <!-- <t t-elif="doc.vendor_name">
                             <span style="color:#143980;"><b>Delivery To: </b></span><br/>  
                             <strong><span style="color:black;font-style: normal;" t-esc="doc.vendor_name.name"/></strong><br/>
                             <span style="color:black;font-style: normal;" t-esc="doc.vendor_name.street"/> <br/>
@@ -78,7 +78,7 @@
                             <t t-set="emailstr" t-value="doc.purchase_order.email_split(doc.vendor_name.email)"/> 
                             <span style="color:black;font-style: normal;" t-esc="emailstr"/> 
                             </t> 
-                        </t> 
+                        </t>  -->
                     </td>
                     <td  colspan="3" style="width:35%;padding:1px;border:1px solid #143980;font-size:12px;padding-left: 6px;">
                         <t t-if="doc.purchase_order">
@@ -101,7 +101,7 @@
                             <b><span style="color:#143980;">PAN:</span></b>
                             <span style="color:black;"><span t-esc="doc.customer_name.pan_no"/></span>
                         </t>
-                        <t t-elif="doc.vendor_name">
+                        <!-- <t t-elif="doc.vendor_name">
                             <b><span style="color:#143980;">State: </span></b>
                             <span style="color:black;"><t t-if="doc.vendor_name.state_id.name" t-esc="doc.vendor_name.state_id.name"/></span><br/>
                             <b><span style="color:#143980;">State Code:</span></b>
@@ -110,7 +110,7 @@
                             <span style="color:black;"><span t-esc="doc.vendor_name.vat"/></span><br/>
                             <b><span style="color:#143980;">PAN:</span></b>
                             <span style="color:black;"><span t-esc="doc.vendor_name.pan_no"/></span>
-                        </t>
+                        </t> -->
                     </td>
                     <td colspan="4" style="width:25%;padding:1px;border:1px solid #143980;font-size:12px;padding-left: 6px;">
                         <span style="color:#143980;"><b>Transporter : </b></span>

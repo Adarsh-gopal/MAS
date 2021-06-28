@@ -10,7 +10,7 @@
                     <field name="vehicle_no"/>
                     <field name="transporter"/>
                     <field name="customer_name"/>
-                    <field name="vendor_name"/>
+                    <!-- <field name="vendor_name"/> -->
                 </field>
             </field>
         </record>

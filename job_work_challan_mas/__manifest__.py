@@ -1,6 +1,6 @@
 {
     'name': 'Job Work Challan report Template',
-    'version': '14.0.0.1',
+    'version': '14.0.0.2',
     'description': """This module consists, the Job Work Challan Templates""",
     'category': 'Localization',
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',

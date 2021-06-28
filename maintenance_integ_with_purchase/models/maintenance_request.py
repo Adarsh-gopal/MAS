@@ -21,4 +21,15 @@ class MaintenanceRequest(models.Model):
         			each.write({'qty_received':1})
 
 
+    #to add name and equipment_id
+    def name_get(self):
+        res = []
+        for rec in self:
+            if rec.equipment_id:
+                res.append((rec.id, "%s - %s" % (rec.name, rec.equipment_id.display_name or " ")))
+            else:
+                res.append((rec.id, "%s" % rec.name))
+        return res
+
+
 

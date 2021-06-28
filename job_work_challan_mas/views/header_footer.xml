@@ -77,7 +77,7 @@
                                 <strong><t t-esc="'MSME CODE'"/>:</strong>
                                 <strong><span t-field="doc.company_id.partner_id.mime_code"/></strong>
                             </div>
-                            <div class="col-2" style="font-size:10px;">
+                            <div class="col-2" style="font-size:9px;">
                                 <strong><t t-esc="'STATE'"/>:</strong>
                                 <strong><span style="text-transform:uppercase" t-field="doc.company_id.state_id"/></strong>
                             </div>
