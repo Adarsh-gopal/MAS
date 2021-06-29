@@ -59,7 +59,7 @@ class PurchaseOrderLine(models.Model):
 
     discount = fields.Float(string="Dis (%)", digits="Discount")
     discount_amount = fields.Float(string="Dis(Amt)")
-    price_after_discount = fields.Float(string="Price after Dis")
+    price_after_discount = fields.Float(string="Price after Dis",digits=(12,4))
 
     _sql_constraints = [
         (
@@ -73,7 +73,7 @@ class PurchaseOrderLine(models.Model):
     def onchange_discount_after_price(self):
         for l in self:
             if l.product_qty>0 and l.price_unit>0: 
-                l.price_after_discount = round(l.price_subtotal/l.product_qty,2)
+                l.price_after_discount = l.price_subtotal/l.product_qty
 
     def _get_discounted_price_unit(self):
         """Inheritable method for getting the unit price after applying
@@ -153,10 +153,10 @@ class PurchaseOrderLine(models.Model):
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    price_after_discount = fields.Float(compute="compute_price_after_discount")
+    price_after_discount = fields.Float(compute="_compute_price_after_discount",digits=(12,4))
 
     @api.depends('purchase_line_id')
-    def compute_price_after_discount(self):
+    def _compute_price_after_discount(self):
         for l in self:
             if l.purchase_line_id:
                 l.price_after_discount = l.purchase_line_id.price_after_discount
