@@ -30,7 +30,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     <tr t-foreach="doc" t-as="rec">
                                         <td>
                                             <span t-esc="rec.equipment_id.name"/>
@@ -38,10 +37,10 @@
                                         <td>
                                             <span t-esc="rec.equipment_id.equipment_number"/>
                                         </td>
-                                          <td>
+                                        <td>
                                             <span t-esc="1.0"/>
                                         </td>
-                                          <td>
+                                        <td>
                                             <span t-esc="rec.equipment_id.cost"/>
                                         </td>
                                     </tr>
