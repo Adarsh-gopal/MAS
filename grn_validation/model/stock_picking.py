@@ -37,7 +37,7 @@ class Picking(models.Model):
                             if po_line.discount == 0:
                                 # print(move_line.z_supplier_rate,"*****")
                                 # print(po_line.price_unit,"@@@@")
-                                if move_line.product_id.id == po_line.product_id.id and move_line.z_supplier_rate != po_line.price_subtotal/po_line.product_qty :
+                                if move_line.product_id.id == po_line.product_id.id and move_line.z_supplier_rate != round(po_line.price_subtotal/po_line.product_qty,4) :
                                     raise UserError(_('Purchase Order price and supplier invoice price are not matching , kindly revise the PO price .'))
                             else:
                                 # print(move_line.z_supplier_rate,"*****")

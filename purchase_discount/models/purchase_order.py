@@ -73,7 +73,7 @@ class PurchaseOrderLine(models.Model):
     def onchange_discount_after_price(self):
         for l in self:
             if l.product_qty>0 and l.price_unit>0: 
-                l.price_after_discount = l.price_subtotal/l.product_qty
+                l.price_after_discount = round(l.price_subtotal/l.product_qty,4)
 
     def _get_discounted_price_unit(self):
         """Inheritable method for getting the unit price after applying
