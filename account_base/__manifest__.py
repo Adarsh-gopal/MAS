@@ -21,6 +21,7 @@
             12)  Journal wise Ceiling limit
             13)  Payment Type in Journal entry
             14)  Due date in Vendor bill tree view
+            15)  Aged payable Report - 120 to 180, 180 to 365, 365 & Above.
     """,
 
     'author': "Prixgen Tech Solutions Pvt. Ltd.",
@@ -29,9 +30,9 @@
 
 
     'category': 'Customization',
-    'version': '14.0.2.1',
+    'version': '14.0.2.2',
 
-    'depends': ['base','account','stock','purchase','account_reports'],
+    'depends': ['base','account','stock','purchase','account_reports','inventory_base'],
 
     'data': [
         'views/assets.xml',

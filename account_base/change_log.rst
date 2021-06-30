@@ -20,6 +20,11 @@ V14.0.1.6 ----> V14.0.1.7(**30/04/2021**)*madhukumar*
 2. invoice date constraint check.
 
 
- V14.0.2.9 ----> V14.0.2.1(**27/05/2021**)*madhukumar*
+ V14.0.2.0 ----> V14.0.2.1(**27/05/2021**)*madhukumar*
 ================================================
 1. Invoice and vendor bill sequence issue if we do reset to draft of posted record and reposted skipping change regenerating of sequence again
+
+
+ V14.0.2.1 ----> V14.0.2.2(**16/06/2021**)*madhukumar*
+================================================
+1. Added the extended periods for aged partner reports 121-180 and 181-365 days.
