@@ -33,6 +33,8 @@ class GateEntry(models.Model):
     lr_rr_date = fields.Datetime(string="LR/RR Date")
     vehicle_no = fields.Many2one('fleet.vehicle',string="Internal Vechile No.")
     external_vehicle_no = fields.Char(string="External Vechile No.")
+    odometer = fields.Float()
+    driver_name = fields.Many2one('res.partner')
     warehouse_id = fields.Many2one("stock.warehouse", string="Warehouse",domain=[('activate_gate_entry','=',True)])
     
     gate_line = fields.One2many('gate.entry.line', 'gate_id')
@@ -83,6 +85,11 @@ class GateEntry(models.Model):
                 vals['post_datetime'] = fields.Datetime.now()
 
         return super(GateEntry, self).create(vals)
+
+    @api.onchange('vehicle_no')
+    def Onchnage_of_Internalvehicle(self):
+        for l in self:
+            l.driver_name = l.vehicle_no.driver_id.id
 
 
     def process(self):

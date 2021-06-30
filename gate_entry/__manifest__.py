@@ -16,7 +16,7 @@
     'website': "https://www.prixgen.com",
 
     'category': 'Custamization',
-    'version': '14.0.2.7',
+    'version': '14.0.2.8',
 
     'depends': ['base', 'stock', 'purchase', 'sale', 'sale_stock','purchase_stock','fleet','close_po'],
 

@@ -34,6 +34,8 @@
               <field name="description" attrs="{'readonly':[('state', '=', 'processed')]}"/>
               <field name='station_to'  attrs="{'invisible':[('entry_type', '=', 'in')]}"/>
               <field name="username" readonly="1"/>
+              <field name="odometer" attrs="{'readonly':[('state', '=', 'processed')],'invisible': [('vehicle_no', '=', False)]}"/>
+              <field name="driver_name" options="{ 'no_create':True, 'no_create_edit':True }" attrs="{'readonly':[('state', '=', 'processed')],'invisible': [('vehicle_no', '=', False)]}"/>
             </group>
             <group>
               <field name="doc_datetime" required='1' attrs="{'readonly':[('state', '=', 'processed')]}"/>
@@ -41,6 +43,7 @@
               <field name="lr_rr_no" attrs="{'readonly':[('state', '=', 'processed')]}"/>
               <field name="lr_rr_date" attrs="{'readonly':[('state', '=', 'processed')]}"/>
               <field name="vehicle_no" placeholder="KA-12-AA-09" attrs="{'readonly':[('state', '=', 'processed')]}"/>
+
               <field name="external_vehicle_no" placeholder="KA-12-AA-09" attrs="{'readonly':[('state', '=', 'processed')]}"/>
             </group>
           </group>
