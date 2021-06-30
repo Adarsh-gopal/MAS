@@ -12,6 +12,7 @@
                         <field name="asset_id" options="{'no_create': True,'no_open': True}" domain="[('state','not in',('draft','close'))]"/>
                         <field name="category_id" options="{'no_create': True,'no_open': True}"/>
                         <field name="number_of_equiments"/>
+                        <field name="hsn_code_id" options="{'no_create': True, 'no_create_edit':True}"/>
                     </group>
                 </group>
                 

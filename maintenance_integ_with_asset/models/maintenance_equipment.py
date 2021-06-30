@@ -10,6 +10,7 @@ class AccountAssets(models.Model):
 
     account_assets_id = fields.Many2one('account.asset',string="Assets")
     cost = fields.Float('Cost',tracking=True) 
+    hsn_code_id = fields.Many2one('hsn.master',string="HSN SAC Code ",tracking=True)
 
 
     def update_cost(self):

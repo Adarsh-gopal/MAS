@@ -16,6 +16,9 @@
             
         </div>
       </field>
+      <field name="workcenter_id" position="after"> 
+                    <field name="hsn_code_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                </field>
 
     </field>
   </record>
