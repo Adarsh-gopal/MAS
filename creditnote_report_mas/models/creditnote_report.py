@@ -23,6 +23,14 @@ class taxorder(models.Model):
 
 		return refspt[0]
 
+	# def get_debit_invoice(self,reference):
+	# 	refsplit=reference.split(" ")
+	# 	# print(refsplit[2])
+	# 	refspt=refsplit[0].split(",")
+	# 	print(refspt[0])
+
+	# 	return refspt[0]
+
 	def get_refdebit(self,reference):
 		refsplitd=reference.split(" ")
 		return refsplitd[2]
