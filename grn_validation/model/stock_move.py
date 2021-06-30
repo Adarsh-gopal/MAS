@@ -11,4 +11,4 @@ from odoo.tools.float_utils import float_round, float_compare, float_is_zero
 class StockMove(models.Model):
     _inherit = "stock.move"
 
-    z_supplier_rate = fields.Float(string="Supplier Rate")
+    z_supplier_rate = fields.Float(string="Supplier Rate", digits=(12,4))

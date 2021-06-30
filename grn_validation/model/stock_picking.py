@@ -33,11 +33,17 @@ class Picking(models.Model):
                 for po_line in self.purchase_id.order_line:
                     if move_line.quantity_done != 0:
                         if not move_line.is_subcontract:
+                            # pdb.set_trace()
                             if po_line.discount == 0:
-                                if move_line.product_id.id == po_line.product_id.id and move_line.z_supplier_rate != po_line.price_unit :
+                                # print(move_line.z_supplier_rate,"*****")
+                                # print(po_line.price_unit,"@@@@")
+                                if move_line.product_id.id == po_line.product_id.id and move_line.z_supplier_rate != round(po_line.price_subtotal/po_line.product_qty,4) :
                                     raise UserError(_('Purchase Order price and supplier invoice price are not matching , kindly revise the PO price .'))
                             else:
-                                if move_line.product_id.id == po_line.product_id.id and move_line.z_supplier_rate != round(po_line.price_subtotal / po_line.product_qty,2) :
+                                # print(move_line.z_supplier_rate,"*****")
+                                # print(po_line.price_after_discount,"@@@@")
+                                if move_line.product_id.id == po_line.product_id.id and move_line.z_supplier_rate != po_line.price_after_discount :
                                     raise UserError(_('Purchase Order price and supplier invoice price are not matching , kindly revise the PO price .'))
+
         
         return super(Picking, self).button_validate()
