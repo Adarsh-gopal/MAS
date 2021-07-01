@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_order_form_close" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='discount']" position="after">
+                    	<field name="z_close_sol" optional="show"/>
+                </xpath> 
+            </field>
+    </record>
+</odoo>
+  
