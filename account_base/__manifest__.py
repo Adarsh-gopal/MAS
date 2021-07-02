@@ -7,9 +7,21 @@
 
     'description': """
         Included Functionalities -
-            1) Roundoff.-------------------------------------------(roundoff.py/xml)
-            2) Unrelate Bill Date and Accounting date--------------(disconnect.py)
-            3) Currency Inverse and precision----------------------(currency_inverce.py/xml)
+            1)   Round Off automation
+            2)   Currency Inverse Precision
+            3)   Unrelated Bill Date and Accounting date only in case of Vendor Bills
+            4)   Accounting date not less than Bill date
+            5)   Negative filter in Aged payable and receivable
+            6)   Analytical Account group filter
+            7)   Custom Invoice Sequence
+            8)   Custom credit not and debit note sequence
+            9)  Bank/cash payment sequence
+            10)  Bank/cash receipt sequence
+            11)  Item group,PG1,PG2,PG3 in invoice report
+            12)  Journal wise Ceiling limit
+            13)  Payment Type in Journal entry
+            14)  Due date in Vendor bill tree view
+            15)  Aged payable Report - 120 to 180, 180 to 365, 365 & Above.
     """,
 
     'author': "Prixgen Tech Solutions Pvt. Ltd.",
@@ -18,9 +30,9 @@
 
 
     'category': 'Customization',
-    'version': '14.0.1.7',
+    'version': '14.0.2.4',
 
-    'depends': ['base','account','stock','purchase','account_reports'],
+    'depends': ['base','account','stock','purchase','account_reports','inventory_base'],
 
     'data': [
         'views/assets.xml',
