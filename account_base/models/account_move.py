@@ -2,6 +2,10 @@ from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError, ValidationError
 
 
+class AccountAccount(models.Model):
+    _inherit = 'account.account'
+
+    z_payment = fields.Boolean(string="Payment",default=False)
     
 
 class AccountJournal(models.Model):
@@ -27,12 +31,8 @@ class AccountJournal(models.Model):
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    invoice_due_date = fields.Date(related='invoice_date_due')
-
     journal_type = fields.Selection(related = 'journal_id.type', readonly=False, string='JType')
     payment_type = fields.Selection(related = 'payment_id.payment_type', readonly=False, store=True)
-
-
 
     def action_post(self):
         for rec in self:
@@ -42,29 +42,29 @@ class AccountMove(models.Model):
 
             if rec.journal_type in ('cash','bank'):
                 if rec.payment_type == 'inbound':
-                    if rec.journal_id.in_sequence_id and not rec.posted_before:
-                        rec.write({'name':rec.journal_id.in_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
+                    if rec.journal_id.in_sequence_id:
+                        rec.write({'name':rec.journal_id.in_sequence_id.next_by_id()})
                 elif rec.payment_type == 'outbound':
-                    if rec.journal_id.out_sequence_id and not rec.posted_before:
-                        rec.write({'name':rec.journal_id.out_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
+                    if rec.journal_id.out_sequence_id:
+                        rec.write({'name':rec.journal_id.out_sequence_id.next_by_id()})
             if rec.move_type in ('in_refund','out_refund'):
-                if rec.journal_id.refund_sequence_id and not rec.posted_before:
-                    rec.write({'name':rec.journal_id.refund_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
-            elif rec.journal_id.name_sequence_id and not rec.posted_before:
-                rec.write({'name':rec.journal_id.name_sequence_id.with_context(ir_sequence_date=rec.date).next_by_id()})
+                if rec.journal_id.refund_sequence_id:
+                    rec.write({'name':rec.journal_id.refund_sequence_id.next_by_id()})
+            elif rec.journal_id.name_sequence_id:
+                rec.write({'name':rec.journal_id.name_sequence_id.next_by_id()})
             else:
                 pass
                 # raise ValidationError(_("""No sequence mapped to Journal {}""".format(rec.journal_id.name)))
         return super(AccountMove, self).action_post()
 
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
 
 
-    @api.constrains('invoice_date')
-    def check_invoice_date(self):
-        for rec in self:
-            if rec.move_type in ('in_invoice','in_refund','in_receipt'):
-                if not rec.invoice_date:
-                    raise UserError(_('Invoice/Bill Date Not updated '))
-
-
-
+    destination_account_id = fields.Many2one(
+        comodel_name='account.account',
+        string='Destination Account',
+        store=True, readonly=False,
+        compute='_compute_destination_account_id',
+        domain="['|','&',('user_type_id.type', 'in', ('receivable', 'payable')), ('company_id', '=', company_id), ('z_payment','=',True)]",
+        check_company=True)
