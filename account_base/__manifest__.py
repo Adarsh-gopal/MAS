@@ -30,7 +30,7 @@
 
 
     'category': 'Customization',
-    'version': '14.0.2.2',
+    'version': '14.0.2.4',
 
     'depends': ['base','account','stock','purchase','account_reports','inventory_base'],
 

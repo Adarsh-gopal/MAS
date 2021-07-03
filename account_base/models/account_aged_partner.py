@@ -262,11 +262,18 @@ class ReportAdgedPartner(models.AbstractModel):
 
     def _show_line(self, report_dict, value_dict, current, options):
         # Don't display an aml report line with all zero amounts.
+        # res =  super(ReportAdgedPartner,self)._show_line(report_dict, value_dict, current, options)
+        # for f in ['period0', 'period1', 'period2', 'period3', 'period4', 'period5','period6','period7']:
+        #     print(value_dict[f],'********************************************') 
         all_zero = all(
             self.env.company.currency_id.is_zero(value_dict[f])
             for f in ['period0', 'period1', 'period2', 'period3', 'period4', 'period5','period6','period7']
         )
-        return super()._show_line(report_dict, value_dict, current, options) and not all_zero
+        return (report_dict['parent_id'] is None
+                or report_dict['parent_id'] == 'total-None'
+                or (report_dict['parent_id'] in options.get('unfolded_lines', [])
+                or options.get('unfold_all'))
+                or not self._get_hierarchy_details(options)[len(current) - 2].foldable) and not all_zero
 
 
 
@@ -280,12 +287,12 @@ class ReportAccountAgedReceivable(models.Model):
         # Don't display an aml report line with all zero amounts.
         # print(report_dict['columns'][-1],'*************************************')
         if options.get('negative_val') == True:
-            negative_val = True if report_dict['columns'][-1]['no_format'] < 0 and report_dict['unfoldable'] == True  and report_dict['unfolded'] != True else False
             # if negative_val == True and 
             # negative_val = any(
             #     value_dict[f] < 0
             #     for f in ['period0', 'period1', 'period2', 'period3', 'period4', 'period5']
             # )
+            negative_val = True if report_dict['columns'][-1]['no_format'] < 0 and report_dict['unfoldable'] == True  and report_dict['unfolded'] != True else False
             return super()._show_line(report_dict, value_dict, current, options) and not negative_val
         else:
             return super()._show_line(report_dict, value_dict, current, options)

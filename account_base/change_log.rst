@@ -28,3 +28,12 @@ V14.0.1.6 ----> V14.0.1.7(**30/04/2021**)*madhukumar*
  V14.0.2.1 ----> V14.0.2.2(**16/06/2021**)*madhukumar*
 ================================================
 1. Added the extended periods for aged partner reports 121-180 and 181-365 days.
+
+
+ V14.0.2.2 ----> V14.0.2.3(**29/06/2021**)*madhukumar*
+================================================
+1. Removed Roundoff automation where it affecting standard feature. in **round_off.py**
+
+ V14.0.2.3 ----> V14.0.2.4(**2/07/2021**)*madhukumar*
+================================================
+1. Aged recievable and payable issue of older records FIXED
