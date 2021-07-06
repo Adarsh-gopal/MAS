@@ -2,25 +2,58 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+import pdb
+
+class StockLocation(models.Model):
+    _inherit = 'stock.location'
+
+    warehouse_id = fields.Many2one('stock.location',compute='_get_warehouse',store=True)
+
+    @api.depends('parent_path')
+    def _get_warehouse(self):
+        for rec in self:
+            parent_path = rec.parent_path.split('/')
+            if len(parent_path) > 2:
+                rec.warehouse_id = int(rec.parent_path.split('/')[1])
+
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    picking_type_code = fields.Selection(related='picking_type_id.code',store=True,string='Operation Type Code')
 
 class StockValuationLayer(models.Model):
     _inherit = 'stock.valuation.layer'
 
     src_loc_id = fields.Many2one(related = 'stock_move_id.location_id',store = True)
     dest_loc_id = fields.Many2one(related = 'stock_move_id.location_dest_id',store = True)
+    warehouse_id = fields.Many2one('stock.warehouse',compute='_get_warehouse',store=True)
+    picking_type_code = fields.Char(compute='get_picking_type',store = True)
+
+
+
+    @api.depends('stock_move_id')
+    def get_picking_type(self):
+        for each in self:
+            if each.stock_move_id and each.stock_move_id.picking_id:
+                each.picking_type_code = each.stock_move_id.picking_id.picking_type_code
+            else:
+                each.picking_type_code = False
+    @api.depends('stock_move_id')
+    def _get_warehouse(self):
+        for rec in self:
+            if rec.stock_move_id:
+                rec.warehouse_id = rec.stock_move_id.warehouse_id.id
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     inv_bal_sum_id = fields.Many2one('inv.bal.sum',compute='_create_inv_bal_sum_rec',store=True)
 
-    @api.depends('type')
+    @api.depends('type','active')
     def _create_inv_bal_sum_rec(self):
         for rec in self:
-            if rec.type == 'product':
-                rec.inv_bal_sum_id = self.env['inv.bal.sum'].create({
-                    'product_id':rec.id
-                })
+            if rec.type == 'product' and rec.active:
+                rec.inv_bal_sum_id = self.env['inv.bal.sum'].create({'product_id':rec.id})
             else:
                 wrong_prod = rec.inv_bal_sum_id.id
                 rec.inv_bal_sum_id = False
@@ -31,6 +64,7 @@ class InvBalSumWiz(models.Model):
     _description = 'Inventory Summary'
 
     product_id = fields.Many2one('product.product')
+    company_id = fields.Many2one('res.company',default=lambda self: self.env.user.company_id.id)
     uom_id = fields.Many2one(related = 'product_id.uom_id', store=True, string="UOM")
     categ_id = fields.Many2one(related = 'product_id.categ_id', store=True)
     default_code = fields.Char(related = 'product_id.default_code', store=True, string="Code")
@@ -49,89 +83,63 @@ class InvBalSumWiz(models.Model):
     warehouses = fields.Char()
     locations = fields.Char()
     
-    # def _compute_closing(self):
-    #     for rec in self:
-    #         rec.closing_stock = rec.opening_stock + rec.stock_increase + rec.stock_decrease
-    #         rec.closing_value = rec.opening_value + rec.value_increase + rec.value_decrease
 
 class InvBalSumWiz(models.TransientModel):
     _name = 'inv.bal.sum.wiz'
     _description = 'Inventory Summary Wizard'
 
-    open_date = fields.Date(string='Start Date')
-    close_date = fields.Date(string='End Date')
+    open_date = fields.Datetime(string='Start Date')
+    close_date = fields.Datetime(string='End Date')
     location_ids = fields.Many2many('stock.location')
+    warehouse_id = fields.Many2one('stock.warehouse')
     
     @api.onchange('close_date')
     def _onchange_close_date(self):
         if self.close_date < self.open_date:
             raise ValidationError(_("""End Date should not be less than Start Date"""))
 
+    @api.onchange('warehouse_id')
+    def _onchange_warehouse_id(self):
+        for rec in self:
+            curr_loc_rec= self.env['stock.location'].search([('warehouse_id','=',self.warehouse_id.id)])
+            rec.location_ids =  [(6, 0, curr_loc_rec.ids)]
     def action_open_report(self):
-        open_date = str(self.open_date).replace('-','')
-        close_date = str(self.close_date).replace('-','')
+        open_date = str(self.open_date)
+        close_date = str(self.close_date)
+        warehouses = ""
 
         if not len(self.location_ids):
-            query = """UPDATE inv_bal_sum as ibs SET opening_stock = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl
-            WHERE svl.create_date < '{}' AND svl.product_id = ibs.product_id),0)
-            """.format(open_date)
-            self.env.cr.execute(query)
-            
-            query = """UPDATE inv_bal_sum as ibs SET stock_increase = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl
-            WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.quantity > 0 AND svl.product_id = ibs.product_id),0)
-            """.format(open_date,close_date)
-            self.env.cr.execute(query)
-            
-            query = """UPDATE inv_bal_sum as ibs SET stock_decrease = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl
-            WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.quantity < 0 AND svl.product_id = ibs.product_id),0)
-            """.format(open_date,close_date)
-            self.env.cr.execute(query)
-
-            query = """UPDATE inv_bal_sum as ibs SET opening_value = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl
-            WHERE svl.create_date < '{}' AND svl.product_id = ibs.product_id),0)
-            """.format(open_date)
-            self.env.cr.execute(query)
-            
-            query = """UPDATE inv_bal_sum as ibs SET value_increase = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl
-            WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value > 0 AND svl.product_id = ibs.product_id),0)
-            """.format(open_date,close_date)
-            self.env.cr.execute(query)
-            
-            query = """UPDATE inv_bal_sum as ibs SET value_decrease = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl
-            WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value < 0 AND svl.product_id = ibs.product_id),0)
-            """.format(open_date,close_date)
+            raise ValidationError(_("""Please select Location(s)"""))
+            query = """UPDATE inv_bal_sum as ibs SET 
+            opening_stock = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl WHERE svl.create_date < '{}' AND svl.product_id = ibs.product_id),0),
+            stock_increase = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.quantity >= 0 AND svl.product_id = ibs.product_id),0),
+            stock_decrease = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.quantity =< 0 AND svl.product_id = ibs.product_id),0),
+            opening_value = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl WHERE svl.create_date < '{}' AND svl.product_id = ibs.product_id),0),
+            value_increase = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value > 0 AND svl.product_id = ibs.product_id),0),
+            value_decrease = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value < 0 AND svl.product_id = ibs.product_id),0)
+            """.format(open_date,open_date,close_date,open_date,close_date,open_date,open_date,close_date,open_date,close_date)
             self.env.cr.execute(query)
         
         else:
             locations = str(tuple(self.location_ids.ids)+(0,))
-            query = """UPDATE inv_bal_sum as ibs SET opening_stock = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl
-            WHERE svl.create_date < '{}' AND svl.product_id = ibs.product_id AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0)
-            """.format(open_date,locations,locations)
-            self.env.cr.execute(query)
-            
-            query = """UPDATE inv_bal_sum as ibs SET stock_increase = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl
-            WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.quantity > 0 AND svl.product_id = ibs.product_id
-            AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0)""".format(open_date,close_date,locations,locations)
-            self.env.cr.execute(query)
-            
-            query = """UPDATE inv_bal_sum as ibs SET stock_decrease = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl
-            WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.quantity < 0 AND svl.product_id = ibs.product_id
-            AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0)""".format(open_date,close_date,locations,locations)
+            query = """UPDATE inv_bal_sum as ibs SET
+            opening_stock = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl WHERE svl.create_date < '{}' AND svl.product_id = ibs.product_id AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0)
+            + coalesce((SELECT SUM(sml.qty_done) FROM stock_move as sm INNER JOIN stock_move_line as sml on sml.move_id = sm.id WHERE sm.date < '{}' AND sm.product_id = ibs.product_id AND sm.location_dest_id in {} AND sm.picking_type_code = 'internal'),0)
+            - coalesce((SELECT SUM(sml.qty_done) FROM stock_move as sm INNER JOIN stock_move_line as sml on sml.move_id = sm.id WHERE sm.date < '{}' AND sm.product_id = ibs.product_id AND sm.location_id in {} AND sm.picking_type_code = 'internal'),0),
+            stock_increase = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.quantity >= 0 AND svl.product_id = ibs.product_id AND (svl.picking_type_code != 'internal' OR svl.picking_type_code is NULL ) AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0),
+            stock_decrease = coalesce((SELECT SUM(quantity) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.quantity <=0 AND svl.product_id = ibs.product_id AND (svl.picking_type_code != 'internal' OR svl.picking_type_code is NULL )AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0),
+            opening_value = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl WHERE svl.create_date < '{}' AND svl.product_id = ibs.product_id AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0),
+            value_increase = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value > 0 AND svl.product_id = ibs.product_id AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0) 
+            +  coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value > 0 AND svl.product_id = ibs.product_id AND (svl.src_loc_id IS NULL OR svl.dest_loc_id IS NULL)),0),
+            value_decrease = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value < 0 AND svl.product_id = ibs.product_id AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0)
+            + coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value < 0 AND svl.product_id = ibs.product_id AND (svl.src_loc_id IS NULL OR svl.dest_loc_id IS NULL)),0)
+            """.format(open_date,locations,locations,open_date,locations,open_date,locations,open_date,close_date,locations,locations,open_date,close_date,locations,locations,open_date,locations,locations,open_date,close_date,locations,locations,open_date,close_date,open_date,close_date,locations,locations,open_date,close_date,open_date)
             self.env.cr.execute(query)
 
-            query = """UPDATE inv_bal_sum as ibs SET opening_value = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl
-            WHERE svl.create_date < '{}' AND svl.product_id = ibs.product_id AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0)
-            """.format(open_date,locations,locations)
-            self.env.cr.execute(query)
-            
-            query = """UPDATE inv_bal_sum as ibs SET value_increase = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl
-            WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value > 0 AND svl.product_id = ibs.product_id
-            AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0)""".format(open_date,close_date,locations,locations)
-            self.env.cr.execute(query)
-            
-            query = """UPDATE inv_bal_sum as ibs SET value_decrease = coalesce((SELECT SUM(value) FROM stock_valuation_layer as svl
-            WHERE svl.create_date >= '{}' AND svl.create_date <= '{}' AND svl.value < 0 AND svl.product_id = ibs.product_id
-            AND (svl.src_loc_id in {} OR svl.dest_loc_id in {})),0)""".format(open_date,close_date,locations,locations)
+            query = """UPDATE inv_bal_sum as ibs SET
+            stock_increase = ibs.stock_increase + coalesce((SELECT SUM(sml.qty_done) FROM stock_move as sm INNER JOIN stock_move_line as sml on sml.move_id = sm.id WHERE sm.date >= '{}' AND sm.date <= '{}' AND sm.product_id = ibs.product_id AND (sm.location_dest_id in {} or sml.location_dest_id in {}) AND sm.picking_type_code = 'internal'),0),
+            stock_decrease = ibs.stock_decrease - coalesce((SELECT SUM(sml.qty_done) FROM stock_move as sm INNER JOIN stock_move_line as sml on sml.move_id = sm.id WHERE sm.date >= '{}' AND sm.date <= '{}' AND sm.product_id = ibs.product_id AND (sm.location_id in {} or sml.location_id in {}) AND sm.picking_type_code = 'internal'),0)
+            """.format(open_date,close_date,locations,locations,open_date,close_date,locations,locations)
             self.env.cr.execute(query)
 
             locations = self.location_ids.mapped('complete_name')
@@ -142,14 +150,19 @@ class InvBalSumWiz(models.TransientModel):
             if warehouses[-2] == ',':
                 warehouses = warehouses[:-2]+')'
 
-            query = """UPDATE inv_bal_sum SET warehouses = '{}', locations = '{}' WHERE product_id IS NOT NULL""".format(warehouses,locations)
+            query = """UPDATE inv_bal_sum SET
+            warehouses = '{}',
+            locations = '{}'
+            """.format(warehouses,locations)
             self.env.cr.execute(query)
         
-        query = """UPDATE inv_bal_sum SET closing_stock = opening_stock + stock_increase + stock_decrease, closing_value = opening_value + value_increase + value_decrease"""
+        
+        query = """UPDATE inv_bal_sum SET
+        closing_stock = opening_stock + stock_increase + stock_decrease,
+        closing_value = opening_value + value_increase + value_decrease"""
         self.env.cr.execute(query)
 
         tree_view_id = self.env.ref('inventory_balance_summary_14.inventory_balance_summmary_tree_view').id
-
 
         return {
             'name': 'Inventory Summary {}'.format(warehouses),
@@ -158,4 +171,5 @@ class InvBalSumWiz(models.TransientModel):
             'res_model': 'inv.bal.sum',
             'type': 'ir.actions.act_window',
             'target': 'current',
+            'domain': [('company_id','=',self.env.company.id)]
             }
