@@ -6,8 +6,8 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     
-    tcs_rate = fields.Float(string="TCS %",compute='compute_tcs_tax_move_line')
-    tcs_amount = fields.Float(string="TCS Amount",compute='compute_tcs_tax_move_line')
+    tcs_rate = fields.Float(string="TCS %",compute='compute_tcs_tax_move_line',store=True)
+    tcs_amount = fields.Float(string="TCS Amount",compute='compute_tcs_tax_move_line', store=True)
     invoice_date = fields.Date(related='move_id.invoice_date', store=True)
     hsn_code = fields.Char(related='product_id.l10n_in_hsn_code', store=True)
     uqc = fields.Char(related='product_uom_id.l10n_in_code', store=True)
@@ -39,17 +39,17 @@ class AccountMoveLine(models.Model):
                             if each_tcs.tax_group_id.name == 'IGST':
                                 line.igst_rate  = each_tcs.amount if each_tcs.amount else 0.0
                                 line.igst_amount  = (line.price_subtotal *line.igst_rate)/100
-                            if each_tcs.tax_group_id.name == 'TDS':
-                                line.tds_rate  = each_tcs.amount if each_tcs.amount else 0.0
-                                line.tds_amount = (line.price_subtotal *line.tds_rate)/100
+                            # if each_tcs.tax_group_id.name == 'TDS':
+                            #     line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
+                            #     line.tcs_amount = (line.price_subtotal *line.tcs_rate)/100
                             if each_tcs.tax_group_id.name == 'SGST' or each_tcs.tax_group_id.name == 'CGST':
                                 line.sgst_rate  = each_tcs.amount if each_tcs.amount else 0
                                 line.sgst_amount = (line.price_subtotal *line.sgst_rate)/100
                                 line.cgst_rate  = each_tcs.amount if each_tcs.amount else 0
                                 line.cgst_amount = (line.price_subtotal *line.cgst_rate)/100
-                            # if each_tcs.tax_group_id.name == 'TCS':
-                            #     line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
-                            #     line.tcs_amount  = (line.price_subtotal *line.tcs_rate)/100
+                            if each_tcs.tax_group_id.name == 'TCS':
+                                line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
+                                line.tcs_amount  = (line.price_subtotal *line.tcs_rate)/100
                         # if each_line.tax_group_id.name == 'RCM':
                             
                         #     for rcm_per in each_line.children_tax_ids:
@@ -64,9 +64,9 @@ class AccountMoveLine(models.Model):
                             if each_tcs.tax_group_id.name == 'IGST':
                                 line.igst_rate  = each_tcs.amount if each_tcs.amount else 0.0
                                 line.igst_amount  = (line.price_subtotal *line.igst_rate)/100
-                            if each_tcs.tax_group_id.name == 'TDS':
-                                line.tds_rate  = each_tcs.amount if each_tcs.amount else 0.0
-                                line.tds_amount  = (line.price_subtotal *line.tds_rate)/100
+                            if each_tcs.tax_group_id.name == 'TCS':
+                                line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
+                                line.tcs_amount  = (line.price_subtotal *line.tcs_rate)/100
                             if each_tcs.tax_group_id.name == 'SGST' or each_tcs.tax_group_id.name == 'CGST':
                                 line.sgst_rate  = each_tcs.amount if each_tcs.amount else 0.0
                                 line.sgst_amount = (line.price_subtotal *line.sgst_rate)/100
@@ -81,8 +81,8 @@ class AccountMoveLine(models.Model):
                 line.igst_rate = 0
                 line.igst_amount = 0
 
-                line.tds_rate = 0
-                line.tds_amount = 0
+                line.tcs_rate = 0
+                line.tcs_amount = 0
                 line.amount_inclusive_tax = 0
             line.amount_inclusive_tax = line.price_subtotal + line.cgst_amount + line.sgst_amount + line.igst_amount+ line.tcs_amount 
 
