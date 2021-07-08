@@ -39,7 +39,7 @@ class AccountMoveLine(models.Model):
                             if each_tcs.tax_group_id.name == 'IGST':
                                 line.igst_rate  = each_tcs.amount if each_tcs.amount else 0.0
                                 line.igst_amount  = (line.price_subtotal *line.igst_rate)/100
-                            if each_tcs.tax_group_id.name == 'TDS':
+                            if each_tcs.tax_group_id.name == 'TCS':
                                 line.tds_rate  = each_tcs.amount if each_tcs.amount else 0.0
                                 line.tds_amount = (line.price_subtotal *line.tds_rate)/100
                             if each_tcs.tax_group_id.name == 'SGST' or each_tcs.tax_group_id.name == 'CGST':
