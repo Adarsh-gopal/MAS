@@ -7,7 +7,7 @@
     """,
 
     'description': """ 
-        This module is used to capture the Sale Register Report 
+        This module is used to capture the Sale Register Report
     """,
 
     'author': "Prixgen Tech Solutions Pvt. Ltd.",
