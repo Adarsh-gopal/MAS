@@ -39,17 +39,17 @@ class AccountMoveLine(models.Model):
                             if each_tcs.tax_group_id.name == 'IGST':
                                 line.igst_rate  = each_tcs.amount if each_tcs.amount else 0.0
                                 line.igst_amount  = (line.price_subtotal *line.igst_rate)/100
-                            if each_tcs.tax_group_id.name == 'TCS':
-                                line.tds_rate  = each_tcs.amount if each_tcs.amount else 0.0
-                                line.tds_amount = (line.price_subtotal *line.tds_rate)/100
+                            # if each_tcs.tax_group_id.name == 'TDS':
+                            #     line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
+                            #     line.tcs_amount = (line.price_subtotal *line.tcs_rate)/100
                             if each_tcs.tax_group_id.name == 'SGST' or each_tcs.tax_group_id.name == 'CGST':
                                 line.sgst_rate  = each_tcs.amount if each_tcs.amount else 0
                                 line.sgst_amount = (line.price_subtotal *line.sgst_rate)/100
                                 line.cgst_rate  = each_tcs.amount if each_tcs.amount else 0
                                 line.cgst_amount = (line.price_subtotal *line.cgst_rate)/100
                             if each_tcs.tax_group_id.name == 'TCS':
-                                line.tds_rate  = each_tcs.amount if each_tcs.amount else 0.0
-                                line.tds_amount  = (line.price_subtotal *line.tcs_rate)/100
+                                line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
+                                line.tcs_amount  = (line.price_subtotal *line.tcs_rate)/100
                         # if each_line.tax_group_id.name == 'RCM':
                             
                         #     for rcm_per in each_line.children_tax_ids:
@@ -65,8 +65,8 @@ class AccountMoveLine(models.Model):
                                 line.igst_rate  = each_tcs.amount if each_tcs.amount else 0.0
                                 line.igst_amount  = (line.price_subtotal *line.igst_rate)/100
                             if each_tcs.tax_group_id.name == 'TCS':
-                                line.tds_rate  = each_tcs.amount if each_tcs.amount else 0.0
-                                line.tds_amount  = (line.price_subtotal *line.tds_rate)/100
+                                line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
+                                line.tcs_amount  = (line.price_subtotal *line.tcs_rate)/100
                             if each_tcs.tax_group_id.name == 'SGST' or each_tcs.tax_group_id.name == 'CGST':
                                 line.sgst_rate  = each_tcs.amount if each_tcs.amount else 0.0
                                 line.sgst_amount = (line.price_subtotal *line.sgst_rate)/100
@@ -81,10 +81,10 @@ class AccountMoveLine(models.Model):
                 line.igst_rate = 0
                 line.igst_amount = 0
 
-                line.tds_rate = 0
-                line.tds_amount = 0
+                line.tcs_rate = 0
+                line.tcs_amount = 0
                 line.amount_inclusive_tax = 0
-            line.amount_inclusive_tax = line.price_subtotal + line.cgst_amount + line.sgst_amount + line.igst_amount+ line.tds_amount 
+            line.amount_inclusive_tax = line.price_subtotal + line.cgst_amount + line.sgst_amount + line.igst_amount+ line.tcs_amount 
 
             # sub_total_amount = line.price_subtotal
             # self.cgst_amount = line.price_subtotal / self.cgst_rate     
