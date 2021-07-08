@@ -47,9 +47,9 @@ class AccountMoveLine(models.Model):
                                 line.sgst_amount = (line.price_subtotal *line.sgst_rate)/100
                                 line.cgst_rate  = each_tcs.amount if each_tcs.amount else 0
                                 line.cgst_amount = (line.price_subtotal *line.cgst_rate)/100
-                            if each_tcs.tax_group_id.name == 'TCS':
-                                line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
-                                line.tcs_amount  = (line.price_subtotal *line.tcs_rate)/100
+                            # if each_tcs.tax_group_id.name == 'TCS':
+                            #     line.tcs_rate  = each_tcs.amount if each_tcs.amount else 0.0
+                            #     line.tcs_amount  = (line.price_subtotal *line.tcs_rate)/100
                         # if each_line.tax_group_id.name == 'RCM':
                             
                         #     for rcm_per in each_line.children_tax_ids:
