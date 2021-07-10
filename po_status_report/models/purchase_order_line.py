@@ -6,17 +6,6 @@ class PurchaseOrderLine(models.Model):
     z_po_order_date = fields.Datetime(related="order_id.date_order",string="Date Order")
     z_status = fields.Char('Document Status',store=True,compute='_compute_status_type')
     z_currency_id = fields.Many2one('res.currency',' Currency',related="order_id.currency_id")
-    remaining_qty = fields.Float("Pending Qty",compute="_qty_remaining",store=True)
-
-    @api.depends('qty_received','product_qty')
-    def _qty_remaining(self):
-        for each in self:
-            if each.product_qty and each.qty_received:
-                each.remaining_qty = each.product_qty- each.qty_received
-            else:
-                each.remaining_qty = 0.0
-
-
 
     @api.depends('qty_received','qty_invoiced','product_qty')
     def _compute_status_type(self):

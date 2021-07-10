@@ -22,7 +22,7 @@
     'website': "https://www.prixgen.com",
 
     'category': 'Customization',
-    'version': '14.0.4',
+    'version': '14.0.5',
 
     'depends': ['base','stock','product'],
 
