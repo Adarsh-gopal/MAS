@@ -1,0 +1,19 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="purchase_order_form_analytic">
+      <field name="name">stock warehouse</field>
+      <field name="model">stock.warehouse</field>
+      <field name="inherit_id" ref="stock.view_warehouse"/>
+      <field name="arch" type="xml">
+        <field name="partner_id" position="after">
+          <field name="analytic_account_id" options="{'no_create': True, 'no_create_edit':True}"
+             required='1' />
+         
+         
+        </field>
+      </field>
+    </record>
+
+  </data>
+</odoo>
