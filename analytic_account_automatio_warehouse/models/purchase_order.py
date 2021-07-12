@@ -13,20 +13,12 @@ class PurchaseOrder(models.Model):
             self.analytic_account_id = self.picking_type_id.warehouse_id.analytic_account_id.id
 
 
-class AccountAnalyticAccount(models.Model):
-    _inherit = 'account.analytic.account'
 
-    warehouse_id = fields.Many2one('stock.warehouse')
 
 class StockWarehouseL(models.Model):
     _inherit = 'stock.warehouse'
 
     analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account')
-
-    # @api.onchange('analytic_account_id')
-    # def _onchange_analytic_account(self):
-    #     if self.analytic_account_id:
-    #         self.analytic_account_id.warehouse_id = self.id
 
    
 class SaleOrder(models.Model):

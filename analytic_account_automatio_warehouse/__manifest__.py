@@ -14,7 +14,7 @@
     'website': "https://www.prixgen.com",
 
     'category': 'Accounting',
-    'version': '14.0.1.3',
+    'version': '14.0.1',
 
     'depends': ['purchase','analytic_account_automation_purchase'
     ,'l10n_in'],
