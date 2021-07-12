@@ -73,6 +73,7 @@ class StockQuant(models.Model):
 class StockMove(models.Model):
     _inherit = "stock.move"
 
+    product_category_id = fields.Many2one('product.category',related='product_id.product_tmpl_id.categ_id', store=True)
     item_group = fields.Many2one('item.group',related='product_id.product_tmpl_id.item_group', store=True)
     product_group_1 = fields.Many2one('product.group.1',related='product_id.product_tmpl_id.product_group_1',store=True)
     product_group_2 = fields.Many2one('product.group.2',related='product_id.product_tmpl_id.product_group_2',store=True)
@@ -82,6 +83,7 @@ class StockMove(models.Model):
 class StockMove(models.Model):
     _inherit = "stock.move.line"
 
+    product_category_id = fields.Many2one('product.category',related='product_id.product_tmpl_id.categ_id', store=True)
     item_group = fields.Many2one('item.group',related='product_id.product_tmpl_id.item_group', store=True)
     product_group_1 = fields.Many2one('product.group.1',related='product_id.product_tmpl_id.product_group_1',store=True)
     product_group_2 = fields.Many2one('product.group.2',related='product_id.product_tmpl_id.product_group_2',store=True)
