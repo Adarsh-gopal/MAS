@@ -37,9 +37,3 @@ V14.0.1.6 ----> V14.0.1.7(**30/04/2021**)*madhukumar*
  V14.0.2.3 ----> V14.0.2.4(**2/07/2021**)*madhukumar*
 ================================================
 1. Aged recievable and payable issue of older records FIXED
-
- V14.0.2.4 ----> V14.0.2.5(**12/07/2021**)*madhukumar*
-================================================
-1. Removed Roundoff automation where it affecting standard feature. in **round_off.py**
-2. Product category has introduced for account move line(**Journal Items**).
-

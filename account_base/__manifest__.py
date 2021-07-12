@@ -41,7 +41,7 @@
         'views/currency_rate_views.xml',
         'views/account_move.xml',
         'views/res_config_settings.xml',
-        # 'views/round_off.xml',
+        'views/round_off.xml',
         'views/account_reversal.xml',
     ],
     'auto_install': False,
