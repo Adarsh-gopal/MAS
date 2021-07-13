@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+       
+    <record id="update_jounal_action" model="ir.ui.view">
+            <field name="name">update.journal.form</field>
+            <field name="model">update.journal</field>
+            <field name="arch" type="xml">
+                <form string="Confirm Analytic Account">
+                    <p class="oe_grey">
+                        Updating the credit or debit amount for selected journal items and those journal should be combination of journal entry and you can't revert the values
+                    </p>
+                    <footer>
+                        <button string="Confirm" name="update_journals" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+      
+
+        <record id="action_journal_modify_confirm" model="ir.actions.act_window">
+            <field name="name">Update Journal Items </field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">update.journal</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="update_jounal_action"/>
+            <field name="context">{'active_id' : active_id}</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="account.model_account_move_line"/>
+        </record>
+
+     
+        
+    </data>
+</odoo>
