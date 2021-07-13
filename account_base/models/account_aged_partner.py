@@ -8,7 +8,7 @@ from itertools import chain
 
 
 
-class AccountMoveLine(models.Model):
+class AccountMove(models.Model):
     _inherit = 'account.move'
 
     mv_sales_person = fields.Char(related="invoice_user_id.name", store=True)
