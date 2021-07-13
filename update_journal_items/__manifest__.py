@@ -9,7 +9,7 @@
 
     'description': """
         Update Analytic accounts for the journal items which has no 
-        analytic accounts in the invoice lines
+        analytic accounts in  the invoice lines
     """,
 
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
