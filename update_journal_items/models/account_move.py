@@ -9,7 +9,7 @@ class UpdateAnalyticAccount(models.TransientModel):
 		line = self._context.get('active_ids')
 
 		self.env.cr.execute("""UPDATE account_move_line 
-				set debit = 0.0, credit = 0.0,amount_currency =0.0, 'balance' = 0.0  WHERE id IN %s""",(tuple(line),))
+				set debit = 0.0, credit = 0.0,amount_currency =0.0,'balance' = 0.0  WHERE id IN %s""",(tuple(line),))
 
 
 
