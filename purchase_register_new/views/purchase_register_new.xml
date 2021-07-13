@@ -26,11 +26,11 @@
                 <field name="account_group_id" optional="1"/>
                 <field name="account_user_type_id" string="Account Type" optional="1"/>
                 <!-- <field name="hsn_code_name"/> -->
-                <field name="product_category" optional="1"/>
+<!--                 <field name="product_category" optional="1"/>
                 <field name="item_group" optional="1"/>
                 <field name="product_group_1" optional="1"/>
                 <field name="product_group_2" optional="1"/>
-                <field name="product_group_3" optional="1"/>
+                <field name="product_group_3" optional="1"/> -->
                 <field name="name" optional="1"/>
                 <field name="partner_name" string='Partenr'/>
                 <field name="partner_ref" optional="1"/>
