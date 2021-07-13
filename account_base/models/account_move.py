@@ -67,4 +67,19 @@ class AccountMove(models.Model):
                     raise UserError(_('Invoice/Bill Date Not updated '))
 
 
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
+
+    product_category = fields.Many2one('product.category',related='product_id.product_tmpl_id.categ_id', store=True)
+    item_group = fields.Many2one('item.group',related='product_id.product_tmpl_id.item_group', store=True)
+    product_group_1 = fields.Many2one('product.group.1',related='product_id.product_tmpl_id.product_group_1',store=True)
+    product_group_2 = fields.Many2one('product.group.2',related='product_id.product_tmpl_id.product_group_2',store=True)
+    product_group_3 = fields.Many2one('product.group.3',related='product_id.product_tmpl_id.product_group_3',store=True)
+
+    # product_category = fields.Char(string="Product Category",related='product_id.categ_id.name' , store=True)
+    # item_group= fields.Char(string="Item Group",related='product_id.item_group.name' , store=True)
+    # product_group_1= fields.Char(string="Product Group 1",related='product_id.product_group_1.name' , store=True)
+    # product_group_2 = fields.Char(string="Product Group 2",related='product_id.product_group_1.name' , store=True)
+    # product_group_3 = fields.Char(string="Product Group 3",related='product_id.product_group_1.name' , store=True)
+
 
