@@ -11,7 +11,7 @@
             </xpath>
         </field>
         </record>
-       <!--  <record id="sale_form_sl_no" model="ir.ui.view">
+        <record id="sale_form_sl_no" model="ir.ui.view">
         <field name="name">sl.sale.order.form</field>
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_form" />
@@ -20,6 +20,6 @@
             <field name="serial_no" />
             </xpath>
         </field>
-        </record> -->
+        </record>
     </data>
 </odoo> 
