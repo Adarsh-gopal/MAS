@@ -3,7 +3,7 @@
     'name': 'Mas XLSX Reports',
     'version': '14.0.1.5',
     'category': 'Customization',
-    'description': u"""
+    'description': """
     This module generates xlsx reports for sale orders	
     """,
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
