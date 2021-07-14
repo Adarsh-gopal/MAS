@@ -14,6 +14,7 @@ from odoo.exceptions import UserError, ValidationError,Warning
 from openpyxl.drawing.spreadsheet_drawing import OneCellAnchor, AnchorMarker
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, colors
 from PIL import Image as PILImage
+import base64
 # import tempfile
 # import os
 
@@ -66,7 +67,7 @@ class SaleOrder(models.Model):
 
 
         #Border
-        thin = Side(border_style="thin", color="000000")
+        thin = Side(style="thin", color="000000")
         
         #Header Section
         #Logo
@@ -74,8 +75,10 @@ class SaleOrder(models.Model):
 
 
         if self.material_group == 'door':
-            img = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
-            h, w = img.height, img.width
+            decoded_img = base64.b64decode(self.env.company.logo)
+            img = Image(io.BytesIO(decoded_img))
+            # h, w = img.height, img.width
+            h, w = 94, 132
             size = XDRPositiveSize2D(p2e(w), p2e(h))
             marker = AnchorMarker(col=0, colOff=coloffset, row=0, rowOff=rowoffset)
             img.anchor = OneCellAnchor(_from=marker, ext=size)
@@ -308,25 +311,25 @@ class SaleOrder(models.Model):
                 serial_no.border = Border(bottom=thin,top=thin,right=thin,left=thin)
                 ws.merge_cells(start_row=current_row, start_column=1, end_row=current_row+3, end_column=1)
                 #Location
-                location = ws.cell(row=current_row, column=2, value=format(line.product_id.name,10))
+                location = ws.cell(row=current_row, column=2, value=line.product_id.name)
                 location.font = Font(size=7,name='Calibri')
                 location.alignment = copy(address.alignment)
                 location.border = copy(serial_no.border)
                 ws.merge_cells(start_row=current_row, start_column=2, end_row=current_row+3, end_column=2)
                 #Face
-                face = ws.cell(row=current_row, column=3, value=format(line.face_description,20))
+                face = ws.cell(row=current_row, column=3, value=line.face_description)
                 face.font = copy(location.font)
                 face.alignment = copy(address.alignment)
                 face.border = copy(serial_no.border)
                 ws.merge_cells(start_row=current_row, start_column=3, end_row=current_row+3, end_column=4)
                 #Back
-                back = ws.cell(row=current_row, column=5, value=format(line.back_description,20))
+                back = ws.cell(row=current_row, column=5, value=line.back_description)
                 back.font = copy(location.font)
                 back.alignment = copy(address.alignment)
                 back.border = copy(serial_no.border)
                 ws.merge_cells(start_row=current_row, start_column=5, end_row=current_row+3, end_column=6)
                 #Edge Banding
-                edge_banding = ws.cell(row=current_row, column=7, value=format(line.edge_banding,20))
+                edge_banding = ws.cell(row=current_row, column=7, value=line.edge_banding)
                 edge_banding.font = copy(location.font)
                 edge_banding.alignment = copy(address.alignment)
                 edge_banding.border = copy(serial_no.border)
@@ -461,8 +464,11 @@ class SaleOrder(models.Model):
 
         #door frame type
         if self.material_group == 'doorframe':
-            img = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
-            h, w = img.height, img.width
+            # img = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
+            decoded_img = base64.b64decode(self.env.company.logo)
+            img = Image(io.BytesIO(decoded_img))
+            # h, w = img.height, img.width
+            h, w = 94, 132
             size = XDRPositiveSize2D(p2e(w), p2e(h))
             marker = AnchorMarker(col=0, colOff=coloffset, row=0, rowOff=rowoffset)
             img.anchor = OneCellAnchor(_from=marker, ext=size)
@@ -770,14 +776,14 @@ class SaleOrder(models.Model):
                 ws.merge_cells(start_row=current_row, start_column=1, end_row=current_row+3, end_column=1)
 
                 #name
-                name = ws.cell(row=current_row, column=2, value=format(line.product_id.name,10))
+                name = ws.cell(row=current_row, column=2, value=line.product_id.name)
                 name.font = Font(size=8,name='Calibri')
                 name.alignment = copy(address.alignment)
                 name.border = copy(serial_no.border)
                 ws.merge_cells(start_row=current_row, start_column=2, end_row=current_row+3, end_column=2)
 
                 #frame description
-                frame_desc = ws.cell(row=current_row, column=3, value=format(line.frame_description,10))
+                frame_desc = ws.cell(row=current_row, column=3, value=line.frame_description)
                 frame_desc.font = Font(size=8,name='Calibri')
                 frame_desc.alignment = copy(address.alignment)
                 frame_desc.border = copy(serial_no.border)
@@ -823,14 +829,14 @@ class SaleOrder(models.Model):
 
 
                 #shutter description
-                frame_desc = ws.cell(row=current_row, column=3, value=format(line.frame_description,10))
+                frame_desc = ws.cell(row=current_row, column=3, value=line.frame_description)
                 frame_desc.font = Font(size=8,name='Calibri')
                 frame_desc.alignment = copy(address.alignment)
                 frame_desc.border = copy(serial_no.border)
                 ws.merge_cells(start_row=current_row, start_column=3, end_row=current_row+3, end_column=3)
 
                 #under frame
-                door_desc = ws.cell(row=current_row, column=9, value=format(line.shutter_description,10))
+                door_desc = ws.cell(row=current_row, column=9, value=line.shutter_description)
                 door_desc.font = Font(size=8,name='Calibri')
                 door_desc.alignment = copy(address.alignment)
                 door_desc.border = copy(serial_no.border)
@@ -997,8 +1003,11 @@ class SaleOrder(models.Model):
             footer_signature.border = Border(bottom=thin,top=thin,right=thin,left=thin)
             ws.merge_cells(start_row=current_row+1, start_column=14, end_row=current_row+5, end_column=23 - disc_adj) 
 
-            img_footer = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
-            h, w = img_footer.height, img_footer.width
+            # img_footer = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
+            decoded_img_footer = base64.b64decode(self.env.company.logo)
+            img_footer = Image(io.BytesIO(decoded_img_footer))
+            # h, w = img_footer.height, img_footer.width
+            h, w = 94, 132
             size = XDRPositiveSize2D(p2e(w), p2e(h))
             ws.add_image(img_footer,'P'+str(current_row+1))
 
@@ -1016,8 +1025,11 @@ class SaleOrder(models.Model):
         #Material group type frame
         if self.material_group == 'frame':
 
-            img = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
-            h, w = img.height, img.width
+            # img = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
+            decoded_img = base64.b64decode(self.env.company.logo)
+            img = Image(io.BytesIO(decoded_img))
+            # h, w = img.height, img.width
+            h, w = 94, 132
             size = XDRPositiveSize2D(p2e(w), p2e(h))
             marker = AnchorMarker(col=0, colOff=coloffset, row=0, rowOff=rowoffset)
             img.anchor = OneCellAnchor(_from=marker, ext=size)
@@ -1255,7 +1267,7 @@ class SaleOrder(models.Model):
                 ws.merge_cells(start_row=current_row, start_column=1, end_row=current_row+1, end_column=1)
 
                 #name
-                name = ws.cell(row=current_row, column=2, value=format(line.name,10))
+                name = ws.cell(row=current_row, column=2, value=line.name)
                 name.font = Font(size=8,name='Calibri')
                 name.alignment = copy(address.alignment)
                 name.border = copy(serial_no.border)
@@ -1438,8 +1450,11 @@ class SaleOrder(models.Model):
             ws.merge_cells(start_row=current_row+5, start_column=1, end_row=current_row+5, end_column=11) 
 
 
-            img_footer = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
-            h, w = img_footer.height, img_footer.width
+            # img_footer = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
+            decoded_img_footer = base64.b64decode(self.env.company.logo)
+            img_footer = Image(io.BytesIO(decoded_img_footer))
+            # h, w = img_footer.height, img_footer.width
+            h, w = 94, 132
             size = XDRPositiveSize2D(p2e(w), p2e(h))
             ws.add_image(img_footer,'L'+str(current_row+1))
 
@@ -1463,8 +1478,11 @@ class SaleOrder(models.Model):
             picture_column = 0
             if self.with_pictures == False:
                 picture_column = 1
-            img = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
-            h, w = img.height, img.width
+            # img = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
+            decoded_img = base64.b64decode(self.env.company.logo)
+            img = Image(io.BytesIO(decoded_img))
+            # h, w = img.height, img.width
+            h, w = 94, 132
             size = XDRPositiveSize2D(p2e(w), p2e(h))
             marker = AnchorMarker(col=0, colOff=coloffset, row=0, rowOff=rowoffset)
             img.anchor = OneCellAnchor(_from=marker, ext=size)
@@ -1687,13 +1705,13 @@ class SaleOrder(models.Model):
                 serial_no.border = Border(bottom=thin,top=thin,right=thin,left=thin)
                 ws.merge_cells(start_row=current_row, start_column=1, end_row=current_row+1, end_column=1)
 
-                code = ws.cell(row=current_row, column=2, value=format(line.name,10))
+                code = ws.cell(row=current_row, column=2, value=line.name)
                 code.font = Font(size=8,name='Calibri')
                 code.alignment = copy(address.alignment)
                 code.border = copy(serial_no.border)
                 ws.merge_cells(start_row=current_row, start_column=2, end_row=current_row+1, end_column=2)
 
-                description = ws.cell(row=current_row, column=3, value=format(line.name,10))
+                description = ws.cell(row=current_row, column=3, value=line.name)
                 description.font = Font(size=8,name='Calibri')
                 description.alignment = copy(address.alignment)
                 description.border = copy(serial_no.border)
@@ -1874,8 +1892,11 @@ class SaleOrder(models.Model):
             ws.merge_cells(start_row=current_row+5, start_column=1, end_row=current_row+5, end_column=11) 
 
 
-            img_footer = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
-            h, w = img_footer.height, img_footer.width
+            # img_footer = Image('/odoo14/prixgen_odoo14/mass_xls_reports/models/mas.jpg')
+            decoded_img_footer = base64.b64decode(self.env.company.logo)
+            img_footer = Image(io.BytesIO(decoded_img_footer))
+            # h, w = img_footer.height, img_footer.width
+            h, w = 94, 132
             size = XDRPositiveSize2D(p2e(w), p2e(h))
             ws.add_image(img_footer,'L'+str(current_row+1))
 
@@ -1899,7 +1920,7 @@ class SaleOrder(models.Model):
 
         fp = io.BytesIO()
         wb.save(fp)
-        excel_file = base64.encodestring(fp.getvalue())
+        excel_file = base64.encodebytes(fp.getvalue())
         self.sale_quotation_xlsx_report = excel_file
         self.file_name = self.name+'_report.xlsx'
         fp.close()
