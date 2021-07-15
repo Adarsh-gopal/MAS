@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <record id="view_sale_register_report_list" model="ir.ui.view">
+            <field name="name">sales.register.report.list</field>
+            <field name="model">sales.register.report</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" string="Product"/>
+                    <field name="quantity" string="Quantity"/>
+                    <field name="price_unit" string="Price"/>
+                    <field name="price_subtotal" widget="monetary"/>
+                    <field name="journal_id" optional="hide"/>
+                    <field name="account_id" optional="hide"/>
+                    <field name="accounting_date" optional="hide"/>
+                    <field name="partner_id" optional="hide"/>
+                    <field name="partner_address" optional="hide"/>
+                    <field name="tax_id" optional="hide"/>
+                    <field name="igst_percent" optional="hide"/>
+                    <field name="igst_amount" optional="hide"/>
+                    <field name="cgst_percent" optional="hide"/>
+                    <field name="cgst_amount" optional="hide"/>
+                    <field name="sgst_percent" optional="hide"/>
+                    <field name="sgst_amount" optional="hide"/>
+                    <field name="tcs_percent" optional="hide"/>
+                    <field name="tcs_amount" optional="hide"/>
+                    <field name="tax_amount" optional="hide"/>
+                    <field name="total" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo> 
