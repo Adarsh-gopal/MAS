@@ -2,7 +2,7 @@
 
 {
     'name': 'Create Contract Employee',
-    'version': '14.0.1',
+    'version': '14.0.2',
     'category': 'Employee',
     
     'summary': 'contract employee details',
