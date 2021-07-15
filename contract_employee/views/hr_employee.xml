@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_inherite" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit.cm</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="before">
+                <field name="is_contract"/>
+            </xpath>
+        </field>
+    </record> 
+
+    <record id="action_contract_employee" model="ir.actions.act_window">
+        <field name="name">Contract Employee</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_contract', '=', True)]</field>
+        <!-- <field name="help" type="html">
+        </field> -->
+    </record>
+        
+    <menuitem action="action_contract_employee" name="Contract Employee"
+            id="menu_action_hr_contract_employee" parent="hr.menu_hr_employee_payroll"
+            sequence="99"/> 
+    <menuitem action="action_contract_employee" name="Contract Employee"
+            id="menu_action_hr_payroll_contract_employee" parent="hr_payroll.menu_hr_payroll_employees_root"
+            sequence="99"/>
+
+    <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
+            <field name="name">Employees</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="domain">[('is_contract', '=', False)]</field>
+            <field name="context">{'chat_icon': True}</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="hr.view_employee_filter"/>
+            <field name="help" type="html">
+             <p class="o_view_nocontent_smiling_face">
+               Add a new employee
+             </p><p>
+               With just a quick glance on the Odoo employee screen, you
+               can easily find all the information you need for each person;
+               contact data, job position, availability, etc.
+             </p>
+            </field>
+        </record>
+</odoo>
