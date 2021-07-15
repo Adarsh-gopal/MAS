@@ -3,7 +3,7 @@
 
 {
     'name': 'Mass Furniture Custom fields',
-    'version': '14.0.16',
+    'version': '14.0.14',
     'category': 'Manufature',
     'summary': 'For all',
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
