@@ -14,7 +14,7 @@
     'website': "http://www.prixgen.com",
 
     'category': 'Sales',
-    'version': '14.0.3',
+    'version': '14.0.4',
 
     # any module necessary for this one to work correctly
     'depends': ['base','account','sale','inventory_base'],

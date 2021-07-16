@@ -9,13 +9,14 @@ class SalesRegisterReport(models.Model):
     _auto = False
     _description =  " "
 
+
     name = fields.Char('Invoice name')
     quantity = fields.Float('Quantity')
     price_unit = fields.Float('Price')
     price_subtotal = fields.Float('Subtotal')
     journal_id = fields.Many2one('account.journal', 'Journal Name')
     account_id = fields.Many2one('account.account','Account Name')
-    analytic_account_id = fields.Many2one('account.analytic.account','Account Name')
+    analytic_account_id = fields.Many2one('account.analytic.account','Analytic Account')
     account_user_type_id = fields.Many2one('account.account.type',"Account Type")
     account_group_type_id = fields.Many2one('account.group',"Account Group")
     invoice_id = fields.Many2one('account.move', 'Invoice Number')
@@ -24,7 +25,15 @@ class SalesRegisterReport(models.Model):
 
     # Partner relate fields
     partner_id = fields.Many2one('res.partner', 'Customer Name')
-    gst_treatment = fields.Char(string="GST Treatment")
+    gst_treatment = fields.Selection([
+        ('regular', 'Registered Business - Regular'),
+        ('composition', 'Registered Business - Composition '),
+        ('unregistered', 'Unregistered Business '),
+        ('consumer', 'Consumer'),
+        ('overseas', 'Overseas'),
+        ('special_economic_zone', 'Special Economic Zone'),
+        ('deemed_export', 'Deemed Export'),
+        ],string="GST Treatment")
     partner_ref = fields.Char(string="Partner Reference")
     partner_category_id = fields.Many2one('partner.category',string="Partner Category")
     partner_state_id = fields.Many2one('res.country.state',string="Partner State")

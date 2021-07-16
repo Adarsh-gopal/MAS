@@ -34,15 +34,15 @@
                     <field name="price_subtotal" widget="monetary"/>
                     <field name="tax_id" optional="hide"/>
                     <field name="igst_percent" optional="hide"/>
-                    <field name="igst_amount" optional="hide"/>
+                    <field name="igst_amount" optional="hide" sum='igst_amount'/>
                     <field name="cgst_percent" optional="hide"/>
-                    <field name="cgst_amount" optional="hide"/>
+                    <field name="cgst_amount" optional="hide" sum='cgst_amount'/>
                     <field name="sgst_percent" optional="hide"/>
-                    <field name="sgst_amount" optional="hide"/>
+                    <field name="sgst_amount" optional="hide" sum='sgst_amount'/>
                     <field name="tcs_percent" optional="hide"/>
-                    <field name="tcs_amount" optional="hide"/>
-                    <field name="tax_amount" optional="hide"/>
-                    <field name="total" optional="hide"/>
+                    <field name="tcs_amount" optional="hide" sum='tcs_amount'/>
+                    <field name="tax_amount" optional="hide" sum='tax_amount'/>
+                    <field name="total" optional="hide" sum='total'/>
                 </tree>
             </field>
         </record>
