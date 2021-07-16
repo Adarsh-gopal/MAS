@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_financial_year_list" model="ir.ui.view">
+        <field name="name">financial.year.tree</field>
+        <field name="model">financial.year</field>
+        <field name="arch" type="xml">
+            <tree  delete="0" string="Financial Year" editable="top">          
+                <field name="name" />            
+                <field name="date_from" width="200px" />            
+                <field name="date_to"  width="200px"/>            
+                <field name="new_financial_year" width="200px"  widget="boolean_toggle"/> 
+                <field name="closed" width="200px"  widget="boolean_toggle"/> 
+                <field name="date_locked"  width="200px"  widget="boolean_toggle"/> 
+                <field name="company_id" groups="base.group_multi_company"/>             
+               
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_financial_year_action" model="ir.actions.act_window">
+        <field name="name">Financial Year</field>
+        <field name="res_model">financial.year</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_financial_year_list"/>
+    </record>
+    
+    <menuitem 
+            action="action_financial_year_action" 
+            id="financial_year_menu"
+            name="Financial Year" 
+            parent="account.account_account_menu" 
+            groups="account.group_account_user"
+    />
+
+</odoo>

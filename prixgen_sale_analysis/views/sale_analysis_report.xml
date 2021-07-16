@@ -1,0 +1,89 @@
+<odoo>
+  <data>
+    <record id="sale_analysis_wiz_view_form" model="ir.ui.view">
+      <field name="name">sale.analysis.wiz.view.form</field>
+      <field name="model">sale.analysis.wiz</field>
+      <field name="arch" type="xml">
+        <form string="Sales Analysis Report">
+          <sheet>
+            <group>
+              <group>
+                <field name="financial_year" options="{'no_create':True,'no_edit':True}" required="1"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="analyse_by"  required='1'/>
+              </group>
+              <group>
+                <field name="based_on" required='1' widget="radio"/>
+              </group>
+            </group>
+            <footer>
+              <button name="action_open_report" type="object" class="oe_highlight" string="View REport"/>
+            </footer>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="sale_analysis_wiz_action" model="ir.actions.act_window">
+      <field name="name">Sale Analysis</field>
+      <field name="res_model">sale.analysis.wiz</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+
+    <menuitem id="sales_analysis_menu" name="Sales Analysis" parent="account.menu_finance_reports" sequence="3">
+        <menuitem id="sales_analysis_report_1" name="Sale Analysis" action="sale_analysis_wiz_action"/>
+    </menuitem>
+
+    <record id="view_sales_analysis_report_filter" model="ir.ui.view">
+        <field name="name">sales.analysis.report.search</field>
+        <field name="model">sales.analysis.report</field>
+        <field name="arch" type="xml">
+            <search string="Search Journal Items">
+                <field name="product_id"/>
+                <field name="category_id"/>
+                <field name="sales_person"/>
+                <field name="team_id"/>
+                <separator/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Product Category" name="group_by_product_category" domain="[]" context="{'group_by': 'category_id'}"/>
+                    <filter string="Product" name="group_by_product_id" domain="[]" context="{'group_by': 'product_id'}"/>
+                    <filter string="Sales Person" name="group_by_sales_person" domain="[]" context="{'group_by': 'sales_person'}"/>
+                    <filter string="Sales Team" name="group_by_team_id" domain="[]" context="{'group_by': 'team_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="view_sale_analysis_report_list" model="ir.ui.view">
+        <field name="name">sales.analysis.report.list</field>
+        <field name="model">sales.analysis.report</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" invisible='1'/>
+                <field name="product_id" invisible="context.get('col_by') != 'prod'" optional="show"/>
+                <field name="category_id" invisible="context.get('col_by') != 'pc'" optional="show"/>
+                <field name="sales_person" invisible="context.get('col_by') != 'sp'" optional="show"/>
+                <field name="team_id" invisible="context.get('col_by') != 'st'" optional="show"/>
+                <field name="april" sum="Total April" optional="show"/>
+                <field name="may" sum="Total May" optional="show"/>
+                <field name="june" sum="Total June" optional="show"/>
+                <field name="july" sum="Total July" optional="show"/>
+                <field name="august" sum="Total August" optional="show"/>
+                <field name="sept" sum="Total Sept" optional="show"/>
+                <field name="october" sum="Total October" optional="show"/>
+                <field name="november" sum="Total November" optional="show"/>
+                <field name="december" sum="Total December" optional="show"/>
+                <field name="jan" sum="Total January" optional="show"/>
+                <field name="feb" sum="Total February" optional="show"/>
+                <field name="march" sum="Total March" optional="show"/>
+                <field name="company_id" optional="show" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+  </data>
+</odoo>

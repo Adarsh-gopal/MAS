@@ -11,4 +11,5 @@ from . import sequence_min
 from . import account_aged_partner
 from . import account_analytic
 from . import account_general_ledger
+from . import financial_year
 

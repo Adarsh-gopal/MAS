@@ -7,7 +7,7 @@
 
     'description': """
         Included Functionalities -
-            1)   Round Off automation
+            1)   Financial Year Configuration.
             2)   Currency Inverse Precision
             3)   Unrelated Bill Date and Accounting date only in case of Vendor Bills
             4)   Accounting date not less than Bill date
@@ -30,11 +30,12 @@
 
 
     'category': 'Customization',
-    'version': '14.0.2.5',
+    'version': '14.0.2.6',
 
     'depends': ['base','account','stock','purchase','account_reports','inventory_base'],
 
     'data': [
+        'security/ir.model.access.csv',
         'views/assets.xml',
         'views/account_reports_aged_receivable.xml',
         'views/currency_inverse.xml',
@@ -43,6 +44,7 @@
         'views/res_config_settings.xml',
         # 'views/round_off.xml',
         'views/account_reversal.xml',
+        'views/financial_year.xml',
     ],
     'auto_install': False,
     'installable': True,
