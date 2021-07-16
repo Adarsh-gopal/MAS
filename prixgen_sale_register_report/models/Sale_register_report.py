@@ -231,7 +231,7 @@ class SalesRegisterReport(models.Model):
                 LEFT JOIN product_product product ON product.id = line.product_id
                 LEFT JOIN account_move_line_account_tax_rel tax_rel ON line.id  = tax_rel.account_move_line_id
                 LEFT JOIN account_tax acc_tax ON acc_tax.id = tax_rel.account_tax_id
-                where line.exclude_from_invoice_tab = 'f' AND line.product_id is Not null  AND (move_type = 'out_invoice' OR move_type = 'out_refund') AND line.date >='{}' AND line.date <= '{}' ) """.format(start_date,end_date))
+                where line.exclude_from_invoice_tab = 'f' AND (move_type = 'out_invoice' OR move_type = 'out_refund') AND line.date >='{}' AND line.date <= '{}' ) """.format(start_date,end_date))
         
        
         return {
