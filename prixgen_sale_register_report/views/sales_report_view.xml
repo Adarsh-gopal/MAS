@@ -6,15 +6,32 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name" string="Product"/>
+                    <!-- <field name="name" string="Product"/> -->
+                    <field name="product_id" />
+                    <field name="accounting_date" optional="hide"/>
+                    <field name="invoice_id" optional="hide"/>
+                    <field name="partner_id" optional="hide"/>
+                    <field name="gst_treatment" optional="hide"/>
+                    <field name="partner_ref" optional="hide"/>
+                    <field name="partner_category_id" optional="hide"/>
+                    <field name="partner_state_id" optional="hide"/>
+                    <field name="partner_country_id" optional="hide"/>
+                    <field name="product_category_id" optional="hide"/>
+                    <field name="item_group_id" optional="hide"/>
+                    <field name="product_group_1_id" optional="hide"/>
+                    <field name="product_group_2_id" optional="hide"/>
+                    <field name="product_group_3_id" optional="hide"/>
+                    <field name="product_ref" optional="hide"/>
+                    <field name="gst_name" optional="hide"/>
+                    <field name="account_id" optional="hide"/>
+                    <field name="account_user_type_id" optional="hide"/>
+                    <field name="account_group_type_id" optional="hide"/>
+                    <field name="analytic_account_id" optional="hide"/>
+                    <field name="journal_id" optional="hide"/>
+                    <!-- <field name="partner_address" optional="hide"/> -->
                     <field name="quantity" string="Quantity"/>
                     <field name="price_unit" string="Price"/>
                     <field name="price_subtotal" widget="monetary"/>
-                    <field name="journal_id" optional="hide"/>
-                    <field name="account_id" optional="hide"/>
-                    <field name="accounting_date" optional="hide"/>
-                    <field name="partner_id" optional="hide"/>
-                    <field name="partner_address" optional="hide"/>
                     <field name="tax_id" optional="hide"/>
                     <field name="igst_percent" optional="hide"/>
                     <field name="igst_amount" optional="hide"/>

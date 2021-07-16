@@ -15,22 +15,43 @@ class SalesRegisterReport(models.Model):
     price_subtotal = fields.Float('Subtotal')
     journal_id = fields.Many2one('account.journal', 'Journal Name')
     account_id = fields.Many2one('account.account','Account Name')
-    partner_id = fields.Many2one('res.partner', 'Customer Name')
+    analytic_account_id = fields.Many2one('account.analytic.account','Account Name')
+    account_user_type_id = fields.Many2one('account.account.type',"Account Type")
+    account_group_type_id = fields.Many2one('account.group',"Account Group")
+    invoice_id = fields.Many2one('account.move', 'Invoice Number')
     currency_id = fields.Many2one('res.currency', string="Currency")
-    tax_id = fields.Many2one('account.tax','Taxes')
-    partner_address = fields.Char('Customer Address')
-    igst_amount = fields.Float(compute="report_compute_tax", string="IGST amount")
-    cgst_amount = fields.Float(compute="report_compute_tax", string="CGST amount")
-    sgst_amount = fields.Float(compute="report_compute_tax", string="SGST amount")
-    tcs_amount = fields.Float(compute="report_compute_tax", string="TCS amount")
-    igst_percent = fields.Float(compute="report_compute_tax", string="IGST Percent")
-    cgst_percent = fields.Float(compute="report_compute_tax", string="CGST Percent")
-    sgst_percent = fields.Float(compute="report_compute_tax", string="SGST Percent")
-    tcs_percent = fields.Float(compute="report_compute_tax", string="TCS Percent")
-    total = fields.Float(compute="total_amount", string="Total")
-    tax_amount = fields.Float(compute="total_tax", string="Total Tax")
-    accounting_date = fields.Date('Accounting Date')
 
+
+    # Partner relate fields
+    partner_id = fields.Many2one('res.partner', 'Customer Name')
+    gst_treatment = fields.Char(string="GST Treatment")
+    partner_ref = fields.Char(string="Partner Reference")
+    partner_category_id = fields.Many2one('partner.category',string="Partner Category")
+    partner_state_id = fields.Many2one('res.country.state',string="Partner State")
+    partner_country_id = fields.Many2one('res.country',string="Partner Country")
+    # Product relate fields
+    product_id = fields.Many2one('product.product', string="Product")
+    product_category_id = fields.Char(string="Product Category",related='product_id.categ_id.name')
+    item_group_id= fields.Many2one('item.group',string="Item Group")
+    product_group_1_id= fields.Many2one('product.group.1',string="Product Group 1")
+    product_group_2_id = fields.Many2one('product.group.2',string="Product Group 2")
+    product_group_3_id = fields.Many2one('product.group.3',string="Product Group 3")
+    product_ref = fields.Char(string="Product Reference")
+
+    gst_name = fields.Char(string="Partner GST")
+    tax_id = fields.Many2one('account.tax','Taxes')
+    igst_amount = fields.Float(compute="report_compute_tax", string="IGST Amt" )
+    cgst_amount = fields.Float(compute="report_compute_tax", string="CGST Amt")
+    sgst_amount = fields.Float(compute="report_compute_tax", string="SGST Amt" )
+    tcs_amount = fields.Float(compute="report_compute_tax", string="TCS Amt")
+    igst_percent = fields.Float(compute="report_compute_tax", string="IGST %")
+    cgst_percent = fields.Float(compute="report_compute_tax", string="CGST %")
+    sgst_percent = fields.Float(compute="report_compute_tax", string="SGST %")
+    tcs_percent = fields.Float(compute="report_compute_tax", string="TCS %")
+    tax_amount = fields.Float(compute="total_tax", string="Tax Amt")
+    total = fields.Float(compute="total_amount", string="Net Total")
+
+    accounting_date = fields.Date('Accounting Date')
 
     # Computing the taxes
     def report_compute_tax(self):
@@ -121,23 +142,40 @@ class SalesRegisterReport(models.Model):
                 move.move_type AS move_type,
                 move.id AS move_id,
                 line.name AS name,
+                line.product_id AS product_id,
                 line.quantity AS quantity,
+                line.move_id AS invoice_id,
                 line.price_unit AS price_unit,
                 line.price_subtotal AS price_subtotal,
                 line.journal_id AS journal_id,
                 line.account_id AS account_id,
+                line.analytic_account_id AS analytic_account_id,
                 line.partner_id AS partner_id,
                 line.currency_id AS currency_id,
                 line.date AS accounting_date,
                 tax_rel.account_tax_id AS tax_id,
                 acc_tax.tax_group_id  AS tax_group_id,
-                partner.contact_address_complete AS partner_address
+                partner.vat AS gst_name,
+                partner.ref AS partner_ref,
+                partner.z_partner_category AS partner_category_id,
+                partner.state_id AS partner_state_id,
+                partner.country_id AS partner_country_id,
+                partner.l10n_in_gst_treatment AS gst_treatment,
+                account.user_type_id as account_user_type_id,
+                account.group_id as account_group_type_id,
+                product.item_group as item_group_id ,
+                product.product_group_1 as product_group_1_id ,
+                product.product_group_2 as product_group_2_id ,
+                product.product_group_3 as product_group_3_id ,
+                product.default_code as product_ref 
                 FROM account_move move
                 LEFT JOIN account_move_line line ON move.id = line.move_id
                 LEFT JOIN res_partner partner ON partner.id = line.partner_id
+                LEFT JOIN account_account account ON account.id = line.account_id
+                LEFT JOIN product_product product ON product.id = line.product_id
                 LEFT JOIN account_move_line_account_tax_rel tax_rel ON line.id  = tax_rel.account_move_line_id
                 LEFT JOIN account_tax acc_tax ON acc_tax.id = tax_rel.account_tax_id
-                where line.exclude_from_invoice_tab = 'f' AND (move_type = 'out_invoice' OR move_type = 'out_refund'))""")
+                where line.exclude_from_invoice_tab = 'f' AND line.product_id is Not null AND (move_type = 'out_invoice' OR move_type = 'out_refund'))""")
 
 
     @api.model
@@ -151,23 +189,40 @@ class SalesRegisterReport(models.Model):
                 move.move_type AS move_type,
                 move.id AS move_id,
                 line.name AS name,
+                line.product_id AS product_id,
+                line.move_id AS invoice_id,
                 line.quantity AS quantity,
                 line.price_unit AS price_unit,
                 line.price_subtotal AS price_subtotal,
                 line.journal_id AS journal_id,
                 line.account_id AS account_id,
+                line.analytic_account_id AS analytic_account_id,
                 line.partner_id AS partner_id,
                 line.currency_id AS currency_id,
                 line.date AS accounting_date,
                 tax_rel.account_tax_id AS tax_id,
                 acc_tax.tax_group_id  AS tax_group_id,
-                partner.contact_address_complete AS partner_address
+                partner.vat AS gst_name,
+                partner.ref AS partner_ref,
+                partner.z_partner_category AS partner_category_id,
+                partner.state_id AS partner_state_id,
+                partner.country_id AS partner_country_id,
+                partner.l10n_in_gst_treatment AS gst_treatment,
+                account.user_type_id as account_user_type_id,
+                account.group_id as account_group_type_id,
+                product.item_group as item_group_id ,
+                product.product_group_1 as product_group_1_id ,
+                product.product_group_2 as product_group_2_id ,
+                product.product_group_3 as product_group_3_id ,
+                product.default_code as product_ref 
                 FROM account_move move
                 LEFT JOIN account_move_line line ON move.id = line.move_id
                 LEFT JOIN res_partner partner ON partner.id = line.partner_id
+                LEFT JOIN account_account account ON account.id = line.account_id
+                LEFT JOIN product_product product ON product.id = line.product_id
                 LEFT JOIN account_move_line_account_tax_rel tax_rel ON line.id  = tax_rel.account_move_line_id
                 LEFT JOIN account_tax acc_tax ON acc_tax.id = tax_rel.account_tax_id
-                where line.exclude_from_invoice_tab = 'f' AND (move_type = 'out_invoice' OR move_type = 'out_refund'))""".format(start_date,end_date))
+                where line.exclude_from_invoice_tab = 'f' AND line.product_id is Not null  AND (move_type = 'out_invoice' OR move_type = 'out_refund') AND line.date >='{}' AND line.date <= '{}' ) """.format(start_date,end_date))
         
        
         return {

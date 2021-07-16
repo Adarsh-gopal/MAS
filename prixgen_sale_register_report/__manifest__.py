@@ -13,20 +13,17 @@
     'author': "Prixgen Team",
     'website': "http://www.prixgen.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Sales',
-    'version': '0.1',
+    'version': '14.0.3',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','sale'],
+    'depends': ['base','account','sale','inventory_base'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/sales_report.xml',
         'wizard/Sale_report_wizard.xml',
+        'views/sales_report.xml',
         'views/sales_report_view.xml',
     ],
     # only loaded in demonstration mode
